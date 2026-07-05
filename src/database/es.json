@@ -1,0 +1,314 @@
+{
+  "ui": {
+    "title": "Barcelona y alrededores",
+    "subtitle": "Del 8 al 17 de Julio",
+    "itineraryTab": "Itinerario",
+    "infoTab": "Información General",
+    "searchPlaceholder": "Buscar actividades o lugares...",
+    "allDays": "Ver Todo",
+    "noResults": "No se encontraron actividades con los filtros actuales.",
+    "infoTitle": "Información del Viaje",
+    "infoDestination": "Destino",
+    "infoDestinationDesc": "Barcelona y sus alrededores, Cataluña, España.",
+    "infoDates": "Fechas",
+    "infoDatesDesc": "Del 8 al 17 de Julio",
+    "infoTips": "Consejos Útiles",
+    "infoTipsList": [
+      "<strong>Transporte:</strong> Utiliza la tarjeta T-Usual o T-Casual para moverte por la red de metro y bus de forma económica.",
+      "<strong>Seguridad:</strong> Cuida tus pertenencias en zonas concurridas (Las Ramblas, metro, etc.).",
+      "<strong>Reservas:</strong> Recuerda reservar con antelación para la Sagrada Familia y el Park Güell."
+    ],
+    "infoPhones": "Teléfonos de Interés",
+    "infoPhonesList": {
+      "Emergencias": "112",
+      "Policía Local": "092"
+    },
+    "errorTitle": "Oops! Algo salió mal.",
+    "errorDesc": "No se pudo cargar el itinerario del viaje. Por favor, inténtalo más tarde.",
+    "homeTitle": "Barcelona Travel Planner",
+    "homeSubtitle": "Tu Próxima Aventura",
+    "startBtn": "Iniciar viaje",
+    "galleryTitle": "Mis Recuerdos",
+    "galleryPlaces": {
+      "sagrada": "Sagrada Familia",
+      "park": "Park Güell",
+      "barceloneta": "La Barceloneta",
+      "gotico": "Barrio Gótico"
+    },
+    "homeDestLabel": "Destino",
+    "homeDestVal": "Barcelona, España",
+    "homeDatesLabel": "Fechas",
+    "homeDatesVal": "8 - 17 de Julio (10 Días)",
+    "homeEventLabel": "Evento Especial",
+    "homeEventVal": "Boda en el Hostal (Día 10) 🥂",
+    "homePackingLabel": "Equipaje",
+    "homePackingVal": "Completado 🎒",
+    "homeFlightLabel": "Vuelo / Tren",
+    "homeFlightVal": "Confirmado ✈️"
+  },
+  "dias": [
+    {
+      "id": 7,
+      "fecha": "Día 7",
+      "tituloPrincipal": "Llegada a Barcelona",
+      "actividades": [
+        {
+          "hora": "20:30",
+          "titulo": "Llegada y Acomodación",
+          "descripcion": "Check-in en el alojamiento y bienvenida.",
+          "lugar": "Centro de Barcelona"
+        },
+        {
+          "hora": "22:00",
+          "titulo": "Primera Cena",
+          "descripcion": "Tapeo informal y paseo corto de toma de contacto.",
+          "lugar": "Plaza Catalunya"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "fecha": "Día 8",
+      "tituloPrincipal": "Barrio Gótico e Histórico",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Llegada Oficial",
+          "descripcion": "Acomodación definitiva si es necesario.",
+          "lugar": "Centro de Barcelona"
+        },
+        {
+          "hora": "12:30",
+          "titulo": "Paseo por el Gótico",
+          "descripcion": "Recorrido a pie por la Catedral de Barcelona, el Barrio Gótico y comida local.",
+          "lugar": "Barrio Gótico"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Paseo por el Born",
+          "descripcion": "Visita a la Basílica de Santa María del Mar.",
+          "lugar": "El Born"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "fecha": "Día 9",
+      "tituloPrincipal": "El Modernismo y Gaudí",
+      "actividades": [
+        {
+          "hora": "09:30",
+          "titulo": "Sagrada Familia",
+          "descripcion": "Visita al interior y exterior de la obra cumbre de Gaudí.",
+          "lugar": "Sagrada Familia"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Paseo de Gràcia",
+          "descripcion": "Admirar Casa Batlló y La Pedrera (Casa Milà).",
+          "lugar": "Eixample"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Park Güell",
+          "descripcion": "Recorrido por la zona monumental del parque al atardecer.",
+          "lugar": "Gràcia"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "fecha": "Día 10",
+      "tituloPrincipal": "Boda",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Llegada al lugar",
+          "descripcion": "Llegada de los invitados al lugar del evento y acomodación.",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "12:00",
+          "titulo": "Ceremonia",
+          "descripcion": "Enlace matrimonial y celebración oficial.",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Aperitivo",
+          "descripcion": "Pica-pica y cóctel de bienvenida con los invitados.",
+          "lugar": "Jardines del Hostal"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Comida / Banquete",
+          "descripcion": "Banquete principal de la boda.",
+          "lugar": "Salón del Hostal"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Fiesta de la Boda",
+          "descripcion": "Baile, música y celebración festiva hasta la noche (20:00).",
+          "lugar": "Zona de Baile"
+        },
+        {
+          "hora": "20:00",
+          "titulo": "Cena",
+          "descripcion": "Cena para recuperar fuerzas (duración de 20:00 a 21:00).",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "21:00",
+          "titulo": "Alojamiento y Descanso",
+          "descripcion": "Dormir en el hostal de la boda hasta la mañana del día 11.",
+          "lugar": "Hostal de la Boda"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "fecha": "Día 11",
+      "tituloPrincipal": "Montjuïc y Vistas de la Ciudad",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Castillo de Montjuïc",
+          "descripcion": "Visita guiada con vistas panorámicas del puerto.",
+          "lugar": "Montjuïc"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Comida en Poble Espanyol",
+          "descripcion": "Paseo por la arquitectura típica de España.",
+          "lugar": "Sants-Montjuïc"
+        },
+        {
+          "hora": "17:00",
+          "titulo": "Museo Nacional (MNAC)",
+          "descripcion": "Visita artística y relax en las escalinatas.",
+          "lugar": "Plaza España"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "fecha": "Día 12",
+      "tituloPrincipal": "Playa, Puerto y Brisa Marina",
+      "actividades": [
+        {
+          "hora": "10:30",
+          "titulo": "Puerto de Barcelona (Port Vell)",
+          "descripcion": "Paseo por la zona portuaria y el Maremagnum.",
+          "lugar": "Port Vell"
+        },
+        {
+          "hora": "13:30",
+          "titulo": "Comida de Paella",
+          "descripcion": "Almuerzo marinero tradicional frente al mar.",
+          "lugar": "La Barceloneta"
+        },
+        {
+          "hora": "16:30",
+          "titulo": "Atardecer en la Playa",
+          "descripcion": "Tarde relajada en la playa de la Barceloneta.",
+          "lugar": "Playa de la Barceloneta"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "fecha": "Día 13",
+      "tituloPrincipal": "Excursión a Girona",
+      "actividades": [
+        {
+          "hora": "09:00",
+          "titulo": "Tren a Girona",
+          "descripcion": "Viaje para visitar las coloridas casas sobre el río Oñar.",
+          "lugar": "Girona Centro"
+        },
+        {
+          "hora": "11:30",
+          "titulo": "Casco Histórico y Catedral",
+          "descripcion": "Recorrido por el Call Jueu (barrio judío) y murallas romanas.",
+          "lugar": "Barrio Viejo de Girona"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "fecha": "Día 14",
+      "tituloPrincipal": "Tibidabo y Diversión",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Parque de Atracciones Tibidabo",
+          "descripcion": "Subida en funicular y atracciones clásicas.",
+          "lugar": "Tibidabo"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Templo del Sagrado Corazón",
+          "descripcion": "Visita a la iglesia en la cima de la montaña.",
+          "lugar": "Collserola"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "fecha": "Día 15",
+      "tituloPrincipal": "Parque de la Ciutadella y Compras",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Parque de la Ciutadella",
+          "descripcion": "Paseo en barca, picnic y ver la gran Cascada Monumental.",
+          "lugar": "Ciutadella"
+        },
+        {
+          "hora": "15:00",
+          "titulo": "Compras en Portal de l'Àngel",
+          "descripcion": "Tarde libre de souvenirs y compras.",
+          "lugar": "Portal de l'Àngel"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "fecha": "Día 16",
+      "tituloPrincipal": "Escapada Costera a Sitges",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Tren de Cercanías a Sitges",
+          "descripcion": "Día en esta idílica localidad costera.",
+          "lugar": "Sitges"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Paseo Marítimo e Iglesia",
+          "descripcion": "Visita a la Iglesia de San Bartolomé y Santa Tecla y almuerzo.",
+          "lugar": "Casco Antiguo de Sitges"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "fecha": "Día 17",
+      "tituloPrincipal": "Últimas Compras y Despedida",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Mercado de La Boquería",
+          "descripcion": "Desayuno de zumo de frutas y últimas compras.",
+          "lugar": "Las Ramblas"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Traslado y Salida",
+          "descripcion": "Salida hacia el aeropuerto o estación.",
+          "lugar": "Barcelona Sants / El Prat"
+        }
+      ]
+    }
+  ]
+}

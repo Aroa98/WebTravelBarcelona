@@ -1,0 +1,314 @@
+{
+  "ui": {
+    "title": "Barcelona & Surroundings",
+    "subtitle": "From July 8th to 17th",
+    "itineraryTab": "Itinerary",
+    "infoTab": "General Info",
+    "searchPlaceholder": "Search activities or locations...",
+    "allDays": "View All",
+    "noResults": "No activities found with the current filters.",
+    "infoTitle": "Trip Information",
+    "infoDestination": "Destination",
+    "infoDestinationDesc": "Barcelona and its surroundings, Catalonia, Spain.",
+    "infoDates": "Dates",
+    "infoDatesDesc": "From July 8th to 17th",
+    "infoTips": "Useful Tips",
+    "infoTipsList": [
+      "<strong>Transportation:</strong> Use a T-Usual or T-Casual card to travel economically via metro and bus network.",
+      "<strong>Safety:</strong> Take care of your belongings in crowded areas (Las Ramblas, metro, etc.).",
+      "<strong>Reservations:</strong> Remember to book tickets in advance for Sagrada Familia and Park Güell."
+    ],
+    "infoPhones": "Emergency Numbers",
+    "infoPhonesList": {
+      "Emergencies": "112",
+      "Local Police": "092"
+    },
+    "errorTitle": "Oops! Something went wrong.",
+    "errorDesc": "Could not load the trip itinerary. Please try again later.",
+    "homeTitle": "Barcelona Travel Planner",
+    "homeSubtitle": "Your Next Adventure",
+    "startBtn": "Start Trip",
+    "galleryTitle": "My Memories",
+    "galleryPlaces": {
+      "sagrada": "Sagrada Familia",
+      "park": "Park Güell",
+      "barceloneta": "La Barceloneta",
+      "gotico": "Gothic Quarter"
+    },
+    "homeDestLabel": "Destination",
+    "homeDestVal": "Barcelona, Spain",
+    "homeDatesLabel": "Dates",
+    "homeDatesVal": "July 8 - 17 (10 Days)",
+    "homeEventLabel": "Special Event",
+    "homeEventVal": "Wedding at Guesthouse (Day 10) 🥂",
+    "homePackingLabel": "Packing",
+    "homePackingVal": "Completed 🎒",
+    "homeFlightLabel": "Flight / Train",
+    "homeFlightVal": "Confirmed ✈️"
+  },
+  "dias": [
+    {
+      "id": 7,
+      "fecha": "Day 7",
+      "tituloPrincipal": "Arrival in Barcelona",
+      "actividades": [
+        {
+          "hora": "20:30",
+          "titulo": "Arrival & Accommodation",
+          "descripcion": "Check-in at the lodging and welcome.",
+          "lugar": "Barcelona Center"
+        },
+        {
+          "hora": "22:00",
+          "titulo": "First Dinner",
+          "descripcion": "Informal tapas dinner and a short orientation walk.",
+          "lugar": "Catalunya Square"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "fecha": "Day 8",
+      "tituloPrincipal": "Gothic & Historic Quarter",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Official Arrival",
+          "descripcion": "Final accommodation setup if needed.",
+          "lugar": "Barcelona Center"
+        },
+        {
+          "hora": "12:30",
+          "titulo": "Walk in the Gothic Quarter",
+          "descripcion": "Walking tour around Barcelona Cathedral, Gothic Quarter, and local lunch.",
+          "lugar": "Gothic Quarter"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Walk in El Born",
+          "descripcion": "Visit to the Santa Maria del Mar Basilica.",
+          "lugar": "El Born"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "fecha": "Day 9",
+      "tituloPrincipal": "Modernism & Gaudí",
+      "actividades": [
+        {
+          "hora": "09:30",
+          "titulo": "Sagrada Familia",
+          "descripcion": "Inside and outside visit of Gaudí's masterpiece.",
+          "lugar": "Sagrada Familia"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Gràcia Avenue",
+          "descripcion": "Admire Casa Batlló and La Pedrera (Casa Milà).",
+          "lugar": "Eixample"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Park Güell",
+          "descripcion": "Tour around the monumental zone of the park at sunset.",
+          "lugar": "Gràcia"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "fecha": "Day 10",
+      "tituloPrincipal": "Wedding Day",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Arrival at the Venue",
+          "descripcion": "Guests arrival at the venue and room check-in.",
+          "lugar": "Wedding Guesthouse"
+        },
+        {
+          "hora": "12:00",
+          "titulo": "Ceremony",
+          "descripcion": "Wedding service and official celebration.",
+          "lugar": "Wedding Guesthouse"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Appetizer",
+          "descripcion": "Finger food and welcome cocktail with the guests.",
+          "lugar": "Guesthouse Gardens"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Lunch / Banquet",
+          "descripcion": "Main wedding banquet.",
+          "lugar": "Guesthouse Hall"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Wedding Party",
+          "descripcion": "Dancing, music, and festive celebrations until evening (20:00).",
+          "lugar": "Dance Floor"
+        },
+        {
+          "hora": "20:00",
+          "titulo": "Dinner",
+          "descripcion": "Dinner to regain energy (duration from 20:00 to 21:00).",
+          "lugar": "Wedding Guesthouse"
+        },
+        {
+          "hora": "21:00",
+          "titulo": "Lodging & Rest",
+          "descripcion": "Sleep at the wedding guesthouse rooms until Day 11 morning.",
+          "lugar": "Wedding Guesthouse"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "fecha": "Day 11",
+      "tituloPrincipal": "Montjuïc & City Views",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Montjuïc Castle",
+          "descripcion": "Guided tour with panoramic harbor views.",
+          "lugar": "Montjuïc"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Lunch at Poble Espanyol",
+          "descripcion": "Walk around typical Spanish architectural styles.",
+          "lugar": "Sants-Montjuïc"
+        },
+        {
+          "hora": "17:00",
+          "titulo": "National Museum (MNAC)",
+          "descripcion": "Artistic visit and relaxation on the main steps.",
+          "lugar": "España Square"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "fecha": "Day 12",
+      "tituloPrincipal": "Beach, Port & Sea Breeze",
+      "actividades": [
+        {
+          "hora": "10:30",
+          "titulo": "Port of Barcelona (Port Vell)",
+          "descripcion": "Walk around the harbor area and Maremagnum.",
+          "lugar": "Port Vell"
+        },
+        {
+          "hora": "13:30",
+          "titulo": "Paella Lunch",
+          "descripcion": "Traditional seafood lunch by the sea.",
+          "lugar": "La Barceloneta"
+        },
+        {
+          "hora": "16:30",
+          "titulo": "Beach Sunset",
+          "descripcion": "Relaxed afternoon at Barceloneta beach.",
+          "lugar": "Barceloneta Beach"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "fecha": "Day 13",
+      "tituloPrincipal": "Girona Day Trip",
+      "actividades": [
+        {
+          "hora": "09:00",
+          "titulo": "Train to Girona",
+          "descripcion": "Day trip to visit the colorful houses along the Onyar river.",
+          "lugar": "Girona Center"
+        },
+        {
+          "hora": "11:30",
+          "titulo": "Historic Center & Cathedral",
+          "descripcion": "Tour around the Call Jueu (Jewish quarter) and Roman walls.",
+          "lugar": "Girona Old Town"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "fecha": "Day 14",
+      "tituloPrincipal": "Tibidabo & Fun",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Tibidabo Amusement Park",
+          "descripcion": "Funicular ascent and classic theme park rides.",
+          "lugar": "Tibidabo"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Sacred Heart Temple",
+          "descripcion": "Visit to the church standing on the mountain peak.",
+          "lugar": "Collserola"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "fecha": "Day 15",
+      "tituloPrincipal": "Ciutadella Park & Shopping",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Ciutadella Park",
+          "descripcion": "Rowboat ride, picnic, and viewing the grand Monumental Cascade waterfall.",
+          "lugar": "Ciutadella"
+        },
+        {
+          "hora": "15:00",
+          "titulo": "Shopping at Portal de l'Àngel",
+          "descripcion": "Free afternoon for shopping and souvenirs.",
+          "lugar": "Portal de l'Àngel"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "fecha": "Day 16",
+      "tituloPrincipal": "Sitges Coastal Getaway",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Commuter Train to Sitges",
+          "descripcion": "Day at this idyllic coastal town.",
+          "lugar": "Sitges"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Promenade & Church",
+          "descripcion": "Visit to the San Bartolomé & Santa Tecla Church and lunch.",
+          "lugar": "Sitges Old Town"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "fecha": "Day 17",
+      "tituloPrincipal": "Last Purchases & Departure",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "La Boquería Market",
+          "descripcion": "Fruit juice breakfast and final shopping.",
+          "lugar": "Las Ramblas"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Transfer & Departure",
+          "descripcion": "Head to the airport or train station.",
+          "lugar": "Barcelona Sants / El Prat"
+        }
+      ]
+    }
+  ]
+}
