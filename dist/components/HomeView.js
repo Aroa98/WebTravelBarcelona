@@ -6,6 +6,28 @@ export class HomeView {
     render() {
         const container = document.createElement('div');
         container.className = 'home-container animate-fade-in';
+        // Language switcher
+        const langContainer = document.createElement('div');
+        langContainer.className = 'home-lang-switcher';
+        const esBtn = document.createElement('button');
+        esBtn.className = `home-lang-btn ${this.props.activeLang === 'es' ? 'active' : ''}`;
+        esBtn.textContent = 'ES';
+        esBtn.addEventListener('click', () => {
+            if (this.props.activeLang !== 'es') {
+                this.props.onLanguageSelect('es');
+            }
+        });
+        const enBtn = document.createElement('button');
+        enBtn.className = `home-lang-btn ${this.props.activeLang === 'en' ? 'active' : ''}`;
+        enBtn.textContent = 'EN';
+        enBtn.addEventListener('click', () => {
+            if (this.props.activeLang !== 'en') {
+                this.props.onLanguageSelect('en');
+            }
+        });
+        langContainer.appendChild(esBtn);
+        langContainer.appendChild(enBtn);
+        container.appendChild(langContainer);
         // The main scrapbook planner book container
         const plannerBook = document.createElement('div');
         plannerBook.className = 'planner-book';
@@ -104,7 +126,7 @@ export class HomeView {
             {
                 id: 'sagrada',
                 name: this.props.ui.galleryPlaces.sagrada,
-                imgUrl: 'https://media.admagazine.com/photos/66fb2613cbe78507189d9e5b/1:1/w_2000,h_2000,c_limit/GettyImages-1467072114.jpg'
+                imgUrl: '/images/sagrada_familia.png'
             },
             {
                 id: 'park',
@@ -114,12 +136,12 @@ export class HomeView {
             {
                 id: 'barceloneta',
                 name: this.props.ui.galleryPlaces.barceloneta,
-                imgUrl: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=80'
+                imgUrl: '/images/barceloneta.png'
             },
             {
                 id: 'gotico',
                 name: this.props.ui.galleryPlaces.gotico,
-                imgUrl: 'https://images.unsplash.com/photo-1529559005085-30dea67a45ca?auto=format&fit=crop&w=800&q=80'
+                imgUrl: '/images/barrio_gotico.png'
             }
         ];
         polaroids.forEach((item, index) => {

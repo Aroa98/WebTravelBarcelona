@@ -79,6 +79,18 @@ async function loadDataAndRender(container: HTMLElement) {
       throw new Error('Data could not be parsed.');
     }
 
+    const localData = localStorage.getItem(`custom-itinerary-${currentLang}`);
+    if (localData) {
+      try {
+        itineraryData.dias = JSON.parse(localData);
+      } catch (e) {
+        console.error('Error parsing custom itinerary:', e);
+        localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(itineraryData.dias));
+      }
+    } else {
+      localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(itineraryData.dias));
+    }
+
     renderApp(container);
   } catch (error) {
     console.error('Error al cargar la traducción:', error);
@@ -123,6 +135,12 @@ function renderApp(container: HTMLElement) {
         homePackingVal: data.ui.homePackingVal,
         homeFlightLabel: data.ui.homeFlightLabel,
         homeFlightVal: data.ui.homeFlightVal
+      },
+      activeLang: currentLang,
+      onLanguageSelect: (lang) => {
+        currentLang = lang as 'es' | 'en';
+        localStorage.setItem('app-lang', currentLang);
+        loadDataAndRender(container);
       },
       onStartTrip: () => {
         currentPage = 'itinerary';
@@ -189,6 +207,12 @@ function renderTabContent(container: HTMLElement) {
         searchPlaceholder: itineraryData.ui.searchPlaceholder,
         allDays: itineraryData.ui.allDays,
         noResults: itineraryData.ui.noResults
+      },
+      onUpdateItinerary: (updatedDays) => {
+        if (itineraryData) {
+          itineraryData.dias = updatedDays;
+          localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(updatedDays));
+        }
       }
     });
     container.appendChild(itineraryView.render());

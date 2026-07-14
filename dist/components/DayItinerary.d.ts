@@ -7,7 +7,11 @@ export interface Day {
 }
 export declare class DayItinerary {
     private day;
-    constructor(day: Day);
+    private onDaySelect;
+    private onUpdateDay;
+    constructor(day: Day, onDaySelect?: (dayId: number) => void, onUpdateDay?: (updatedDay: Day) => void);
     render(): HTMLElement;
+    private openAddPlanModal;
+    private openUnsavedWarningModal;
 }
 //# sourceMappingURL=DayItinerary.d.ts.map

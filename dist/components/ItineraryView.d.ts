@@ -6,10 +6,12 @@ export interface ItineraryViewProps {
         allDays: string;
         noResults: string;
     };
+    onUpdateItinerary?: (days: Day[]) => void;
 }
 export declare class ItineraryView {
     private days;
     private ui;
+    private onUpdateItinerary;
     private activeDayFilter;
     private searchQuery;
     private element;
@@ -17,7 +19,6 @@ export declare class ItineraryView {
     constructor(props: ItineraryViewProps);
     render(): HTMLElement;
     private createToolbar;
-    private setDayFilter;
     private updateList;
 }
 //# sourceMappingURL=ItineraryView.d.ts.map

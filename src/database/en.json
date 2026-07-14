@@ -1,7 +1,7 @@
 {
   "ui": {
     "title": "Barcelona & Surroundings",
-    "subtitle": "From July 8th to 17th",
+    "subtitle": "From October 7th to 17th",
     "itineraryTab": "Itinerary",
     "infoTab": "General Info",
     "searchPlaceholder": "Search activities or locations...",
@@ -11,7 +11,7 @@
     "infoDestination": "Destination",
     "infoDestinationDesc": "Barcelona and its surroundings, Catalonia, Spain.",
     "infoDates": "Dates",
-    "infoDatesDesc": "From July 8th to 17th",
+    "infoDatesDesc": "From October 7th to 17th",
     "infoTips": "Useful Tips",
     "infoTipsList": [
       "<strong>Transportation:</strong> Use a T-Usual or T-Casual card to travel economically via metro and bus network.",
@@ -38,7 +38,7 @@
     "homeDestLabel": "Destination",
     "homeDestVal": "Barcelona, Spain",
     "homeDatesLabel": "Dates",
-    "homeDatesVal": "July 8 - 17 (10 Days)",
+    "homeDatesVal": "October 7 - 17 (11 Days)",
     "homeEventLabel": "Special Event",
     "homeEventVal": "Wedding at Guesthouse (Day 10) 🥂",
     "homePackingLabel": "Packing",
@@ -50,31 +50,31 @@
     {
       "id": 7,
       "fecha": "Day 7",
-      "tituloPrincipal": "Arrival in Barcelona",
+      "tituloPrincipal": "Departure Flight",
       "actividades": [
         {
-          "hora": "20:30",
-          "titulo": "Arrival & Accommodation",
-          "descripcion": "Check-in at the lodging and welcome.",
-          "lugar": "Barcelona Center"
-        },
-        {
-          "hora": "22:00",
-          "titulo": "First Dinner",
-          "descripcion": "Informal tapas dinner and a short orientation walk.",
-          "lugar": "Catalunya Square"
+          "hora": "18:35",
+          "titulo": "Flight Departure to Barcelona",
+          "descripcion": "Flight departure from Washington DC (IAD/DCA) at 6:35 PM heading to Barcelona-El Prat Airport (BCN).",
+          "lugar": "Washington DC"
         }
       ]
     },
     {
       "id": 8,
       "fecha": "Day 8",
-      "tituloPrincipal": "Gothic & Historic Quarter",
+      "tituloPrincipal": "Arrival & Gothic Quarter",
       "actividades": [
         {
+          "hora": "08:20",
+          "titulo": "Arrival in Barcelona (BCN)",
+          "descripcion": "Landing at Barcelona-El Prat Airport at 8:20 AM. Transfer to the city center.",
+          "lugar": "Barcelona-El Prat Airport (BCN)"
+        },
+        {
           "hora": "10:00",
-          "titulo": "Official Arrival",
-          "descripcion": "Final accommodation setup if needed.",
+          "titulo": "Official Arrival & Accommodation",
+          "descripcion": "Check-in at the lodging and welcome.",
           "lugar": "Barcelona Center"
         },
         {
@@ -168,145 +168,147 @@
     {
       "id": 11,
       "fecha": "Day 11",
-      "tituloPrincipal": "Montjuïc & City Views",
+      "tituloPrincipal": "The Magic Mountain",
       "actividades": [
         {
           "hora": "10:00",
-          "titulo": "Montjuïc Castle",
-          "descripcion": "Guided tour with panoramic harbor views.",
-          "lugar": "Montjuïc"
+          "titulo": "Montserrat Day Trip",
+          "descripcion": "Ascend by rack railway or cable car to visit the Abbey of Montserrat and see La Moreneta (the Black Madonna).",
+          "lugar": "Montserrat Abbey"
         },
         {
           "hora": "14:00",
-          "titulo": "Lunch at Poble Espanyol",
-          "descripcion": "Walk around typical Spanish architectural styles.",
-          "lugar": "Sants-Montjuïc"
-        },
-        {
-          "hora": "17:00",
-          "titulo": "National Museum (MNAC)",
-          "descripcion": "Artistic visit and relaxation on the main steps.",
-          "lugar": "España Square"
+          "titulo": "Light Hiking",
+          "descripcion": "Walk up to Saint Michael's Cross to enjoy panoramic views.",
+          "lugar": "Saint Michael's Cross, Montserrat"
         }
       ]
     },
     {
       "id": 12,
       "fecha": "Day 12",
-      "tituloPrincipal": "Beach, Port & Sea Breeze",
+      "tituloPrincipal": "The Magic of Costa Brava",
       "actividades": [
         {
           "hora": "10:30",
-          "titulo": "Port of Barcelona (Port Vell)",
-          "descripcion": "Walk around the harbor area and Maremagnum.",
-          "lugar": "Port Vell"
+          "titulo": "The Castle by the Sea",
+          "descripcion": "Visit the Vila Vella of Tossa de Mar and its spectacular medieval walled enclosure.",
+          "lugar": "Vila Vella, Tossa de Mar"
         },
         {
-          "hora": "13:30",
-          "titulo": "Paella Lunch",
-          "descripcion": "Traditional seafood lunch by the sea.",
-          "lugar": "La Barceloneta"
+          "hora": "14:00",
+          "titulo": "Seafood Gastronomy",
+          "descripcion": "Lunch at a local restaurant right in front of the sea.",
+          "lugar": "Tossa de Mar"
         },
         {
           "hora": "16:30",
-          "titulo": "Beach Sunset",
-          "descripcion": "Relaxed afternoon at Barceloneta beach.",
-          "lugar": "Barceloneta Beach"
+          "titulo": "Caminos de Ronda",
+          "descripcion": "Walk along the coastal paths near Tossa to enjoy hidden coves.",
+          "lugar": "Caminos of Ronda, Tossa de Mar"
         }
       ]
     },
     {
       "id": 13,
       "fecha": "Day 13",
-      "tituloPrincipal": "Girona Day Trip",
+      "tituloPrincipal": "Pyrenees Getaway (Andorra)",
       "actividades": [
         {
-          "hora": "09:00",
-          "titulo": "Train to Girona",
-          "descripcion": "Day trip to visit the colorful houses along the Onyar river.",
-          "lugar": "Girona Center"
+          "hora": "11:00",
+          "titulo": "Shopping & Mountains",
+          "descripcion": "Arrival at Andorra la Vella. Walk around the shopping center and pedestrian streets.",
+          "lugar": "Andorra la Vella"
         },
         {
-          "hora": "11:30",
-          "titulo": "Historic Center & Cathedral",
-          "descripcion": "Tour around the Call Jueu (Jewish quarter) and Roman walls.",
-          "lugar": "Girona Old Town"
+          "hora": "15:00",
+          "titulo": "Thermal Relax or Views",
+          "descripcion": "Spend the afternoon at Caldea spa or visit the Roc del Quer viewpoint for spectacular valley views.",
+          "lugar": "Caldea / Roc del Quer Viewpoint"
         }
       ]
     },
     {
       "id": 14,
       "fecha": "Day 14",
-      "tituloPrincipal": "Tibidabo & Fun",
+      "tituloPrincipal": "Wine & Tradition (Southern Catalonia)",
       "actividades": [
         {
-          "hora": "11:00",
-          "titulo": "Tibidabo Amusement Park",
-          "descripcion": "Funicular ascent and classic theme park rides.",
-          "lugar": "Tibidabo"
+          "hora": "10:30",
+          "titulo": "Penedès Region",
+          "descripcion": "Visit traditional cavas (such as Codorníu or Freixenet) or a winery (such as Familia Torres) for tasting and pairing.",
+          "lugar": "Penedès",
+          "enlace_reserva": "https://www.torres.es/es/experiencias/penedes"
         },
         {
           "hora": "16:00",
-          "titulo": "Sacred Heart Temple",
-          "descripcion": "Visit to the church standing on the mountain peak.",
-          "lugar": "Collserola"
+          "titulo": "Roman Tarragona",
+          "descripcion": "Afternoon walk around Tarragona to see the Roman Amphitheatre facing the Mediterranean Sea.",
+          "lugar": "Tarragona"
         }
       ]
     },
     {
       "id": 15,
       "fecha": "Day 15",
-      "tituloPrincipal": "Ciutadella Park & Shopping",
+      "tituloPrincipal": "Culture & Sea Breeze (Back to Barcelona)",
       "actividades": [
         {
           "hora": "10:00",
-          "titulo": "Ciutadella Park",
-          "descripcion": "Rowboat ride, picnic, and viewing the grand Monumental Cascade waterfall.",
-          "lugar": "Ciutadella"
+          "titulo": "Montjuïc",
+          "descripcion": "Cable car ride to Montjuïc Castle and visit the Olympic Stadium surroundings.",
+          "lugar": "Montjuïc"
         },
         {
-          "hora": "15:00",
-          "titulo": "Shopping at Portal de l'Àngel",
-          "descripcion": "Free afternoon for shopping and souvenirs.",
-          "lugar": "Portal de l'Àngel"
+          "hora": "14:00",
+          "titulo": "The Seafront",
+          "descripcion": "Lunch in the Barceloneta neighborhood and walk around Port Vell (Old Port).",
+          "lugar": "La Barceloneta & Port Vell"
         }
       ]
     },
     {
       "id": 16,
       "fecha": "Day 16",
-      "tituloPrincipal": "Sitges Coastal Getaway",
+      "tituloPrincipal": "Hidden Gems & Farewell",
       "actividades": [
         {
-          "hora": "10:00",
-          "titulo": "Commuter Train to Sitges",
-          "descripcion": "Day at this idyllic coastal town.",
-          "lugar": "Sitges"
+          "hora": "10:30",
+          "titulo": "Musical Modernism",
+          "descripcion": "Visit the Palau de la Música Catalana (one of the most beautiful architectural gems, guided tour recommended).",
+          "lugar": "Palau de la Música Catalana",
+          "enlace_reserva": "https://www.palaumusica.cat/es/visitas-guiadas"
         },
         {
-          "hora": "13:00",
-          "titulo": "Promenade & Church",
-          "descripcion": "Visit to the San Bartolomé & Santa Tecla Church and lunch.",
-          "lugar": "Sitges Old Town"
+          "hora": "12:30",
+          "titulo": "Ciutadella Park & Arc de Triomf",
+          "descripcion": "Relaxing walk through the city's green lung.",
+          "lugar": "Ciutadella Park"
+        },
+        {
+          "hora": "18:00",
+          "titulo": "Afternoon in Gràcia",
+          "descripcion": "Final shopping and farewell tapas around the plazas of the picturesque Gràcia neighborhood.",
+          "lugar": "Gràcia District"
         }
       ]
     },
     {
       "id": 17,
       "fecha": "Day 17",
-      "tituloPrincipal": "Last Purchases & Departure",
+      "tituloPrincipal": "Heading Home",
       "actividades": [
         {
-          "hora": "10:00",
-          "titulo": "La Boquería Market",
-          "descripcion": "Fruit juice breakfast and final shopping.",
-          "lugar": "Las Ramblas"
+          "hora": "08:00",
+          "titulo": "Transfer",
+          "descripcion": "Departure to Barcelona-El Prat Airport.",
+          "lugar": "Barcelona-El Prat Airport (BCN)"
         },
         {
-          "hora": "14:00",
-          "titulo": "Transfer & Departure",
-          "descripcion": "Head to the airport or train station.",
-          "lugar": "Barcelona Sants / El Prat"
+          "hora": "11:15",
+          "titulo": "Return flight",
+          "descripcion": "Takeoff bound for Washington DC (Estimated arrival at 02:35 PM US local time).",
+          "lugar": "Washington DC"
         }
       ]
     }

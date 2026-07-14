@@ -2,6 +2,7 @@ import { DayItinerary } from './DayItinerary.js';
 export class ItineraryView {
     days;
     ui;
+    onUpdateItinerary;
     activeDayFilter = 'all'; // 'all' or day ID as string
     searchQuery = '';
     element = null;
@@ -9,6 +10,7 @@ export class ItineraryView {
     constructor(props) {
         this.days = props.days;
         this.ui = props.ui;
+        this.onUpdateItinerary = props.onUpdateItinerary;
     }
     render() {
         const container = document.createElement('div');
@@ -60,32 +62,29 @@ export class ItineraryView {
             this.searchQuery = e.target.value.toLowerCase();
             this.updateList();
         });
-        // Day Quick Filters
+        // Day Quick Filters (Dropdown)
         const filterWrapper = document.createElement('div');
         filterWrapper.className = 'filter-wrapper';
-        const allBtn = document.createElement('button');
-        allBtn.className = 'filter-btn active';
-        allBtn.textContent = this.ui.allDays;
-        allBtn.addEventListener('click', () => this.setDayFilter('all', allBtn));
-        filterWrapper.appendChild(allBtn);
+        const daySelect = document.createElement('select');
+        daySelect.className = 'day-select-filter';
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = this.ui.allDays;
+        daySelect.appendChild(allOption);
         this.days.forEach(day => {
-            const btn = document.createElement('button');
-            btn.className = 'filter-btn';
-            btn.textContent = day.fecha;
-            btn.addEventListener('click', () => this.setDayFilter(day.id.toString(), btn));
-            filterWrapper.appendChild(btn);
+            const option = document.createElement('option');
+            option.value = day.id.toString();
+            option.textContent = day.fecha;
+            daySelect.appendChild(option);
         });
+        daySelect.addEventListener('change', (e) => {
+            this.activeDayFilter = e.target.value;
+            this.updateList();
+        });
+        filterWrapper.appendChild(daySelect);
         toolbar.appendChild(searchWrapper);
         toolbar.appendChild(filterWrapper);
         return toolbar;
-    }
-    setDayFilter(dayId, button) {
-        this.activeDayFilter = dayId;
-        // Update active class on buttons
-        const buttons = button.parentElement?.querySelectorAll('.filter-btn');
-        buttons?.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        this.updateList();
     }
     updateList() {
         if (!this.contentContainer)
@@ -124,7 +123,23 @@ export class ItineraryView {
         }
         else {
             filteredDays.forEach(day => {
-                const dayItinerary = new DayItinerary(day);
+                const dayItinerary = new DayItinerary(day, (dayId) => {
+                    const select = this.element?.querySelector('.day-select-filter');
+                    if (select) {
+                        select.value = dayId.toString();
+                    }
+                    this.activeDayFilter = dayId.toString();
+                    this.updateList();
+                }, (updatedDay) => {
+                    const index = this.days.findIndex(d => d.id === updatedDay.id);
+                    if (index !== -1) {
+                        this.days[index] = updatedDay;
+                        if (this.onUpdateItinerary) {
+                            this.onUpdateItinerary(this.days);
+                        }
+                        this.updateList();
+                    }
+                });
                 this.contentContainer.appendChild(dayItinerary.render());
             });
         }

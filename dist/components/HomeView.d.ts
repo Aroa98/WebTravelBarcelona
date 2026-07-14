@@ -21,6 +21,8 @@ export interface HomeViewProps {
         homeFlightLabel: string;
         homeFlightVal: string;
     };
+    activeLang: 'es' | 'en';
+    onLanguageSelect: (lang: 'es' | 'en') => void;
     onStartTrip: () => void;
 }
 export declare class HomeView {
