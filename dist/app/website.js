@@ -31,10 +31,18 @@ let currentTab = 'itinerary';
 let itineraryData = null;
 async function loadDataAndRender(container) {
     try {
-        // Fetch data from the API server
-        const response = await fetch(`/api/itinerary/${currentLang}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        // Strategy 1: Try the API server (works locally with Express)
+        let response = await fetch(`/api/itinerary/${currentLang}`);
+        // If API returns HTML (e.g. static hosting 404), it's not available
+        const contentType = response.headers.get('content-type') || '';
+        if (!response.ok || !contentType.includes('application/json')) {
+            // Strategy 2: Fall back to reading the static JSON file directly
+            // (works on GitHub Pages and any static hosting)
+            console.log('API not available, loading static JSON file...');
+            response = await fetch(`/src/database/${currentLang}.json`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
         }
         itineraryData = await response.json();
         if (!itineraryData) {
@@ -45,8 +53,8 @@ async function loadDataAndRender(container) {
         renderApp(container);
     }
     catch (error) {
-        console.error('Error loading from API, trying localStorage cache:', error);
-        // Fallback: try to load from localStorage cache
+        console.error('Error loading data, trying localStorage cache:', error);
+        // Strategy 3: Fall back to localStorage cache
         const cached = localStorage.getItem(`cache-itinerary-${currentLang}`);
         if (cached) {
             try {
