@@ -11,6 +11,19 @@ const errorFallback = {
         desc: "Could not load the trip itinerary. Please try again later."
     }
 };
+// API Configuration
+const API_KEY = 'barcelona-travel-2024';
+/**
+ * Helper to make authenticated API requests
+ */
+async function apiRequest(url, options = {}) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        ...(options.headers || {})
+    };
+    return fetch(url, { ...options, headers });
+}
 // Global App State
 let currentLang = (localStorage.getItem('app-lang') || 'es');
 let currentPage = 'home';
@@ -18,8 +31,8 @@ let currentTab = 'itinerary';
 let itineraryData = null;
 async function loadDataAndRender(container) {
     try {
-        // Fetch translated data based on current language
-        const response = await fetch(`/src/database/${currentLang}.json`);
+        // Fetch data from the API server
+        const response = await fetch(`/api/itinerary/${currentLang}`);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -27,23 +40,25 @@ async function loadDataAndRender(container) {
         if (!itineraryData) {
             throw new Error('Data could not be parsed.');
         }
-        const localData = localStorage.getItem(`custom-itinerary-${currentLang}`);
-        if (localData) {
-            try {
-                itineraryData.dias = JSON.parse(localData);
-            }
-            catch (e) {
-                console.error('Error parsing custom itinerary:', e);
-                localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(itineraryData.dias));
-            }
-        }
-        else {
-            localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(itineraryData.dias));
-        }
+        // Cache in localStorage as fallback
+        localStorage.setItem(`cache-itinerary-${currentLang}`, JSON.stringify(itineraryData));
         renderApp(container);
     }
     catch (error) {
-        console.error('Error al cargar la traducción:', error);
+        console.error('Error loading from API, trying localStorage cache:', error);
+        // Fallback: try to load from localStorage cache
+        const cached = localStorage.getItem(`cache-itinerary-${currentLang}`);
+        if (cached) {
+            try {
+                itineraryData = JSON.parse(cached);
+                console.log('Loaded from localStorage cache.');
+                renderApp(container);
+                return;
+            }
+            catch (e) {
+                console.error('Cache parse error:', e);
+            }
+        }
         const fallback = errorFallback[currentLang];
         container.innerHTML = `
       <div class="error-container">
@@ -148,10 +163,23 @@ function renderTabContent(container) {
                 allDays: itineraryData.ui.allDays,
                 noResults: itineraryData.ui.noResults
             },
-            onUpdateItinerary: (updatedDays) => {
+            onUpdateItinerary: async (updatedDays) => {
                 if (itineraryData) {
                     itineraryData.dias = updatedDays;
-                    localStorage.setItem(`custom-itinerary-${currentLang}`, JSON.stringify(updatedDays));
+                    // Persist each updated day to the server via API
+                    for (const day of updatedDays) {
+                        try {
+                            await apiRequest(`/api/days/${currentLang}/${day.id}`, {
+                                method: 'PUT',
+                                body: JSON.stringify(day)
+                            });
+                        }
+                        catch (err) {
+                            console.error(`Error saving day ${day.id}:`, err);
+                        }
+                    }
+                    // Also update the localStorage cache
+                    localStorage.setItem(`cache-itinerary-${currentLang}`, JSON.stringify(itineraryData));
                 }
             }
         });

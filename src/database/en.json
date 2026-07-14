@@ -63,56 +63,53 @@
     {
       "id": 8,
       "fecha": "Day 8",
-      "tituloPrincipal": "Arrival & Gothic Quarter",
+      "tituloPrincipal": "Arrival & the Historic Heart",
       "actividades": [
         {
           "hora": "08:20",
-          "titulo": "Arrival in Barcelona (BCN)",
-          "descripcion": "Landing at Barcelona-El Prat Airport at 8:20 AM. Transfer to the city center.",
+          "titulo": "Arrival",
+          "descripcion": "Landing at Barcelona-El Prat Airport (Flight from Washington DC). Baggage claim and transfer to accommodation.",
           "lugar": "Barcelona-El Prat Airport (BCN)"
         },
         {
-          "hora": "10:00",
-          "titulo": "Official Arrival & Accommodation",
-          "descripcion": "Check-in at the lodging and welcome.",
-          "lugar": "Barcelona Center"
-        },
-        {
-          "hora": "12:30",
-          "titulo": "Walk in the Gothic Quarter",
-          "descripcion": "Walking tour around Barcelona Cathedral, Gothic Quarter, and local lunch.",
-          "lugar": "Gothic Quarter"
+          "hora": "12:00",
+          "titulo": "Welcome Walk",
+          "descripcion": "Walk along Las Ramblas and the Boquería Market for a quick lunch.",
+          "lugar": "Las Ramblas & Boquería Market"
         },
         {
           "hora": "16:00",
-          "titulo": "Walk in El Born",
-          "descripcion": "Visit to the Santa Maria del Mar Basilica.",
-          "lugar": "El Born"
+          "titulo": "Gothic Exploration",
+          "descripcion": "Visit to the Gothic Quarter, including Barcelona Cathedral and Plaza del Rey.",
+          "lugar": "Gothic Quarter"
         }
       ]
     },
     {
       "id": 9,
       "fecha": "Day 9",
-      "tituloPrincipal": "Modernism & Gaudí",
+      "tituloPrincipal": "The Gaudí Route",
       "actividades": [
         {
           "hora": "09:30",
-          "titulo": "Sagrada Familia",
-          "descripcion": "Inside and outside visit of Gaudí's masterpiece.",
-          "lugar": "Sagrada Familia"
+          "titulo": "Masterpiece",
+          "descripcion": "Interior visit to the Sagrada Familia (Advance booking required).",
+          "lugar": "Sagrada Familia",
+          "enlace_reserva": "https://tickets.sagradafamilia.org/"
         },
         {
-          "hora": "13:00",
-          "titulo": "Gràcia Avenue",
-          "descripcion": "Admire Casa Batlló and La Pedrera (Casa Milà).",
-          "lugar": "Eixample"
+          "hora": "13:30",
+          "titulo": "Paseo de Gràcia",
+          "descripcion": "Walk to see the facades of Casa Batlló and La Pedrera (Casa Milà), with the option to enter one of them.",
+          "lugar": "Paseo de Gràcia",
+          "enlace_reserva": "https://www.casabatllo.es/venta-entradas/"
         },
         {
-          "hora": "16:00",
-          "titulo": "Park Güell",
-          "descripcion": "Tour around the monumental zone of the park at sunset.",
-          "lugar": "Gràcia"
+          "hora": "17:00",
+          "titulo": "Sunset at the Park",
+          "descripcion": "Visit to Park Güell (Advance booking required for the monumental zone).",
+          "lugar": "Park Güell",
+          "enlace_reserva": "https://parkguell.barcelona/es/compra-de-entradas"
         }
       ]
     },

@@ -1,0 +1,313 @@
+{
+  "ui": {
+    "title": "Barcelona y alrededores",
+    "subtitle": "Del 7 al 17 de Octubre",
+    "itineraryTab": "Itinerario",
+    "infoTab": "Información General",
+    "searchPlaceholder": "Buscar actividades o lugares...",
+    "allDays": "Ver Todo",
+    "noResults": "No se encontraron actividades con los filtros actuales.",
+    "infoTitle": "Información del Viaje",
+    "infoDestination": "Destino",
+    "infoDestinationDesc": "Barcelona y sus alrededores, Cataluña, España.",
+    "infoDates": "Fechas",
+    "infoDatesDesc": "Del 7 al 17 de Octubre",
+    "infoTips": "Consejos Útiles",
+    "infoTipsList": [
+      "<strong>Transporte:</strong> Utiliza la tarjeta T-Usual o T-Casual para moverte por la red de metro y bus de forma económica.",
+      "<strong>Seguridad:</strong> Cuida tus pertenencias en zonas concurridas (Las Ramblas, metro, etc.).",
+      "<strong>Reservas:</strong> Recuerda reservar con antelación para la Sagrada Familia y el Park Güell."
+    ],
+    "infoPhones": "Teléfonos de Interés",
+    "infoPhonesList": {
+      "Emergencias": "112",
+      "Policía Local": "092"
+    },
+    "errorTitle": "Oops! Algo salió mal.",
+    "errorDesc": "No se pudo cargar el itinerario del viaje. Por favor, inténtalo más tarde.",
+    "homeTitle": "Barcelona Travel Planner",
+    "homeSubtitle": "Tu Próxima Aventura",
+    "startBtn": "Iniciar viaje",
+    "galleryTitle": "Mis Recuerdos",
+    "galleryPlaces": {
+      "sagrada": "Sagrada Familia",
+      "park": "Park Güell",
+      "barceloneta": "La Barceloneta",
+      "gotico": "Barrio Gótico"
+    },
+    "homeDestLabel": "Destino",
+    "homeDestVal": "Barcelona, España",
+    "homeDatesLabel": "Fechas",
+    "homeDatesVal": "7 - 17 de Octubre (11 Días)",
+    "homeEventLabel": "Evento Especial",
+    "homeEventVal": "Boda en el Hostal (Día 10) 🥂",
+    "homePackingLabel": "Equipaje",
+    "homePackingVal": "Completado 🎒",
+    "homeFlightLabel": "Vuelo / Tren",
+    "homeFlightVal": "Confirmado ✈️"
+  },
+  "dias": [
+    {
+      "id": 7,
+      "fecha": "Día 7",
+      "tituloPrincipal": "Vuelo de Salida",
+      "actividades": [
+        {
+          "hora": "18:35",
+          "titulo": "Salida del Vuelo a Barcelona",
+          "descripcion": "Salida del vuelo desde Washington DC (IAD/DCA) a las 6:35 pm con destino al Aeropuerto de Barcelona-El Prat (BCN).",
+          "lugar": "Washington DC"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "fecha": "Día 8",
+      "tituloPrincipal": "Llegada y el Corazón Histórico",
+      "actividades": [
+        {
+          "hora": "08:20",
+          "titulo": "Llegada",
+          "descripcion": "Aterrizaje en el Aeropuerto de Barcelona-El Prat (Vuelo desde Washington DC). Recogida de maletas y traslado al alojamiento.",
+          "lugar": "Aeropuerto de Barcelona-El Prat (BCN)"
+        },
+        {
+          "hora": "12:00",
+          "titulo": "Paseo de bienvenida",
+          "descripcion": "Caminata por Las Ramblas y el Mercado de la Boquería para un almuerzo rápido.",
+          "lugar": "Las Ramblas y el Mercado de la Boquería"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Exploración Gótica",
+          "descripcion": "Visita al Barrio Gótico, incluyendo la Catedral de Barcelona y la Plaza del Rey.",
+          "lugar": "Barrio Gótico"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "fecha": "Día 9",
+      "tituloPrincipal": "La Ruta de Gaudí",
+      "actividades": [
+        {
+          "hora": "09:30",
+          "titulo": "Obra Maestra",
+          "descripcion": "Visita interior a la Sagrada Familia (Imprescindible reserva previa).",
+          "lugar": "Sagrada Familia",
+          "enlace_reserva": "https://tickets.sagradafamilia.org/"
+        },
+        {
+          "hora": "13:30",
+          "titulo": "Paseo de Gràcia",
+          "descripcion": "Caminata para ver las fachadas de Casa Batlló y La Pedrera (Casa Milà), con opción a entrar a una de ellas.",
+          "lugar": "Paseo de Gràcia",
+          "enlace_reserva": "https://www.casabatllo.es/venta-entradas/"
+        },
+        {
+          "hora": "17:00",
+          "titulo": "Atardecer en el Parque",
+          "descripcion": "Visita al Park Güell (Se requiere reserva previa para la zona monumental).",
+          "lugar": "Park Güell",
+          "enlace_reserva": "https://parkguell.barcelona/es/compra-de-entradas"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "fecha": "Día 10",
+      "tituloPrincipal": "Boda",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Llegada al lugar",
+          "descripcion": "Llegada de los invitados al lugar del evento y acomodación.",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "12:00",
+          "titulo": "Ceremonia",
+          "descripcion": "Enlace matrimonial y celebración oficial.",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "13:00",
+          "titulo": "Aperitivo",
+          "descripcion": "Pica-pica y cóctel de bienvenida con los invitados.",
+          "lugar": "Jardines del Hostal"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Comida / Banquete",
+          "descripcion": "Banquete principal de la boda.",
+          "lugar": "Salón del Hostal"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Fiesta de la Boda",
+          "descripcion": "Baile, música y celebración festiva hasta la noche (20:00).",
+          "lugar": "Zona de Baile"
+        },
+        {
+          "hora": "20:00",
+          "titulo": "Cena",
+          "descripcion": "Cena para recuperar fuerzas (duración de 20:00 a 21:00).",
+          "lugar": "Hostal de la Boda"
+        },
+        {
+          "hora": "21:00",
+          "titulo": "Alojamiento y Descanso",
+          "descripcion": "Dormir en el hostal de la boda hasta la mañana del día 11.",
+          "lugar": "Hostal de la Boda"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "fecha": "Día 11",
+      "tituloPrincipal": "La Montaña Mágica",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Excursión a Montserrat",
+          "descripcion": "Subida en tren cremallera o teleférico para visitar la Abadía de Montserrat y ver a La Moreneta.",
+          "lugar": "Abadía de Montserrat"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Senderismo ligero",
+          "descripcion": "Ruta a pie hacia la Cruz de San Miguel para disfrutar de las vistas panorámicas.",
+          "lugar": "Cruz de San Miguel, Montserrat"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "fecha": "Día 12",
+      "tituloPrincipal": "La Magia de la Costa Brava",
+      "actividades": [
+        {
+          "hora": "10:30",
+          "titulo": "El Castillo junto al mar",
+          "descripcion": "Visita a la Vila Vella de Tossa de Mar y su espectacular recinto amurallado medieval.",
+          "lugar": "Vila Vella de Tossa de Mar"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "Gastronomía marinera",
+          "descripcion": "Comida en un restaurante local frente al mar.",
+          "lugar": "Tossa de Mar"
+        },
+        {
+          "hora": "16:30",
+          "titulo": "Caminos de Ronda",
+          "descripcion": "Paseo por los senderos costeros cercanos a Tossa para disfrutar de las calas escondidas.",
+          "lugar": "Caminos de Ronda, Tossa de Mar"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "fecha": "Día 13",
+      "tituloPrincipal": "Escapada a los Pirineos (Andorra)",
+      "actividades": [
+        {
+          "hora": "11:00",
+          "titulo": "Compras y montaña",
+          "descripcion": "Llegada a Andorra la Vella. Paseo por el centro comercial y calles peatonales.",
+          "lugar": "Andorra la Vella"
+        },
+        {
+          "hora": "15:00",
+          "titulo": "Relax termal o Vistas",
+          "descripcion": "Tarde en el balneario de Caldea o visita al Mirador Roc del Quer para vistas espectaculares del valle.",
+          "lugar": "Caldea / Mirador Roc del Quer"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "fecha": "Día 14",
+      "tituloPrincipal": "Vinos y Tradición (Sur de Cataluña)",
+      "actividades": [
+        {
+          "hora": "10:30",
+          "titulo": "Región del Penedès",
+          "descripcion": "Visita a unas cavas tradicionales (como Codorníu o Freixenet) o una bodega de vinos (como Familia Torres) para cata y maridaje.",
+          "lugar": "Penedès",
+          "enlace_reserva": "https://www.torres.es/es/experiencias/penedes"
+        },
+        {
+          "hora": "16:00",
+          "titulo": "Tarragona Romana",
+          "descripcion": "Paseo de tarde por la ciudad de Tarragona para ver el Anfiteatro Romano frente al mar Mediterráneo.",
+          "lugar": "Tarragona"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "fecha": "Día 15",
+      "tituloPrincipal": "Cultura y Brisa Marina (Vuelta a Barcelona)",
+      "actividades": [
+        {
+          "hora": "10:00",
+          "titulo": "Montjuïc",
+          "descripcion": "Subida en teleférico al Castillo de Montjuïc y visita a los alrededores del Estadio Olímpico.",
+          "lugar": "Montjuïc"
+        },
+        {
+          "hora": "14:00",
+          "titulo": "El frente marítimo",
+          "descripcion": "Comida en el barrio de la Barceloneta y paseo por el Port Vell (Puerto Viejo).",
+          "lugar": "La Barceloneta y Port Vell"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "fecha": "Día 16",
+      "tituloPrincipal": "Joyas Escondidas y Despedida",
+      "actividades": [
+        {
+          "hora": "10:30",
+          "titulo": "Modernismo musical",
+          "descripcion": "Visita al Palau de la Música Catalana (Una de las joyas arquitectónicas más bonitas, recomendable visita guiada).",
+          "lugar": "Palau de la Música Catalana",
+          "enlace_reserva": "https://www.palaumusica.cat/es/visitas-guiadas"
+        },
+        {
+          "hora": "12:30",
+          "titulo": "Parque de la Ciutadella y Arc de Triomf",
+          "descripcion": "Paseo relajado por el pulmón verde de la ciudad.",
+          "lugar": "Parque de la Ciutadella"
+        },
+        {
+          "hora": "18:00",
+          "titulo": "Tarde en Gràcia",
+          "descripcion": "Últimas compras y tapeo de despedida por las plazas del pintoresco barrio de Gràcia.",
+          "lugar": "Barrio de Gràcia"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "fecha": "Día 17",
+      "tituloPrincipal": "Regreso a Casa",
+      "actividades": [
+        {
+          "hora": "08:00",
+          "titulo": "Desplazamiento",
+          "descripcion": "Salida hacia el Aeropuerto de Barcelona-El Prat.",
+          "lugar": "Aeropuerto de Barcelona-El Prat (BCN)"
+        },
+        {
+          "hora": "11:15",
+          "titulo": "Vuelo de vuelta",
+          "descripcion": "Despegue con destino Washington DC (Llegada estimada a las 02:35 PM hora local de EEUU).",
+          "lugar": "Washington DC"
+        }
+      ]
+    }
+  ]
+}

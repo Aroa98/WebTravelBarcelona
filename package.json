@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "watch": "tsc -w",
-    "dev": "lite-server"
+    "dev": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,9 @@
   "devDependencies": {
     "lite-server": "^2.6.1",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "sanitize-html": "^2.17.6"
   }
 }
