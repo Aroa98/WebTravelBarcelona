@@ -1,6 +1,7 @@
 import { Navbar } from '../components/Navbar.js';
 import { ItineraryView } from '../components/ItineraryView.js';
 import { HomeView } from '../components/HomeView.js';
+import { fetchUiTexts, fetchDays, updateDay, isConfigured } from '../database/supabaseClient.js';
 const errorFallback = {
     es: {
         title: "Oops! Algo salió mal.",
@@ -11,19 +12,6 @@ const errorFallback = {
         desc: "Could not load the trip itinerary. Please try again later."
     }
 };
-// API Configuration
-const API_KEY = 'barcelona-travel-2024';
-/**
- * Helper to make authenticated API requests
- */
-async function apiRequest(url, options = {}) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        ...(options.headers || {})
-    };
-    return fetch(url, { ...options, headers });
-}
 // Global App State
 let currentLang = (localStorage.getItem('app-lang') || 'es');
 let currentPage = 'home';
@@ -31,24 +19,44 @@ let currentTab = 'itinerary';
 let itineraryData = null;
 async function loadDataAndRender(container) {
     try {
-        // Strategy 1: Try the API server (works locally with Express)
-        let response = await fetch(`/api/itinerary/${currentLang}`);
-        // If API returns HTML (e.g. static hosting 404), it's not available
-        const contentType = response.headers.get('content-type') || '';
-        if (!response.ok || !contentType.includes('application/json')) {
-            // Strategy 2: Fall back to reading the static JSON file directly
-            // (works on GitHub Pages and any static hosting)
-            console.log('API not available, loading static JSON file...');
-            response = await fetch(`/src/database/${currentLang}.json`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+        let loaded = false;
+        // Strategy 1: Try Supabase (works everywhere — local & deployed)
+        if (isConfigured()) {
+            try {
+                const [uiData, daysData] = await Promise.all([
+                    fetchUiTexts(currentLang),
+                    fetchDays(currentLang)
+                ]);
+                if (uiData && daysData.length > 0) {
+                    // Transform Supabase rows into the app's expected format
+                    const dias = daysData.map(row => ({
+                        id: row.id,
+                        fecha: row.fecha,
+                        tituloPrincipal: row.titulo_principal,
+                        actividades: row.actividades
+                    }));
+                    itineraryData = { ui: uiData, dias };
+                    loaded = true;
+                    console.log('✅ Data loaded from Supabase.');
+                }
+            }
+            catch (e) {
+                console.warn('Supabase not reachable, trying fallback...', e);
             }
         }
-        itineraryData = await response.json();
-        if (!itineraryData) {
-            throw new Error('Data could not be parsed.');
+        // Strategy 2: Fall back to static JSON files
+        if (!loaded) {
+            console.log('Loading from static JSON file...');
+            const response = await fetch(`/src/database/${currentLang}.json`);
+            if (response.ok) {
+                itineraryData = await response.json();
+                loaded = true;
+            }
         }
-        // Cache in localStorage as fallback
+        if (!loaded || !itineraryData) {
+            throw new Error('Could not load data from any source.');
+        }
+        // Cache in localStorage as last-resort fallback
         localStorage.setItem(`cache-itinerary-${currentLang}`, JSON.stringify(itineraryData));
         renderApp(container);
     }
@@ -174,16 +182,19 @@ function renderTabContent(container) {
             onUpdateItinerary: async (updatedDays) => {
                 if (itineraryData) {
                     itineraryData.dias = updatedDays;
-                    // Persist each updated day to the server via API
-                    for (const day of updatedDays) {
-                        try {
-                            await apiRequest(`/api/days/${currentLang}/${day.id}`, {
-                                method: 'PUT',
-                                body: JSON.stringify(day)
-                            });
-                        }
-                        catch (err) {
-                            console.error(`Error saving day ${day.id}:`, err);
+                    // Persist to Supabase if configured
+                    if (isConfigured()) {
+                        for (const day of updatedDays) {
+                            try {
+                                await updateDay(day.id, currentLang, {
+                                    fecha: day.fecha,
+                                    titulo_principal: day.tituloPrincipal,
+                                    actividades: day.actividades
+                                });
+                            }
+                            catch (err) {
+                                console.error(`Error saving day ${day.id} to Supabase:`, err);
+                            }
                         }
                     }
                     // Also update the localStorage cache
