@@ -1,9 +1,12 @@
 export interface Activity {
+    id_actividad?: number;
+    id_dia: number;
     hora: string;
     titulo: string;
-    descripcion: string;
-    lugar: string;
-    enlace_reserva?: string | undefined;
+    descripcion?: string | null;
+    url?: string | null;
+    reservaLink?: string | null;
+    notas?: string | null;
 }
 export declare class ActivityCard {
     private activity;

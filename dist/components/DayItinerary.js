@@ -1,4 +1,5 @@
 import { ActivityCard } from './ActivityCard.js';
+import { createActividad } from '../database/supabaseClient.js';
 export class DayItinerary {
     day;
     onDaySelect;
@@ -11,10 +12,10 @@ export class DayItinerary {
     render() {
         const daySection = document.createElement('section');
         daySection.className = 'day-section';
-        daySection.id = `day-${this.day.id}`;
-        const isWedding = this.day.id === 10 ||
-            this.day.tituloPrincipal.toLowerCase().includes('boda') ||
-            this.day.tituloPrincipal.toLowerCase().includes('wedding');
+        daySection.id = `day-${this.day.id_dia}`;
+        const isWedding = this.day.id_dia === 10 ||
+            (this.day.descripcion && this.day.descripcion.toLowerCase().includes('boda')) ||
+            (this.day.descripcion && this.day.descripcion.toLowerCase().includes('wedding'));
         if (isWedding) {
             daySection.classList.add('wedding-theme');
         }
@@ -24,7 +25,7 @@ export class DayItinerary {
         header.title = localStorage.getItem('app-lang') === 'en' ? 'Click to focus on this day' : 'Haz clic para enfocar este día';
         header.addEventListener('click', () => {
             if (this.onDaySelect) {
-                this.onDaySelect(this.day.id);
+                this.onDaySelect(this.day.id_dia);
             }
         });
         const headerLeft = document.createElement('div');
@@ -36,7 +37,7 @@ export class DayItinerary {
         dateBadge.textContent = this.day.fecha;
         const title = document.createElement('h2');
         title.className = 'day-title';
-        title.textContent = this.day.tituloPrincipal;
+        title.textContent = this.day.descripcion;
         headerLeft.appendChild(dateBadge);
         headerLeft.appendChild(title);
         header.appendChild(headerLeft);
@@ -60,17 +61,17 @@ export class DayItinerary {
         // Timeline wrapper
         const timeline = document.createElement('div');
         timeline.className = 'day-timeline';
-        if (this.day.actividades && this.day.actividades.length > 0) {
-            this.day.actividades.forEach((activity, idx) => {
-                const activityCard = new ActivityCard(activity, this.day.id, (updatedActivity) => {
-                    this.day.actividades[idx] = updatedActivity;
+        if (this.day.actividadDia && this.day.actividadDia.length > 0) {
+            this.day.actividadDia.forEach((activity, idx) => {
+                const activityCard = new ActivityCard(activity, this.day.id_dia, (updatedActivity) => {
+                    this.day.actividadDia[idx] = updatedActivity;
                     // Sort by hour to maintain chronological order after edit
-                    this.day.actividades.sort((a, b) => a.hora.localeCompare(b.hora));
+                    this.day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
                     if (this.onUpdateDay) {
                         this.onUpdateDay(this.day);
                     }
                 }, () => {
-                    this.day.actividades.splice(idx, 1);
+                    this.day.actividadDia.splice(idx, 1);
                     if (this.onUpdateDay) {
                         this.onUpdateDay(this.day);
                     }
@@ -111,11 +112,11 @@ export class DayItinerary {
         timeLabel.className = 'activity-modal-time';
         timeLabel.style.fontSize = '0.9rem';
         timeLabel.style.marginBottom = '4px';
-        timeLabel.textContent = isEn ? 'Time (e.g. 10:00):' : 'Hora (ej. 10:00):';
+        timeLabel.textContent = isEn ? 'Time (e.g. 10:00:00):' : 'Hora (ej. 10:00:00):';
         const timeInput = document.createElement('input');
         timeInput.type = 'text';
         timeInput.className = 'activity-edit-input';
-        timeInput.value = '10:00';
+        timeInput.value = '10:00:00';
         timeInput.style.marginBottom = '12px';
         const titleLabel = document.createElement('div');
         titleLabel.style.fontWeight = '700';
@@ -141,7 +142,7 @@ export class DayItinerary {
         descTextarea.className = 'activity-edit-textarea';
         descTextarea.placeholder = isEn ? 'Details of the activity...' : 'Detalles de la actividad...';
         descTextarea.style.marginBottom = '12px';
-        // Location
+        // Location (URL column in DB used for location string)
         const locLabel = document.createElement('div');
         locLabel.style.fontWeight = '700';
         locLabel.style.marginBottom = '4px';
@@ -152,7 +153,7 @@ export class DayItinerary {
         locInput.className = 'activity-edit-input';
         locInput.placeholder = isEn ? 'e.g. Barceloneta...' : 'ej. Barceloneta...';
         locInput.style.marginBottom = '12px';
-        // Reservation Link (optional)
+        // Reservation Link
         const linkLabel = document.createElement('div');
         linkLabel.style.fontWeight = '700';
         linkLabel.style.marginBottom = '4px';
@@ -163,11 +164,11 @@ export class DayItinerary {
         linkInput.className = 'activity-edit-input';
         linkInput.placeholder = 'https://...';
         linkInput.style.marginBottom = '16px';
-        // Notes Area in the add modal (lined notebook style)
+        // Notes Area
         const notesContainer = document.createElement('div');
         notesContainer.className = 'activity-modal-notes';
         const notesTitle = document.createElement('h4');
-        notesTitle.textContent = isEn ? 'Initial Notes 📝' : 'Notas Iniciales 📝';
+        notesTitle.textContent = isEn ? 'Notes 📝' : 'Notas 📝';
         const notesTextarea = document.createElement('textarea');
         notesTextarea.className = 'activity-notes-textarea';
         notesTextarea.placeholder = isEn ? 'Write here your notes...' : 'Escribe aquí tus anotaciones...';
@@ -181,45 +182,52 @@ export class DayItinerary {
         const saveBtn = document.createElement('button');
         saveBtn.className = 'activity-notes-save-btn';
         saveBtn.textContent = isEn ? 'Create Plan ➕' : 'Crear Plan ➕';
-        saveBtn.addEventListener('click', () => {
+        saveBtn.addEventListener('click', async () => {
             const titleVal = titleInput.value.trim();
             const timeVal = timeInput.value.trim();
-            const locVal = locInput.value.trim() || 'Barcelona';
+            const locVal = locInput.value.trim();
             const descVal = descTextarea.value.trim();
             const linkVal = linkInput.value.trim();
+            const notesVal = notesTextarea.value.trim();
             if (!titleVal) {
                 alert(isEn ? 'Please enter a name for the activity' : 'Por favor ingresa un nombre para la actividad');
                 return;
             }
-            const newActivity = {
-                hora: timeVal || '10:00',
+            const newActivityPayload = {
+                id_dia: this.day.id_dia,
+                hora: timeVal || '10:00:00',
                 titulo: titleVal,
-                descripcion: descVal,
-                lugar: locVal,
-                enlace_reserva: linkVal || undefined
+                descripcion: descVal || null,
+                url: locVal || null,
+                reservaLink: linkVal || null,
+                notas: notesVal || null
             };
-            // Save notes if any
-            if (notesTextarea.value.trim()) {
-                const storageKey = `notes-${this.day.id}-${newActivity.titulo.replace(/\s+/g, '-').toLowerCase()}`;
-                localStorage.setItem(storageKey, notesTextarea.value);
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Guardando...';
+            // Llamada real a la BD
+            const createdRecord = await createActividad(newActivityPayload);
+            if (createdRecord) {
+                if (!this.day.actividadDia) {
+                    this.day.actividadDia = [];
+                }
+                this.day.actividadDia.push(createdRecord);
+                this.day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
+                if (this.onUpdateDay) {
+                    this.onUpdateDay(this.day);
+                }
+                overlay.remove();
             }
-            // Add to activities
-            if (!this.day.actividades) {
-                this.day.actividades = [];
+            else {
+                alert('Error creating activity in Supabase.');
+                saveBtn.disabled = false;
+                saveBtn.textContent = isEn ? 'Create Plan ➕' : 'Crear Plan ➕';
             }
-            this.day.actividades.push(newActivity);
-            // Sort activities by time
-            this.day.actividades.sort((a, b) => a.hora.localeCompare(b.hora));
-            if (this.onUpdateDay) {
-                this.onUpdateDay(this.day);
-            }
-            overlay.remove();
         });
         actionsWrapper.appendChild(saveBtn);
         // Change checks
         const hasChanges = () => {
             return titleInput.value.trim() !== '' ||
-                timeInput.value.trim() !== '10:00' ||
+                timeInput.value.trim() !== '10:00:00' ||
                 locInput.value.trim() !== '' ||
                 descTextarea.value.trim() !== '' ||
                 linkInput.value.trim() !== '' ||
@@ -260,14 +268,11 @@ export class DayItinerary {
     }
     openUnsavedWarningModal(onConfirmDiscard) {
         const isEn = localStorage.getItem('app-lang') === 'en';
-        // Overlay
         const confirmOverlay = document.createElement('div');
         confirmOverlay.className = 'confirm-modal-overlay';
-        // Modal box
         const confirmModal = document.createElement('div');
         confirmModal.className = 'confirm-modal';
-        confirmModal.style.borderTopColor = '#e67e22'; // Orange warning accent
-        // Warning SVG Icon
+        confirmModal.style.borderTopColor = '#e67e22';
         const warningIcon = document.createElement('div');
         warningIcon.className = 'confirm-modal-icon';
         warningIcon.style.color = '#e67e22';
@@ -279,19 +284,16 @@ export class DayItinerary {
       </svg>
     `;
         confirmModal.appendChild(warningIcon);
-        // Title
         const title = document.createElement('h4');
         title.className = 'confirm-modal-title';
         title.textContent = isEn ? 'Unsaved Changes' : 'Cambios no guardados';
         confirmModal.appendChild(title);
-        // Description
         const desc = document.createElement('p');
         desc.className = 'confirm-modal-desc';
         desc.textContent = isEn
             ? 'Are you sure you want to leave? Your changes will not be saved.'
             : '¿Estás seguro de que deseas salir? Los datos introducidos no se guardarán.';
         confirmModal.appendChild(desc);
-        // Actions Wrapper
         const actions = document.createElement('div');
         actions.className = 'confirm-modal-actions';
         const cancelBtn = document.createElement('button');

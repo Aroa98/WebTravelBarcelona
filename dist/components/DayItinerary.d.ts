@@ -1,9 +1,9 @@
 import { type Activity } from './ActivityCard.js';
 export interface Day {
-    id: number;
+    id_dia: number;
     fecha: string;
-    tituloPrincipal: string;
-    actividades: Activity[];
+    descripcion: string;
+    actividadDia: Activity[];
 }
 export declare class DayItinerary {
     private day;

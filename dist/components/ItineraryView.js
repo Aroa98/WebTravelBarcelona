@@ -73,7 +73,7 @@ export class ItineraryView {
         daySelect.appendChild(allOption);
         this.days.forEach(day => {
             const option = document.createElement('option');
-            option.value = day.id.toString();
+            option.value = day.id_dia.toString();
             option.textContent = day.fecha;
             daySelect.appendChild(option);
         });
@@ -94,20 +94,20 @@ export class ItineraryView {
         // Filter data
         const filteredDays = this.days.map(day => {
             // 1. Filter by day if single day filter is active
-            if (this.activeDayFilter !== 'all' && day.id.toString() !== this.activeDayFilter) {
+            if (this.activeDayFilter !== 'all' && day.id_dia.toString() !== this.activeDayFilter) {
                 return null;
             }
             // 2. Filter by search query within activities
             if (this.searchQuery.trim() !== '') {
-                const matchingActivities = day.actividades.filter(act => act.titulo.toLowerCase().includes(this.searchQuery) ||
-                    act.descripcion.toLowerCase().includes(this.searchQuery) ||
-                    act.lugar.toLowerCase().includes(this.searchQuery));
+                const matchingActivities = (day.actividadDia || []).filter(act => (act.titulo && act.titulo.toLowerCase().includes(this.searchQuery)) ||
+                    (act.descripcion && act.descripcion.toLowerCase().includes(this.searchQuery)) ||
+                    (act.url && act.url.toLowerCase().includes(this.searchQuery)));
                 if (matchingActivities.length === 0) {
                     return null; // Day has no matching activities
                 }
                 return {
                     ...day,
-                    actividades: matchingActivities
+                    actividadDia: matchingActivities
                 };
             }
             return day;
@@ -131,7 +131,7 @@ export class ItineraryView {
                     this.activeDayFilter = dayId.toString();
                     this.updateList();
                 }, (updatedDay) => {
-                    const index = this.days.findIndex(d => d.id === updatedDay.id);
+                    const index = this.days.findIndex(d => d.id_dia === updatedDay.id_dia);
                     if (index !== -1) {
                         this.days[index] = updatedDay;
                         if (this.onUpdateItinerary) {

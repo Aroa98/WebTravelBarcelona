@@ -1,3 +1,4 @@
+import { updateActividad, deleteActividad } from '../database/supabaseClient.js';
 export class ActivityCard {
     activity;
     dayId;
@@ -18,7 +19,8 @@ export class ActivityCard {
         timeContainer.className = 'activity-time-container';
         const timeBadge = document.createElement('span');
         timeBadge.className = 'activity-time';
-        timeBadge.textContent = this.activity.hora;
+        // Format hora (remove seconds if present)
+        timeBadge.textContent = this.activity.hora ? this.activity.hora.substring(0, 5) : '10:00';
         timeContainer.appendChild(timeBadge);
         // Content container
         const content = document.createElement('div');
@@ -34,21 +36,21 @@ export class ActivityCard {
         });
         const description = document.createElement('p');
         description.className = 'activity-description';
-        description.textContent = this.activity.descripcion;
+        description.textContent = this.activity.descripcion || '';
         const locationContainer = document.createElement('div');
         locationContainer.className = 'activity-location clickable-location';
         const isEn = localStorage.getItem('app-lang') === 'en';
-        locationContainer.title = this.activity.enlace_reserva
+        locationContainer.title = this.activity.reservaLink
             ? (isEn ? 'Click to book tickets' : 'Haz clic para reservar')
             : (isEn ? 'View location on Google Maps' : 'Ver ubicación en Google Maps');
         // Click handler for location (booking or maps redirection)
         locationContainer.addEventListener('click', (e) => {
             e.stopPropagation(); // Prevent opening the detail modal
-            if (this.activity.enlace_reserva) {
-                window.open(this.activity.enlace_reserva, '_blank');
+            if (this.activity.reservaLink) {
+                window.open(this.activity.reservaLink, '_blank');
             }
-            else {
-                const query = encodeURIComponent(this.activity.lugar);
+            else if (this.activity.url) {
+                const query = encodeURIComponent(this.activity.url);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
             }
         });
@@ -76,17 +78,23 @@ export class ActivityCard {
         pinSvg.appendChild(circle);
         const locationText = document.createElement('span');
         locationText.className = 'location-text';
-        locationText.textContent = this.activity.lugar;
-        locationContainer.appendChild(pinSvg);
-        locationContainer.appendChild(locationText);
-        content.appendChild(title);
-        content.appendChild(description);
-        content.appendChild(locationContainer);
-        if (this.activity.enlace_reserva) {
+        locationText.textContent = this.activity.url || '';
+        if (this.activity.url) {
+            locationContainer.appendChild(pinSvg);
+            locationContainer.appendChild(locationText);
+            content.appendChild(title);
+            content.appendChild(description);
+            content.appendChild(locationContainer);
+        }
+        else {
+            content.appendChild(title);
+            content.appendChild(description);
+        }
+        if (this.activity.reservaLink) {
             const linkContainer = document.createElement('div');
             linkContainer.className = 'activity-link-container';
             const link = document.createElement('a');
-            link.href = this.activity.enlace_reserva;
+            link.href = this.activity.reservaLink;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.className = 'activity-booking-link';
@@ -105,8 +113,7 @@ export class ActivityCard {
         return card;
     }
     updateNoteIndicator(contentEl, titleEl) {
-        const storageKey = `notes-${this.dayId || 0}-${this.activity.titulo.replace(/\s+/g, '-').toLowerCase()}`;
-        const savedNote = localStorage.getItem(storageKey);
+        const savedNote = this.activity.notas;
         let indicator = titleEl.querySelector('.activity-note-indicator');
         if (savedNote && savedNote.trim()) {
             if (!indicator) {
@@ -174,7 +181,7 @@ export class ActivityCard {
         const headerInfo = document.createElement('div');
         const timeSpan = document.createElement('span');
         timeSpan.className = 'activity-modal-time';
-        timeSpan.textContent = this.activity.hora;
+        timeSpan.textContent = this.activity.hora ? this.activity.hora.substring(0, 5) : '';
         const title = document.createElement('h3');
         title.className = 'activity-modal-title';
         title.textContent = this.activity.titulo;
@@ -217,21 +224,21 @@ export class ActivityCard {
         // Modal Body
         const desc = document.createElement('p');
         desc.className = 'activity-modal-desc';
-        desc.textContent = this.activity.descripcion;
+        desc.textContent = this.activity.descripcion || '';
         viewModeContainer.appendChild(desc);
         // Location in modal
         const locationBox = document.createElement('div');
         locationBox.className = 'activity-modal-location-container';
         const locText = document.createElement('span');
         locText.className = 'location-text clickable-location';
-        locText.title = this.activity.enlace_reserva ? (isEn ? 'Book tickets' : 'Reservar') : (isEn ? 'Google Maps' : 'Google Maps');
-        locText.innerHTML = `📍 <strong>${this.activity.lugar}</strong>`;
+        locText.title = this.activity.reservaLink ? (isEn ? 'Book tickets' : 'Reservar') : (isEn ? 'Google Maps' : 'Google Maps');
+        locText.innerHTML = `📍 <strong>${this.activity.url || 'Sin ubicación'}</strong>`;
         locText.addEventListener('click', () => {
-            if (this.activity.enlace_reserva) {
-                window.open(this.activity.enlace_reserva, '_blank');
+            if (this.activity.reservaLink) {
+                window.open(this.activity.reservaLink, '_blank');
             }
-            else {
-                const query = encodeURIComponent(this.activity.lugar);
+            else if (this.activity.url) {
+                const query = encodeURIComponent(this.activity.url);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
             }
         });
@@ -239,9 +246,9 @@ export class ActivityCard {
         viewModeContainer.appendChild(locationBox);
         // Booking button in modal
         let bookBtn = null;
-        if (this.activity.enlace_reserva) {
+        if (this.activity.reservaLink) {
             bookBtn = document.createElement('a');
-            bookBtn.href = this.activity.enlace_reserva;
+            bookBtn.href = this.activity.reservaLink;
             bookBtn.target = '_blank';
             bookBtn.rel = 'noopener noreferrer';
             bookBtn.className = 'activity-booking-link';
@@ -281,14 +288,14 @@ export class ActivityCard {
         const editLoc = document.createElement('input');
         editLoc.type = 'text';
         editLoc.className = 'activity-edit-input';
-        editLoc.value = this.activity.lugar;
+        editLoc.value = this.activity.url || '';
         const descLbl = document.createElement('div');
         descLbl.style.fontWeight = '700';
         descLbl.style.color = 'var(--primary-color)';
         descLbl.textContent = isEn ? 'Description:' : 'Descripción:';
         const editDesc = document.createElement('textarea');
         editDesc.className = 'activity-edit-textarea';
-        editDesc.value = this.activity.descripcion;
+        editDesc.value = this.activity.descripcion || '';
         const linkLbl = document.createElement('div');
         linkLbl.style.fontWeight = '700';
         linkLbl.style.color = 'var(--primary-color)';
@@ -296,7 +303,7 @@ export class ActivityCard {
         const editLink = document.createElement('input');
         editLink.type = 'text';
         editLink.className = 'activity-edit-input';
-        editLink.value = this.activity.enlace_reserva || '';
+        editLink.value = this.activity.reservaLink || '';
         // Action buttons inside edit mode
         const editActions = document.createElement('div');
         editActions.style.display = 'flex';
@@ -332,9 +339,9 @@ export class ActivityCard {
             // Prompt warning if changes were made before canceling
             const hasChanges = editTime.value.trim() !== this.activity.hora ||
                 editTitle.value.trim() !== this.activity.titulo ||
-                editLoc.value.trim() !== this.activity.lugar ||
-                editDesc.value.trim() !== this.activity.descripcion ||
-                editLink.value.trim() !== (this.activity.enlace_reserva || '');
+                editLoc.value.trim() !== (this.activity.url || '') ||
+                editDesc.value.trim() !== (this.activity.descripcion || '') ||
+                editLink.value.trim() !== (this.activity.reservaLink || '');
             const proceedCancel = () => {
                 viewModeContainer.style.display = 'block';
                 editModeContainer.style.display = 'none';
@@ -342,9 +349,9 @@ export class ActivityCard {
                 // Revert fields
                 editTime.value = this.activity.hora;
                 editTitle.value = this.activity.titulo;
-                editLoc.value = this.activity.lugar;
-                editDesc.value = this.activity.descripcion;
-                editLink.value = this.activity.enlace_reserva || '';
+                editLoc.value = this.activity.url || '';
+                editDesc.value = this.activity.descripcion || '';
+                editLink.value = this.activity.reservaLink || '';
             };
             if (hasChanges) {
                 this.openUnsavedWarningModal(proceedCancel);
@@ -353,31 +360,49 @@ export class ActivityCard {
                 proceedCancel();
             }
         });
-        saveChangesBtn.addEventListener('click', () => {
+        saveChangesBtn.addEventListener('click', async () => {
             const newTitle = editTitle.value.trim();
             if (!newTitle) {
                 alert(isEn ? 'Please enter a name for the activity' : 'Por favor ingresa un nombre para la actividad');
                 return;
             }
+            saveChangesBtn.disabled = true;
+            saveChangesBtn.textContent = 'Guardando...';
             // Update internal state
-            this.activity.hora = editTime.value.trim() || '10:00';
-            this.activity.titulo = newTitle;
-            this.activity.lugar = editLoc.value.trim() || 'Barcelona';
-            this.activity.descripcion = editDesc.value.trim();
-            this.activity.enlace_reserva = editLink.value.trim() || undefined;
+            const updateData = {
+                hora: editTime.value.trim() || '10:00:00',
+                titulo: newTitle,
+                url: editLoc.value.trim() || null,
+                descripcion: editDesc.value.trim() || null,
+                reservaLink: editLink.value.trim() || null
+            };
+            if (this.activity.id_actividad) {
+                const success = await updateActividad(this.activity.id_actividad, updateData);
+                if (!success) {
+                    alert('Error updating activity in Supabase.');
+                    saveChangesBtn.disabled = false;
+                    saveChangesBtn.textContent = isEn ? 'Save Changes' : 'Guardar Cambios';
+                    return;
+                }
+            }
+            this.activity.hora = updateData.hora;
+            this.activity.titulo = updateData.titulo;
+            this.activity.url = updateData.url;
+            this.activity.descripcion = updateData.descripcion;
+            this.activity.reservaLink = updateData.reservaLink;
             // Update modal view elements
-            timeSpan.textContent = this.activity.hora;
+            timeSpan.textContent = this.activity.hora.substring(0, 5);
             title.textContent = this.activity.titulo;
-            desc.textContent = this.activity.descripcion;
-            locText.innerHTML = `📍 <strong>${this.activity.lugar}</strong>`;
-            if (this.activity.enlace_reserva) {
+            desc.textContent = this.activity.descripcion || '';
+            locText.innerHTML = `📍 <strong>${this.activity.url || 'Sin ubicación'}</strong>`;
+            if (this.activity.reservaLink) {
                 if (bookBtn) {
-                    bookBtn.href = this.activity.enlace_reserva;
+                    bookBtn.href = this.activity.reservaLink;
                     bookBtn.style.display = 'inline-block';
                 }
                 else {
                     bookBtn = document.createElement('a');
-                    bookBtn.href = this.activity.enlace_reserva;
+                    bookBtn.href = this.activity.reservaLink;
                     bookBtn.target = '_blank';
                     bookBtn.rel = 'noopener noreferrer';
                     bookBtn.className = 'activity-booking-link';
@@ -393,7 +418,7 @@ export class ActivityCard {
                     bookBtn.style.display = 'none';
                 }
             }
-            // Trigger callback to update website state & localStorage
+            // Trigger callback to update website state
             if (this.onUpdateActivity) {
                 this.onUpdateActivity(this.activity);
             }
@@ -401,6 +426,8 @@ export class ActivityCard {
             viewModeContainer.style.display = 'block';
             editModeContainer.style.display = 'none';
             this.isEditing = false;
+            saveChangesBtn.disabled = false;
+            saveChangesBtn.textContent = isEn ? 'Save Changes' : 'Guardar Cambios';
         });
         modal.appendChild(closeBtn);
         // Scroll Container
@@ -408,19 +435,17 @@ export class ActivityCard {
         scrollContainer.className = 'activity-modal-scroll-container';
         scrollContainer.appendChild(viewModeContainer);
         scrollContainer.appendChild(editModeContainer);
-        // Notes Section (stays at the bottom of the modal, shared between views)
+        // Notes Section
         const notesContainer = document.createElement('div');
         notesContainer.className = 'activity-modal-notes';
         const notesTitle = document.createElement('h4');
-        notesTitle.textContent = isEn ? 'My Notes 📝' : 'Mis Notas 📝';
+        notesTitle.textContent = isEn ? 'Notes 📝' : 'Notas 📝';
         const notesTextarea = document.createElement('textarea');
         notesTextarea.className = 'activity-notes-textarea';
         notesTextarea.placeholder = isEn ? 'Write here your notes, checklist, booking references...' : 'Escribe aquí tus anotaciones, lista de cosas a llevar, referencias...';
-        // Load note from local storage
-        const storageKey = `notes-${this.dayId || 0}-${this.activity.titulo.replace(/\s+/g, '-').toLowerCase()}`;
-        const savedNote = localStorage.getItem(storageKey);
-        if (savedNote) {
-            notesTextarea.value = savedNote;
+        // Load note from database
+        if (this.activity.notas) {
+            notesTextarea.value = this.activity.notas;
         }
         const saveBtn = document.createElement('button');
         saveBtn.className = 'activity-notes-save-btn';
@@ -428,12 +453,24 @@ export class ActivityCard {
         const statusMsg = document.createElement('span');
         statusMsg.className = 'activity-notes-saved-status';
         statusMsg.textContent = isEn ? 'Saved! ✅' : '¡Nota guardada! ✅';
-        saveBtn.addEventListener('click', () => {
-            localStorage.setItem(storageKey, notesTextarea.value);
-            statusMsg.classList.add('show');
-            setTimeout(() => {
-                statusMsg.classList.remove('show');
-            }, 2000);
+        saveBtn.addEventListener('click', async () => {
+            const newNotes = notesTextarea.value.trim();
+            if (this.activity.id_actividad) {
+                saveBtn.disabled = true;
+                const success = await updateActividad(this.activity.id_actividad, { notas: newNotes || null });
+                if (success) {
+                    this.activity.notas = newNotes || null;
+                    statusMsg.classList.add('show');
+                    setTimeout(() => {
+                        statusMsg.classList.remove('show');
+                    }, 2000);
+                    this.updateNoteIndicator(contentEl, title);
+                }
+                else {
+                    alert('Error saving note in Supabase');
+                }
+                saveBtn.disabled = false;
+            }
         });
         notesContainer.appendChild(notesTitle);
         notesContainer.appendChild(notesTextarea);
@@ -446,14 +483,11 @@ export class ActivityCard {
     }
     openUnsavedWarningModal(onConfirmDiscard) {
         const isEn = localStorage.getItem('app-lang') === 'en';
-        // Overlay
         const confirmOverlay = document.createElement('div');
         confirmOverlay.className = 'confirm-modal-overlay';
-        // Modal box
         const confirmModal = document.createElement('div');
         confirmModal.className = 'confirm-modal';
-        confirmModal.style.borderTopColor = '#e67e22'; // Orange warning accent
-        // Warning SVG Icon
+        confirmModal.style.borderTopColor = '#e67e22';
         const warningIcon = document.createElement('div');
         warningIcon.className = 'confirm-modal-icon';
         warningIcon.style.color = '#e67e22';
@@ -465,19 +499,16 @@ export class ActivityCard {
       </svg>
     `;
         confirmModal.appendChild(warningIcon);
-        // Title
         const title = document.createElement('h4');
         title.className = 'confirm-modal-title';
         title.textContent = isEn ? 'Unsaved Changes' : 'Cambios no guardados';
         confirmModal.appendChild(title);
-        // Description
         const desc = document.createElement('p');
         desc.className = 'confirm-modal-desc';
         desc.textContent = isEn
             ? 'Are you sure you want to leave? Your changes will not be saved.'
             : '¿Estás seguro de que deseas salir? Los cambios realizados no se guardarán.';
         confirmModal.appendChild(desc);
-        // Actions Wrapper
         const actions = document.createElement('div');
         actions.className = 'confirm-modal-actions';
         const cancelBtn = document.createElement('button');
@@ -507,13 +538,10 @@ export class ActivityCard {
     }
     openDeleteConfirmModal(detailOverlay) {
         const isEn = localStorage.getItem('app-lang') === 'en';
-        // Overlay
         const confirmOverlay = document.createElement('div');
         confirmOverlay.className = 'confirm-modal-overlay';
-        // Modal box
         const confirmModal = document.createElement('div');
         confirmModal.className = 'confirm-modal';
-        // Warning SVG Icon
         const warningIcon = document.createElement('div');
         warningIcon.className = 'confirm-modal-icon';
         warningIcon.innerHTML = `
@@ -524,19 +552,16 @@ export class ActivityCard {
       </svg>
     `;
         confirmModal.appendChild(warningIcon);
-        // Title
         const title = document.createElement('h4');
         title.className = 'confirm-modal-title';
         title.textContent = isEn ? 'Confirm Deletion' : 'Confirmar eliminación';
         confirmModal.appendChild(title);
-        // Description
         const desc = document.createElement('p');
         desc.className = 'confirm-modal-desc';
         desc.textContent = isEn
             ? 'Are you sure you want to delete this activity? This action cannot be undone.'
             : '¿Estás seguro de que deseas eliminar esta actividad? Esta acción no se puede deshacer.';
         confirmModal.appendChild(desc);
-        // Actions Wrapper
         const actions = document.createElement('div');
         actions.className = 'confirm-modal-actions';
         const cancelBtn = document.createElement('button');
@@ -548,7 +573,18 @@ export class ActivityCard {
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
         deleteBtn.textContent = isEn ? 'Delete' : 'Eliminar';
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', async () => {
+            if (this.activity.id_actividad) {
+                deleteBtn.disabled = true;
+                deleteBtn.textContent = 'Borrando...';
+                const success = await deleteActividad(this.activity.id_actividad);
+                if (!success) {
+                    alert('Error deleting activity in Supabase');
+                    deleteBtn.disabled = false;
+                    deleteBtn.textContent = isEn ? 'Delete' : 'Eliminar';
+                    return;
+                }
+            }
             confirmOverlay.remove();
             detailOverlay.remove();
             if (this.onDeleteActivity) {
@@ -559,7 +595,6 @@ export class ActivityCard {
         actions.appendChild(deleteBtn);
         confirmModal.appendChild(actions);
         confirmOverlay.appendChild(confirmModal);
-        // Close on clicking outside
         confirmOverlay.addEventListener('click', (e) => {
             if (e.target === confirmOverlay) {
                 confirmOverlay.remove();

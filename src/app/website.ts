@@ -2,7 +2,7 @@ import { Navbar, type NavbarTab } from '../components/Navbar.js';
 import { ItineraryView } from '../components/ItineraryView.js';
 import { HomeView } from '../components/HomeView.js';
 import type { Day } from '../components/DayItinerary.js';
-import { fetchUiTexts, fetchDays, updateDay, isConfigured } from '../database/supabaseClient.js';
+import { getDiasViaje, updateDiaViaje } from '../database/supabaseClient.js';
 
 interface UIData {
   title: string;
@@ -50,14 +50,100 @@ interface ItineraryData {
   dias: Day[];
 }
 
-const errorFallback = {
+const staticUiTexts: Record<'es' | 'en', UIData> = {
   es: {
-    title: "Oops! Algo salió mal.",
-    desc: "No se pudo cargar el itinerario del viaje. Por favor, inténtalo más tarde."
+    title: "Boda de Aroa y Alberto",
+    subtitle: "Nuestro Itinerario en Barcelona",
+    itineraryTab: "Itinerario",
+    infoTab: "Info General",
+    searchPlaceholder: "Buscar actividades...",
+    allDays: "Todos los días",
+    noResults: "No se encontraron actividades.",
+    infoTitle: "Información General",
+    infoDestination: "Destino",
+    infoDestinationDesc: "Barcelona y alrededores, España",
+    infoDates: "Fechas",
+    infoDatesDesc: "Del 7 al 17 de Octubre de 2026",
+    infoTips: "Consejos Prácticos",
+    infoTipsList: [
+      "Lleva calzado muy cómodo para caminar.",
+      "Vigila tus pertenencias en zonas turísticas.",
+      "Reserva con antelación las entradas (Sagrada Familia, Park Güell)."
+    ],
+    infoPhones: "Teléfonos Útiles",
+    infoPhonesList: {
+      "Emergencias": "112",
+      "Policía Nacional": "091"
+    },
+    errorTitle: "Oops! Algo salió mal.",
+    errorDesc: "No se pudo cargar el itinerario del viaje desde la base de datos. Por favor, inténtalo más tarde.",
+    homeTitle: "Bienvenidos a Nuestro Viaje",
+    homeSubtitle: "Descubre el itinerario y todos los detalles de nuestra boda en Barcelona.",
+    startBtn: "Ver Itinerario",
+    galleryTitle: "Lugares Destacados",
+    galleryPlaces: {
+      sagrada: "Sagrada Familia",
+      park: "Park Güell",
+      barceloneta: "La Barceloneta",
+      gotico: "Barrio Gótico"
+    },
+    homeDestLabel: "Destino",
+    homeDestVal: "Barcelona",
+    homeDatesLabel: "Fechas",
+    homeDatesVal: "7 - 17 Oct 2026",
+    homeEventLabel: "Evento Principal",
+    homeEventVal: "Boda (10 de Octubre)",
+    homePackingLabel: "Equipaje",
+    homePackingVal: "Otoño / Cómodo",
+    homeFlightLabel: "Vuelo Salida",
+    homeFlightVal: "IAD -> BCN"
   },
   en: {
-    title: "Oops! Something went wrong.",
-    desc: "Could not load the trip itinerary. Please try again later."
+    title: "Aroa & Alberto's Wedding",
+    subtitle: "Our Barcelona Itinerary",
+    itineraryTab: "Itinerary",
+    infoTab: "General Info",
+    searchPlaceholder: "Search activities...",
+    allDays: "All Days",
+    noResults: "No activities found.",
+    infoTitle: "General Information",
+    infoDestination: "Destination",
+    infoDestinationDesc: "Barcelona and surroundings, Spain",
+    infoDates: "Dates",
+    infoDatesDesc: "October 7th to 17th, 2026",
+    infoTips: "Practical Tips",
+    infoTipsList: [
+      "Wear very comfortable shoes for walking.",
+      "Watch your belongings in tourist areas.",
+      "Book tickets in advance (Sagrada Familia, Park Güell)."
+    ],
+    infoPhones: "Useful Numbers",
+    infoPhonesList: {
+      "Emergencies": "112",
+      "National Police": "091"
+    },
+    errorTitle: "Oops! Something went wrong.",
+    errorDesc: "Could not load the trip itinerary from the database. Please try again later.",
+    homeTitle: "Welcome to Our Trip",
+    homeSubtitle: "Discover the itinerary and all the details for our wedding in Barcelona.",
+    startBtn: "View Itinerary",
+    galleryTitle: "Highlighted Places",
+    galleryPlaces: {
+      sagrada: "Sagrada Familia",
+      park: "Park Güell",
+      barceloneta: "La Barceloneta",
+      gotico: "Gothic Quarter"
+    },
+    homeDestLabel: "Destination",
+    homeDestVal: "Barcelona",
+    homeDatesLabel: "Dates",
+    homeDatesVal: "Oct 7 - 17, 2026",
+    homeEventLabel: "Main Event",
+    homeEventVal: "Wedding (October 10th)",
+    homePackingLabel: "Packing",
+    homePackingVal: "Autumn / Casual",
+    homeFlightLabel: "Departure Flight",
+    homeFlightVal: "IAD -> BCN"
   }
 };
 
@@ -69,73 +155,25 @@ let itineraryData: ItineraryData | null = null;
 
 async function loadDataAndRender(container: HTMLElement) {
   try {
-    let loaded = false;
+    // We get the raw data directly from Supabase!
+    const daysData = await getDiasViaje();
 
-    // Strategy 1: Try Supabase (works everywhere — local & deployed)
-    if (isConfigured()) {
-      try {
-        const [uiData, daysData] = await Promise.all([
-          fetchUiTexts(currentLang),
-          fetchDays(currentLang)
-        ]);
-
-        if (uiData && daysData.length > 0) {
-          // Transform Supabase rows into the app's expected format
-          const dias: Day[] = daysData.map(row => ({
-            id: row.id,
-            fecha: row.fecha,
-            tituloPrincipal: row.titulo_principal,
-            actividades: row.actividades as Day['actividades']
-          }));
-
-          itineraryData = { ui: uiData as unknown as UIData, dias };
-          loaded = true;
-          console.log('✅ Data loaded from Supabase.');
-        }
-      } catch (e) {
-        console.warn('Supabase not reachable, trying fallback...', e);
-      }
+    if (daysData && daysData.length > 0) {
+      const dias: Day[] = daysData as Day[];
+      itineraryData = { ui: staticUiTexts[currentLang], dias };
+      console.log('✅ Data loaded successfully from Supabase.', dias);
+      renderApp(container);
+    } else {
+      throw new Error('No data returned from the database.');
     }
-
-    // Strategy 2: Fall back to static JSON files
-    if (!loaded) {
-      console.log('Loading from static JSON file...');
-      const response = await fetch(`/src/database/${currentLang}.json`);
-      if (response.ok) {
-        itineraryData = await response.json();
-        loaded = true;
-      }
-    }
-
-    if (!loaded || !itineraryData) {
-      throw new Error('Could not load data from any source.');
-    }
-
-    // Cache in localStorage as last-resort fallback
-    localStorage.setItem(`cache-itinerary-${currentLang}`, JSON.stringify(itineraryData));
-
-    renderApp(container);
   } catch (error) {
-    console.error('Error loading data, trying localStorage cache:', error);
+    console.error('Error loading data from Supabase:', error);
     
-    // Strategy 3: Fall back to localStorage cache
-    const cached = localStorage.getItem(`cache-itinerary-${currentLang}`);
-    if (cached) {
-      try {
-        itineraryData = JSON.parse(cached);
-        console.log('Loaded from localStorage cache.');
-        renderApp(container);
-        return;
-      } catch (e) {
-        console.error('Cache parse error:', e);
-      }
-    }
-
-    const fallback = errorFallback[currentLang];
+    const uiFallback = staticUiTexts[currentLang];
     container.innerHTML = `
       <div class="error-container">
-        <h3>${fallback.title}</h3>
-        <p>${fallback.desc}</p>
+        <h3>${uiFallback.errorTitle}</h3>
+        <p>${uiFallback.errorDesc}</p>
         <p class="error-details">${error instanceof Error ? error.message : String(error)}</p>
       </div>
     `;
@@ -213,7 +251,7 @@ function renderApp(container: HTMLElement) {
     onLanguageSelect: (lang) => {
       currentLang = lang as 'es' | 'en';
       localStorage.setItem('app-lang', currentLang);
-      loadDataAndRender(container); // Reload JSON and re-render app
+      loadDataAndRender(container);
     },
     onBrandClick: () => {
       currentPage = 'home';
@@ -249,23 +287,18 @@ function renderTabContent(container: HTMLElement) {
         if (itineraryData) {
           itineraryData.dias = updatedDays;
           
-          // Persist to Supabase if configured
-          if (isConfigured()) {
-            for (const day of updatedDays) {
-              try {
-                await updateDay(day.id, currentLang, {
-                  fecha: day.fecha,
-                  titulo_principal: day.tituloPrincipal,
-                  actividades: day.actividades
-                });
-              } catch (err) {
-                console.error(`Error saving day ${day.id} to Supabase:`, err);
-              }
+          // Guardar SOLO datos del día a Supabase, ya que
+          // las actividades ahora se guardan directo desde su propio modal.
+          for (const day of updatedDays) {
+            try {
+              await updateDiaViaje(day.id_dia, {
+                fecha: day.fecha,
+                descripcion: day.descripcion
+              });
+            } catch (err) {
+              console.error(`Error saving day ${day.id_dia} to Supabase:`, err);
             }
           }
-
-          // Also update the localStorage cache
-          localStorage.setItem(`cache-itinerary-${currentLang}`, JSON.stringify(itineraryData));
         }
       }
     });
@@ -325,3 +358,4 @@ function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
+
