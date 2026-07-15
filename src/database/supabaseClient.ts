@@ -24,11 +24,35 @@ function getHeaders(preferReturn: boolean = false): Record<string, string> {
 }
 
 // =============================================
+// Translation Utility (MyMemory API)
+// =============================================
+export async function translateText(text: string, targetLang: 'es' | 'en'): Promise<string> {
+  if (!text) return text;
+  
+  const sourceLang = targetLang === 'en' ? 'es' : 'en';
+  
+  try {
+    const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`);
+    const data = await response.json();
+    
+    if (data && data.responseData && data.responseData.translatedText) {
+      return data.responseData.translatedText;
+    }
+  } catch (error) {
+    console.error('Error traduciendo texto:', error);
+  }
+
+  // Fallback en caso de que la API falle
+  return `[${targetLang.toUpperCase()}] ${text}`;
+}
+
+// =============================================
 // CRUD: diaViaje
 // =============================================
 
-export async function getDiasViaje(): Promise<any[]> {
-  const res = await fetch(`${REST_URL}/diaViaje?select=*,actividadDia(*)&order=id_dia.asc`, {
+export async function getDiasViaje(lang: string = 'es'): Promise<any[]> {
+  const selectQuery = `id_dia, fecha, descripcion:descripcion_${lang}, actividadDia(id_actividad, id_dia, hora, titulo:titulo_${lang}, descripcion:descripcion_${lang}, url, reservaLink, notas:notas_${lang})`;
+  const res = await fetch(`${REST_URL}/diaViaje?select=${selectQuery}&order=id_dia.asc`, {
     headers: getHeaders()
   });
   if (!res.ok) return [];
@@ -101,63 +125,6 @@ export async function deleteActividad(id_actividad: number): Promise<boolean> {
     headers: getHeaders()
   });
   return res.ok;
-}
-
-// =============================================
-// COMPATIBILITY CON LA WEB (Funciones antiguas)
-// =============================================
-
-export async function fetchUiTexts(lang: string): Promise<Record<string, unknown> | null> {
-  // La tabla ui_texts ya no existe, retornamos null para que la app cargue los textos del JSON estático.
-  return null;
-}
-
-export async function fetchDays(lang: string): Promise<Array<{
-  id: number;
-  fecha: string;
-  titulo_principal: string;
-  actividades: unknown[];
-}>> {
-  // Obtenemos los datos con el nuevo formato y los mapeamos al antiguo
-  const dias = await getDiasViaje();
-  return dias.map(dia => ({
-    id: dia.id_dia,
-    fecha: dia.fecha,
-    titulo_principal: dia.descripcion,
-    actividades: (dia.actividadDia || []).map((act: any) => ({
-      // Aseguramos que la hora sea HH:MM
-      hora: act.hora ? act.hora.substring(0, 5) : '10:00',
-      titulo: act.titulo,
-      descripcion: act.descripcion || '',
-      lugar: act.url || '', // url parece ser el equivalente a lugar
-      enlace_reserva: act.reservaLink || '',
-      notas: act.notas || ''
-    }))
-  }));
-}
-
-export async function updateDay(
-  dayId: number,
-  lang: string,
-  data: {
-    fecha?: string;
-    titulo_principal?: string;
-    actividades?: any[];
-  }
-): Promise<boolean> {
-  // Actualizar el día
-  if (data.fecha || data.titulo_principal) {
-    const diaUpdate: any = {};
-    if (data.fecha) diaUpdate.fecha = data.fecha;
-    if (data.titulo_principal) diaUpdate.descripcion = data.titulo_principal;
-    await updateDiaViaje(dayId, diaUpdate);
-  }
-
-  // Si se envían actividades, idealmente aquí sincronizaríamos,
-  // pero como Supabase no tiene transacciones complejas vía REST, 
-  // simplemente indicaremos éxito temporalmente.
-  // Para una sincronización real de actividades, se usarían updateActividad / deleteActividad.
-  return true;
 }
 
 export function isConfigured(): boolean {

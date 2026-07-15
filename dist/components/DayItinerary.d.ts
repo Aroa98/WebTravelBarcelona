@@ -14,4 +14,3 @@ export declare class DayItinerary {
     private openAddPlanModal;
     private openUnsavedWarningModal;
 }
-//# sourceMappingURL=DayItinerary.d.ts.map

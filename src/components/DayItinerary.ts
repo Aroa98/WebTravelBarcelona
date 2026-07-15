@@ -1,10 +1,11 @@
 import { ActivityCard, type Activity } from './ActivityCard.js';
-import { createActividad } from '../database/supabaseClient.js';
+import { createActividad, translateText } from '../database/supabaseClient.js';
+import { t } from '../i18n/index.js';
 
 export interface Day {
   id_dia: number;
   fecha: string;
-  descripcion: string;
+  descripcion: string; // Aliased from DB
   actividadDia: Activity[];
 }
 
@@ -24,21 +25,20 @@ export class DayItinerary {
     daySection.className = 'day-section';
     daySection.id = `day-${this.day.id_dia}`;
 
+    const dayDesc = this.day.descripcion;
+
     const isWedding = this.day.id_dia === 10 || 
-                      (this.day.descripcion && this.day.descripcion.toLowerCase().includes('boda')) || 
-                      (this.day.descripcion && this.day.descripcion.toLowerCase().includes('wedding'));
+                      (dayDesc && dayDesc.toLowerCase().includes('boda')) || 
+                      (dayDesc && dayDesc.toLowerCase().includes('wedding'));
     if (isWedding) {
       daySection.classList.add('wedding-theme');
     }
 
-    // Header of the day (clickable to filter view)
     const header = document.createElement('div');
     header.className = 'day-header clickable-day';
-    header.title = localStorage.getItem('app-lang') === 'en' ? 'Click to focus on this day' : 'Haz clic para enfocar este día';
+    header.title = t('clickToFocusDay');
     header.addEventListener('click', () => {
-      if (this.onDaySelect) {
-        this.onDaySelect(this.day.id_dia);
-      }
+      if (this.onDaySelect) this.onDaySelect(this.day.id_dia);
     });
 
     const headerLeft = document.createElement('div');
@@ -52,13 +52,12 @@ export class DayItinerary {
 
     const title = document.createElement('h2');
     title.className = 'day-title';
-    title.textContent = this.day.descripcion;
+    title.textContent = dayDesc;
 
     headerLeft.appendChild(dateBadge);
     headerLeft.appendChild(title);
     header.appendChild(headerLeft);
 
-    // Add activity plan button inside the day header
     const addPlanBtn = document.createElement('button');
     addPlanBtn.className = 'day-add-plan-btn';
     addPlanBtn.innerHTML = `
@@ -67,157 +66,98 @@ export class DayItinerary {
         <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
     `;
-    const isEn = localStorage.getItem('app-lang') === 'en';
-    addPlanBtn.title = isEn ? 'Add custom plan' : 'Añadir plan personalizado';
+    addPlanBtn.title = t('addCustomPlan');
     addPlanBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // prevent day header filter click!
+      e.stopPropagation();
       this.openAddPlanModal();
     });
     header.appendChild(addPlanBtn);
-
     daySection.appendChild(header);
 
-    // Timeline wrapper
     const timeline = document.createElement('div');
     timeline.className = 'day-timeline';
 
     if (this.day.actividadDia && this.day.actividadDia.length > 0) {
       this.day.actividadDia.forEach((activity, idx) => {
-        const activityCard = new ActivityCard(activity, this.day.id_dia, (updatedActivity) => {
-          this.day.actividadDia[idx] = updatedActivity;
-          // Sort by hour to maintain chronological order after edit
-          this.day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
-          if (this.onUpdateDay) {
-            this.onUpdateDay(this.day);
+        const activityCard = new ActivityCard(activity, this.day.id_dia, 
+          (updatedActivity) => {
+            this.day.actividadDia[idx] = updatedActivity;
+            this.day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
+            if (this.onUpdateDay) this.onUpdateDay(this.day);
+          }, 
+          () => {
+            this.day.actividadDia.splice(idx, 1);
+            if (this.onUpdateDay) this.onUpdateDay(this.day);
           }
-        }, () => {
-          this.day.actividadDia.splice(idx, 1);
-          if (this.onUpdateDay) {
-            this.onUpdateDay(this.day);
-          }
-        });
+        );
         timeline.appendChild(activityCard.render());
       });
     } else {
       const emptyState = document.createElement('p');
       emptyState.className = 'timeline-empty';
-      emptyState.textContent = 'No hay actividades planificadas para este día.';
+      emptyState.textContent = t('emptyDayTimeline');
       timeline.appendChild(emptyState);
     }
 
     daySection.appendChild(timeline);
-
     return daySection;
   }
 
   private openAddPlanModal(): void {
-    const isEn = localStorage.getItem('app-lang') === 'en';
-    
-    // Modal Overlay
     const overlay = document.createElement('div');
     overlay.className = 'activity-modal-overlay';
     
-    // Modal Box
     const modal = document.createElement('div');
     modal.className = 'activity-modal';
 
-    // Washi tape decorator at the top
     const washiTape = document.createElement('div');
     washiTape.className = 'activity-modal-washi-tape';
     modal.appendChild(washiTape);
     
-    // Close button
     const closeBtn = document.createElement('button');
     closeBtn.className = 'activity-modal-close';
     closeBtn.innerHTML = '&times;';
     
-    // Form Inputs
-    const header = document.createElement('div');
-    header.className = 'activity-modal-header';
-    header.style.marginBottom = '12px';
-    
-    const timeLabel = document.createElement('div');
-    timeLabel.className = 'activity-modal-time';
-    timeLabel.style.fontSize = '0.9rem';
-    timeLabel.style.marginBottom = '4px';
-    timeLabel.textContent = isEn ? 'Time (e.g. 10:00:00):' : 'Hora (ej. 10:00:00):';
-    
-    const timeInput = document.createElement('input');
-    timeInput.type = 'text';
-    timeInput.className = 'activity-edit-input';
-    timeInput.value = '10:00:00';
-    timeInput.style.marginBottom = '12px';
-    
-    const titleLabel = document.createElement('div');
-    titleLabel.style.fontWeight = '700';
-    titleLabel.style.marginBottom = '4px';
-    titleLabel.style.color = 'var(--primary-color)';
-    titleLabel.textContent = isEn ? 'Activity Name:' : 'Nombre de la Actividad:';
-    
-    const titleInput = document.createElement('input');
-    titleInput.type = 'text';
-    titleInput.className = 'activity-edit-input';
-    titleInput.placeholder = isEn ? 'e.g. Lunch at beach...' : 'ej. Almuerzo en la playa...';
-    titleInput.style.marginBottom = '12px';
-    
-    header.appendChild(timeLabel);
-    header.appendChild(timeInput);
-    header.appendChild(titleLabel);
-    header.appendChild(titleInput);
-    
-    // Description
-    const descLabel = document.createElement('div');
-    descLabel.style.fontWeight = '700';
-    descLabel.style.marginBottom = '4px';
-    descLabel.style.color = 'var(--primary-color)';
-    descLabel.textContent = isEn ? 'Description:' : 'Descripción:';
-    
-    const descTextarea = document.createElement('textarea');
-    descTextarea.className = 'activity-edit-textarea';
-    descTextarea.placeholder = isEn ? 'Details of the activity...' : 'Detalles de la actividad...';
-    descTextarea.style.marginBottom = '12px';
-    
-    // Location (URL column in DB used for location string)
-    const locLabel = document.createElement('div');
-    locLabel.style.fontWeight = '700';
-    locLabel.style.marginBottom = '4px';
-    locLabel.style.color = 'var(--primary-color)';
-    locLabel.textContent = isEn ? 'Location:' : 'Lugar:';
-    
-    const locInput = document.createElement('input');
-    locInput.type = 'text';
-    locInput.className = 'activity-edit-input';
-    locInput.placeholder = isEn ? 'e.g. Barceloneta...' : 'ej. Barceloneta...';
-    locInput.style.marginBottom = '12px';
+    const scrollContainer = document.createElement('div');
+    scrollContainer.className = 'activity-modal-scroll-container';
 
-    // Reservation Link
-    const linkLabel = document.createElement('div');
-    linkLabel.style.fontWeight = '700';
-    linkLabel.style.marginBottom = '4px';
-    linkLabel.style.color = 'var(--primary-color)';
-    linkLabel.textContent = isEn ? 'Booking Link (optional):' : 'Enlace de Reserva (opcional):';
-    
-    const linkInput = document.createElement('input');
-    linkInput.type = 'text';
-    linkInput.className = 'activity-edit-input';
-    linkInput.placeholder = 'https://...';
-    linkInput.style.marginBottom = '16px';
-    
-    // Notes Area
-    const notesContainer = document.createElement('div');
-    notesContainer.className = 'activity-modal-notes';
-    
+    const createField = (label: string, isTextarea = false, placeholder = '', defaultValue = '') => {
+      const lbl = document.createElement('div');
+      lbl.style.fontWeight = '700';
+      lbl.style.marginBottom = '4px';
+      lbl.style.color = 'var(--primary-color)';
+      lbl.textContent = label;
+      
+      const input = document.createElement(isTextarea ? 'textarea' : 'input') as HTMLInputElement | HTMLTextAreaElement;
+      input.className = isTextarea ? 'activity-edit-textarea' : 'activity-edit-input';
+      if (!isTextarea) (input as HTMLInputElement).type = 'text';
+      if (placeholder) input.placeholder = placeholder;
+      if (defaultValue) input.value = defaultValue;
+      input.style.marginBottom = '12px';
+      
+      scrollContainer.appendChild(lbl);
+      scrollContainer.appendChild(input);
+      return input;
+    };
+
+    const timeInput = createField(t('modalTimeLabel'), false, '', '10:00:00') as HTMLInputElement;
+    const titleInput = createField(t('modalActivityNameLabel'), false, t('modalActivityNamePlaceholder')) as HTMLInputElement;
+    const descTextarea = createField(t('modalDescriptionLabel'), true, t('modalDescriptionPlaceholder')) as HTMLTextAreaElement;
+    const locInput = createField(t('modalLocationLabel'), false, t('modalLocationPlaceholder')) as HTMLInputElement;
+    const linkInput = createField(t('modalBookingLinkLabel'), false, 'https://...') as HTMLInputElement;
+
     const notesTitle = document.createElement('h4');
-    notesTitle.textContent = isEn ? 'Notes 📝' : 'Notas 📝';
-    
+    notesTitle.textContent = t('modalNotesTitle');
     const notesTextarea = document.createElement('textarea');
     notesTextarea.className = 'activity-notes-textarea';
-    notesTextarea.placeholder = isEn ? 'Write here your notes...' : 'Escribe aquí tus anotaciones...';
+    notesTextarea.placeholder = t('modalNotesPlaceholder');
     
+    const notesContainer = document.createElement('div');
+    notesContainer.className = 'activity-modal-notes';
     notesContainer.appendChild(notesTitle);
     notesContainer.appendChild(notesTextarea);
+    scrollContainer.appendChild(notesContainer);
     
-    // Action buttons
     const actionsWrapper = document.createElement('div');
     actionsWrapper.style.marginTop = '20px';
     actionsWrapper.style.display = 'flex';
@@ -225,58 +165,71 @@ export class DayItinerary {
     
     const saveBtn = document.createElement('button');
     saveBtn.className = 'activity-notes-save-btn';
-    saveBtn.textContent = isEn ? 'Create Plan ➕' : 'Crear Plan ➕';
+    saveBtn.textContent = t('createPlanBtn');
     
     saveBtn.addEventListener('click', async () => {
       const titleVal = titleInput.value.trim();
-      const timeVal = timeInput.value.trim();
-      const locVal = locInput.value.trim();
-      const descVal = descTextarea.value.trim();
-      const linkVal = linkInput.value.trim();
-      const notesVal = notesTextarea.value.trim();
       
       if (!titleVal) {
-        alert(isEn ? 'Please enter a name for the activity' : 'Por favor ingresa un nombre para la actividad');
+        alert(t('errorEmptyName'));
         return;
       }
       
+      saveBtn.disabled = true;
+      saveBtn.textContent = t('savingBtn');
+
+      const sourceLang = (localStorage.getItem('app-lang') || 'es') as 'es' | 'en';
+      const targetLang = sourceLang === 'es' ? 'en' : 'es';
+
+      const descVal = descTextarea.value.trim() || null;
+      const notesVal = notesTextarea.value.trim() || null;
+
+      const [translatedTitle, translatedDesc, translatedNotes] = await Promise.all([
+        translateText(titleVal, targetLang),
+        descVal ? translateText(descVal, targetLang) : Promise.resolve(null),
+        notesVal ? translateText(notesVal, targetLang) : Promise.resolve(null)
+      ]);
+      
       const newActivityPayload = {
         id_dia: this.day.id_dia,
-        hora: timeVal || '10:00:00',
-        titulo: titleVal,
-        descripcion: descVal || null,
-        url: locVal || null,
-        reservaLink: linkVal || null,
-        notas: notesVal || null
+        hora: timeInput.value.trim() || '10:00:00',
+        url: locInput.value.trim() || null,
+        reservaLink: linkInput.value.trim() || null,
+        
+        titulo_es: sourceLang === 'es' ? titleVal : translatedTitle,
+        titulo_en: sourceLang === 'en' ? titleVal : translatedTitle,
+        
+        descripcion_es: sourceLang === 'es' ? descVal : translatedDesc,
+        descripcion_en: sourceLang === 'en' ? descVal : translatedDesc,
+        
+        notas_es: sourceLang === 'es' ? notesVal : translatedNotes,
+        notas_en: sourceLang === 'en' ? notesVal : translatedNotes
       };
 
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Guardando...';
-
-      // Llamada real a la BD
       const createdRecord = await createActividad(newActivityPayload);
       
       if (createdRecord) {
-        if (!this.day.actividadDia) {
-          this.day.actividadDia = [];
-        }
+        // Remap the inserted fields so the frontend immediately works without refreshing
+        createdRecord.titulo = titleVal;
+        createdRecord.descripcion = descVal;
+        createdRecord.notas = notesVal;
+
+        if (!this.day.actividadDia) this.day.actividadDia = [];
         this.day.actividadDia.push(createdRecord);
         this.day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
         
-        if (this.onUpdateDay) {
-          this.onUpdateDay(this.day);
-        }
+        if (this.onUpdateDay) this.onUpdateDay(this.day);
         overlay.remove();
       } else {
-        alert('Error creating activity in Supabase.');
+        alert(t('errorSupabaseCreate'));
         saveBtn.disabled = false;
-        saveBtn.textContent = isEn ? 'Create Plan ➕' : 'Crear Plan ➕';
+        saveBtn.textContent = t('createPlanBtn');
       }
     });
     
     actionsWrapper.appendChild(saveBtn);
+    scrollContainer.appendChild(actionsWrapper);
 
-    // Change checks
     const hasChanges = () => {
       return titleInput.value.trim() !== '' ||
              timeInput.value.trim() !== '10:00:00' ||
@@ -288,9 +241,7 @@ export class DayItinerary {
 
     const handleCloseAttempt = () => {
       if (hasChanges()) {
-        this.openUnsavedWarningModal(() => {
-          overlay.remove();
-        });
+        this.openUnsavedWarningModal(() => overlay.remove());
       } else {
         overlay.remove();
       }
@@ -298,34 +249,16 @@ export class DayItinerary {
 
     closeBtn.addEventListener('click', handleCloseAttempt);
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        handleCloseAttempt();
-      }
+      if (e.target === overlay) handleCloseAttempt();
     });
 
     modal.appendChild(closeBtn);
-
-    // Scroll Container
-    const scrollContainer = document.createElement('div');
-    scrollContainer.className = 'activity-modal-scroll-container';
-    scrollContainer.appendChild(header);
-    scrollContainer.appendChild(descLabel);
-    scrollContainer.appendChild(descTextarea);
-    scrollContainer.appendChild(locLabel);
-    scrollContainer.appendChild(locInput);
-    scrollContainer.appendChild(linkLabel);
-    scrollContainer.appendChild(linkInput);
-    scrollContainer.appendChild(notesContainer);
-    scrollContainer.appendChild(actionsWrapper);
-
     modal.appendChild(scrollContainer);
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
   }
 
   private openUnsavedWarningModal(onConfirmDiscard: () => void): void {
-    const isEn = localStorage.getItem('app-lang') === 'en';
-    
     const confirmOverlay = document.createElement('div');
     confirmOverlay.className = 'confirm-modal-overlay';
     
@@ -347,14 +280,12 @@ export class DayItinerary {
     
     const title = document.createElement('h4');
     title.className = 'confirm-modal-title';
-    title.textContent = isEn ? 'Unsaved Changes' : 'Cambios no guardados';
+    title.textContent = t('unsavedChangesTitle');
     confirmModal.appendChild(title);
     
     const desc = document.createElement('p');
     desc.className = 'confirm-modal-desc';
-    desc.textContent = isEn 
-      ? 'Are you sure you want to leave? Your changes will not be saved.'
-      : '¿Estás seguro de que deseas salir? Los datos introducidos no se guardarán.';
+    desc.textContent = t('unsavedChangesDesc');
     confirmModal.appendChild(desc);
     
     const actions = document.createElement('div');
@@ -362,15 +293,13 @@ export class DayItinerary {
     
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'confirm-modal-btn confirm-modal-btn-cancel';
-    cancelBtn.textContent = isEn ? 'Keep Editing' : 'Seguir editando';
-    cancelBtn.addEventListener('click', () => {
-      confirmOverlay.remove();
-    });
+    cancelBtn.textContent = t('keepEditingBtn');
+    cancelBtn.addEventListener('click', () => confirmOverlay.remove());
     
     const discardBtn = document.createElement('button');
     discardBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
     discardBtn.style.backgroundColor = '#e67e22';
-    discardBtn.textContent = isEn ? 'Discard & Leave' : 'Salir sin guardar';
+    discardBtn.textContent = t('discardLeaveBtn');
     discardBtn.addEventListener('click', () => {
       confirmOverlay.remove();
       onConfirmDiscard();
@@ -379,13 +308,10 @@ export class DayItinerary {
     actions.appendChild(cancelBtn);
     actions.appendChild(discardBtn);
     confirmModal.appendChild(actions);
-    
     confirmOverlay.appendChild(confirmModal);
     
     confirmOverlay.addEventListener('click', (e) => {
-      if (e.target === confirmOverlay) {
-        confirmOverlay.remove();
-      }
+      if (e.target === confirmOverlay) confirmOverlay.remove();
     });
     
     document.body.appendChild(confirmOverlay);

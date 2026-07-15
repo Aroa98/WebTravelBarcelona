@@ -21,4 +21,3 @@ export declare class ItineraryView {
     private createToolbar;
     private updateList;
 }
-//# sourceMappingURL=ItineraryView.d.ts.map

@@ -145,4 +145,3 @@ export class ItineraryView {
         }
     }
 }
-//# sourceMappingURL=ItineraryView.js.map

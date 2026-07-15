@@ -14,11 +14,22 @@ export declare class ActivityCard {
     private onUpdateActivity;
     private onDeleteActivity;
     private isEditing;
+    private viewModeContainer;
+    private editModeContainer;
+    private timeSpan;
+    private titleEl;
+    private descEl;
+    private locText;
+    private bookBtn;
+    private overlay;
     constructor(activity: Activity, dayId?: number, onUpdateActivity?: (updatedActivity: Activity) => void, onDeleteActivity?: () => void);
     render(): HTMLElement;
+    private createPinSvg;
     private updateNoteIndicator;
     private openDetailModal;
+    private buildViewMode;
+    private buildEditMode;
+    private buildNotesSection;
     private openUnsavedWarningModal;
     private openDeleteConfirmModal;
 }
-//# sourceMappingURL=ActivityCard.d.ts.map

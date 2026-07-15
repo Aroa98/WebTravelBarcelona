@@ -19,4 +19,3 @@ export declare class Navbar {
     render(): HTMLElement;
     private setActiveTab;
 }
-//# sourceMappingURL=Navbar.d.ts.map

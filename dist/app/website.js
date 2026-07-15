@@ -2,102 +2,44 @@ import { Navbar } from '../components/Navbar.js';
 import { ItineraryView } from '../components/ItineraryView.js';
 import { HomeView } from '../components/HomeView.js';
 import { getDiasViaje, updateDiaViaje } from '../database/supabaseClient.js';
-const staticUiTexts = {
-    es: {
-        title: "Boda de Aroa y Alberto",
-        subtitle: "Nuestro Itinerario en Barcelona",
-        itineraryTab: "Itinerario",
-        infoTab: "Info General",
-        searchPlaceholder: "Buscar actividades...",
-        allDays: "Todos los días",
-        noResults: "No se encontraron actividades.",
-        infoTitle: "Información General",
-        infoDestination: "Destino",
-        infoDestinationDesc: "Barcelona y alrededores, España",
-        infoDates: "Fechas",
-        infoDatesDesc: "Del 7 al 17 de Octubre de 2026",
-        infoTips: "Consejos Prácticos",
-        infoTipsList: [
-            "Lleva calzado muy cómodo para caminar.",
-            "Vigila tus pertenencias en zonas turísticas.",
-            "Reserva con antelación las entradas (Sagrada Familia, Park Güell)."
-        ],
-        infoPhones: "Teléfonos Útiles",
-        infoPhonesList: {
-            "Emergencias": "112",
-            "Policía Nacional": "091"
-        },
-        errorTitle: "Oops! Algo salió mal.",
-        errorDesc: "No se pudo cargar el itinerario del viaje desde la base de datos. Por favor, inténtalo más tarde.",
-        homeTitle: "Bienvenidos a Nuestro Viaje",
-        homeSubtitle: "Descubre el itinerario y todos los detalles de nuestra boda en Barcelona.",
-        startBtn: "Ver Itinerario",
-        galleryTitle: "Lugares Destacados",
-        galleryPlaces: {
-            sagrada: "Sagrada Familia",
-            park: "Park Güell",
-            barceloneta: "La Barceloneta",
-            gotico: "Barrio Gótico"
-        },
-        homeDestLabel: "Destino",
-        homeDestVal: "Barcelona",
-        homeDatesLabel: "Fechas",
-        homeDatesVal: "7 - 17 Oct 2026",
-        homeEventLabel: "Evento Principal",
-        homeEventVal: "Boda (10 de Octubre)",
-        homePackingLabel: "Equipaje",
-        homePackingVal: "Otoño / Cómodo",
-        homeFlightLabel: "Vuelo Salida",
-        homeFlightVal: "IAD -> BCN"
-    },
-    en: {
-        title: "Aroa & Alberto's Wedding",
-        subtitle: "Our Barcelona Itinerary",
-        itineraryTab: "Itinerary",
-        infoTab: "General Info",
-        searchPlaceholder: "Search activities...",
-        allDays: "All Days",
-        noResults: "No activities found.",
-        infoTitle: "General Information",
-        infoDestination: "Destination",
-        infoDestinationDesc: "Barcelona and surroundings, Spain",
-        infoDates: "Dates",
-        infoDatesDesc: "October 7th to 17th, 2026",
-        infoTips: "Practical Tips",
-        infoTipsList: [
-            "Wear very comfortable shoes for walking.",
-            "Watch your belongings in tourist areas.",
-            "Book tickets in advance (Sagrada Familia, Park Güell)."
-        ],
-        infoPhones: "Useful Numbers",
-        infoPhonesList: {
-            "Emergencies": "112",
-            "National Police": "091"
-        },
-        errorTitle: "Oops! Something went wrong.",
-        errorDesc: "Could not load the trip itinerary from the database. Please try again later.",
-        homeTitle: "Welcome to Our Trip",
-        homeSubtitle: "Discover the itinerary and all the details for our wedding in Barcelona.",
-        startBtn: "View Itinerary",
-        galleryTitle: "Highlighted Places",
-        galleryPlaces: {
-            sagrada: "Sagrada Familia",
-            park: "Park Güell",
-            barceloneta: "La Barceloneta",
-            gotico: "Gothic Quarter"
-        },
-        homeDestLabel: "Destination",
-        homeDestVal: "Barcelona",
-        homeDatesLabel: "Dates",
-        homeDatesVal: "Oct 7 - 17, 2026",
-        homeEventLabel: "Main Event",
-        homeEventVal: "Wedding (October 10th)",
-        homePackingLabel: "Packing",
-        homePackingVal: "Autumn / Casual",
-        homeFlightLabel: "Departure Flight",
-        homeFlightVal: "IAD -> BCN"
-    }
-};
+import { t } from '../i18n/index.js';
+function getUIData() {
+    return {
+        title: t('title'),
+        subtitle: t('subtitle'),
+        itineraryTab: t('itineraryTab'),
+        infoTab: t('infoTab'),
+        searchPlaceholder: t('searchPlaceholder'),
+        allDays: t('allDays'),
+        noResults: t('noResults'),
+        infoTitle: t('infoTitle'),
+        infoDestination: t('infoDestination'),
+        infoDestinationDesc: t('infoDestinationDesc'),
+        infoDates: t('infoDates'),
+        infoDatesDesc: t('infoDatesDesc'),
+        infoTips: t('infoTips'),
+        infoTipsList: t('infoTipsList'),
+        infoPhones: t('infoPhones'),
+        infoPhonesList: t('infoPhonesList'),
+        errorTitle: t('errorTitle'),
+        errorDesc: t('errorDesc'),
+        homeTitle: t('homeTitle'),
+        homeSubtitle: t('homeSubtitle'),
+        startBtn: t('startBtn'),
+        galleryTitle: t('galleryTitle'),
+        galleryPlaces: t('galleryPlaces'),
+        homeDestLabel: t('homeDestLabel'),
+        homeDestVal: t('homeDestVal'),
+        homeDatesLabel: t('homeDatesLabel'),
+        homeDatesVal: t('homeDatesVal'),
+        homeEventLabel: t('homeEventLabel'),
+        homeEventVal: t('homeEventVal'),
+        homePackingLabel: t('homePackingLabel'),
+        homePackingVal: t('homePackingVal'),
+        homeFlightLabel: t('homeFlightLabel'),
+        homeFlightVal: t('homeFlightVal')
+    };
+}
 // Global App State
 let currentLang = (localStorage.getItem('app-lang') || 'es');
 let currentPage = 'home';
@@ -106,10 +48,15 @@ let itineraryData = null;
 async function loadDataAndRender(container) {
     try {
         // We get the raw data directly from Supabase!
-        const daysData = await getDiasViaje();
+        const daysData = await getDiasViaje(currentLang);
         if (daysData && daysData.length > 0) {
             const dias = daysData;
-            itineraryData = { ui: staticUiTexts[currentLang], dias };
+            dias.forEach(day => {
+                if (day.actividadDia) {
+                    day.actividadDia.sort((a, b) => a.hora.localeCompare(b.hora));
+                }
+            });
+            itineraryData = { ui: getUIData(), dias };
             console.log('✅ Data loaded successfully from Supabase.', dias);
             renderApp(container);
         }
@@ -119,7 +66,7 @@ async function loadDataAndRender(container) {
     }
     catch (error) {
         console.error('Error loading data from Supabase:', error);
-        const uiFallback = staticUiTexts[currentLang];
+        const uiFallback = getUIData();
         container.innerHTML = `
       <div class="error-container">
         <h3>${uiFallback.errorTitle}</h3>
@@ -230,10 +177,9 @@ function renderTabContent(container) {
                     // las actividades ahora se guardan directo desde su propio modal.
                     for (const day of updatedDays) {
                         try {
-                            await updateDiaViaje(day.id_dia, {
-                                fecha: day.fecha,
-                                descripcion: day.descripcion
-                            });
+                            const updatePayload = { fecha: day.fecha };
+                            updatePayload[`descripcion_${currentLang}`] = day.descripcion;
+                            await updateDiaViaje(day.id_dia, updatePayload);
                         }
                         catch (err) {
                             console.error(`Error saving day ${day.id_dia} to Supabase:`, err);
@@ -292,4 +238,3 @@ function initApp() {
     loadDataAndRender(container);
 }
 document.addEventListener('DOMContentLoaded', initApp);
-//# sourceMappingURL=website.js.map
