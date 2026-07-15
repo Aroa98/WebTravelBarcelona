@@ -1,6 +1,6 @@
 export const es = {
   // Global / App level
-  title: "Boda de Aroa y Alberto",
+  title: "Boda de Aroa y Chanchai",
   subtitle: "Nuestro Itinerario en Barcelona",
   itineraryTab: "Itinerario",
   infoTab: "Info General",
@@ -31,7 +31,7 @@ export const es = {
   errorDesc: "No se pudo cargar el itinerario del viaje desde la base de datos. Por favor, inténtalo más tarde.",
   
   // Home View
-  homeTitle: "Bienvenidos a Nuestro Viaje",
+  homeTitle: "Bienvenidos a Barcelona",
   homeSubtitle: "Descubre el itinerario y todos los detalles de nuestra boda en Barcelona.",
   startBtn: "Ver Itinerario",
   galleryTitle: "Lugares Destacados",
