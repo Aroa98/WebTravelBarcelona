@@ -1647,3 +1647,162 @@ html {
   margin-top: 10px;
 }
 
+/* ==========================================
+   Comprehensive Mobile Responsiveness
+   ========================================== */
+
+@media (max-width: 768px) {
+  /* Modals */
+  .activity-modal {
+    width: 95%;
+    padding: 30px 20px 20px 20px;
+    max-height: 95vh;
+  }
+  
+  .activity-modal-title {
+    font-size: 1.6rem;
+  }
+  
+  .activity-modal-time {
+    font-size: 1.4rem;
+  }
+  
+  .activity-modal-desc {
+    font-size: 0.95rem;
+  }
+  
+  .activity-modal-washi-tape {
+    width: 100px;
+  }
+  
+  .activity-notes-textarea {
+    font-size: 1.2rem;
+  }
+  
+  .confirm-modal {
+    width: 95%;
+    padding: 20px 16px;
+  }
+  
+  .confirm-modal-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .confirm-modal-btn {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  /* Timeline fixes */
+  .day-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .day-header > div:first-child {
+    width: 100%;
+  }
+  
+  .day-add-plan-btn {
+    margin-left: 0;
+    align-self: flex-end;
+    margin-top: -44px; /* Pull it up next to the title on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra Small Devices */
+  .app-header {
+    padding: 24px 16px 60px 16px;
+  }
+  
+  .header-title {
+    font-size: 1.8rem;
+  }
+  
+  .header-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .nav-button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .day-section {
+    padding: 20px 16px;
+    border-radius: var(--radius-md);
+  }
+  
+  .day-title {
+    font-size: 1.3rem;
+  }
+  
+  .day-timeline {
+    padding-left: 16px;
+  }
+  
+  .day-timeline::before {
+    left: 4px;
+  }
+  
+  .activity-card {
+    gap: 0;
+  }
+  
+  .activity-card::before {
+    left: -17px;
+    width: 10px;
+    height: 10px;
+    top: 6px;
+  }
+  
+  .activity-content {
+    padding: 16px;
+    margin-left: 12px;
+  }
+  
+  .activity-title {
+    font-size: 1.1rem;
+  }
+  
+  .activity-time-container {
+    position: absolute;
+    top: -24px;
+    left: 20px;
+  }
+  
+  .activity-time {
+    font-size: 0.9rem;
+    background: var(--bg-primary);
+    padding: 0 4px;
+  }
+  
+  .activity-booking-link {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .itinerary-toolbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-wrapper {
+    width: 100%;
+  }
+  
+  .day-select-filter {
+    width: 100%;
+  }
+  
+  .activity-modal-header {
+    padding-right: 20px;
+  }
+  
+  .activity-modal-close {
+    top: 10px;
+    right: 10px;
+  }
+}

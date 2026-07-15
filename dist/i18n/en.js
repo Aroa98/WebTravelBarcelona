@@ -1,6 +1,6 @@
 export const en = {
     // Global / App level
-    title: "Aroa & Alberto's Wedding",
+    title: "Aroa & Chanchai's Wedding",
     subtitle: "Our Barcelona Itinerary",
     itineraryTab: "Itinerary",
     infoTab: "General Info",
@@ -28,7 +28,7 @@ export const en = {
     errorTitle: "Oops! Something went wrong.",
     errorDesc: "Could not load the trip itinerary from the database. Please try again later.",
     // Home View
-    homeTitle: "Welcome to Our Trip",
+    homeTitle: "Welcome to Barcelona",
     homeSubtitle: "Discover the itinerary and all the details for our wedding in Barcelona.",
     startBtn: "View Itinerary",
     galleryTitle: "Highlighted Places",
