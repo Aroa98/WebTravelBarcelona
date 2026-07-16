@@ -1,27 +1,10 @@
-/**
- * Supabase REST API Client
- * 
- * Uses raw fetch() to communicate with the Supabase PostgREST API.
- * No npm packages needed — works directly in the browser.
- */
+import { createClient } from '@supabase/supabase-js';
 
-// ⚠️ REPLACE THESE WITH YOUR SUPABASE PROJECT VALUES
-const SUPABASE_URL = 'https://lxgwxjnmpnfcoeblztee.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_AYWCmwgfQU6fXsrwQMMbpA_63oViV1R';
+// Usar variables de entorno (Vite) en lugar de valores hardcoded
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-const REST_URL = `${SUPABASE_URL}/rest/v1`;
-
-function getHeaders(preferReturn: boolean = false): Record<string, string> {
-  const headers: Record<string, string> = {
-    'apikey': SUPABASE_ANON_KEY,
-    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-    'Content-Type': 'application/json'
-  };
-  if (preferReturn) {
-    headers['Prefer'] = 'return=representation';
-  }
-  return headers;
-}
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // =============================================
 // Translation Utility (MyMemory API)
@@ -52,39 +35,44 @@ export async function translateText(text: string, targetLang: 'es' | 'en'): Prom
 
 export async function getDiasViaje(lang: string = 'es'): Promise<any[]> {
   const selectQuery = `id_dia, fecha, descripcion:descripcion_${lang}, actividadDia(id_actividad, id_dia, hora, titulo:titulo_${lang}, descripcion:descripcion_${lang}, url, reservaLink, notas:notas_${lang})`;
-  const res = await fetch(`${REST_URL}/diaViaje?select=${selectQuery}&order=id_dia.asc`, {
-    headers: getHeaders()
-  });
-  if (!res.ok) return [];
-  return await res.json();
+  const { data, error } = await supabase
+    .from('diaViaje')
+    .select(selectQuery)
+    .order('id_dia', { ascending: true });
+
+  if (error) {
+    console.error('Error in getDiasViaje:', error);
+    return [];
+  }
+  return data || [];
 }
 
 export async function createDiaViaje(data: any): Promise<any> {
-  const res = await fetch(`${REST_URL}/diaViaje`, {
-    method: 'POST',
-    headers: getHeaders(true),
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) return null;
-  const rows = await res.json();
-  return rows[0];
+  const { data: result, error } = await supabase
+    .from('diaViaje')
+    .insert([data])
+    .select();
+
+  if (error) return null;
+  return result?.[0];
 }
 
 export async function updateDiaViaje(id_dia: number, data: any): Promise<boolean> {
-  const res = await fetch(`${REST_URL}/diaViaje?id_dia=eq.${id_dia}`, {
-    method: 'PATCH',
-    headers: getHeaders(true),
-    body: JSON.stringify(data)
-  });
-  return res.ok;
+  const { error } = await supabase
+    .from('diaViaje')
+    .update(data)
+    .eq('id_dia', id_dia);
+
+  return !error;
 }
 
 export async function deleteDiaViaje(id_dia: number): Promise<boolean> {
-  const res = await fetch(`${REST_URL}/diaViaje?id_dia=eq.${id_dia}`, {
-    method: 'DELETE',
-    headers: getHeaders()
-  });
-  return res.ok;
+  const { error } = await supabase
+    .from('diaViaje')
+    .delete()
+    .eq('id_dia', id_dia);
+
+  return !error;
 }
 
 // =============================================
@@ -92,41 +80,43 @@ export async function deleteDiaViaje(id_dia: number): Promise<boolean> {
 // =============================================
 
 export async function getActividades(): Promise<any[]> {
-  const res = await fetch(`${REST_URL}/actividadDia?order=hora.asc`, {
-    headers: getHeaders()
-  });
-  if (!res.ok) return [];
-  return await res.json();
+  const { data, error } = await supabase
+    .from('actividadDia')
+    .select('*')
+    .order('hora', { ascending: true });
+
+  if (error) return [];
+  return data || [];
 }
 
 export async function createActividad(data: any): Promise<any> {
-  const res = await fetch(`${REST_URL}/actividadDia`, {
-    method: 'POST',
-    headers: getHeaders(true),
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) return null;
-  const rows = await res.json();
-  return rows[0];
+  const { data: result, error } = await supabase
+    .from('actividadDia')
+    .insert([data])
+    .select();
+
+  if (error) return null;
+  return result?.[0];
 }
 
 export async function updateActividad(id_actividad: number, data: any): Promise<boolean> {
-  const res = await fetch(`${REST_URL}/actividadDia?id_actividad=eq.${id_actividad}`, {
-    method: 'PATCH',
-    headers: getHeaders(true),
-    body: JSON.stringify(data)
-  });
-  return res.ok;
+  const { error } = await supabase
+    .from('actividadDia')
+    .update(data)
+    .eq('id_actividad', id_actividad);
+
+  return !error;
 }
 
 export async function deleteActividad(id_actividad: number): Promise<boolean> {
-  const res = await fetch(`${REST_URL}/actividadDia?id_actividad=eq.${id_actividad}`, {
-    method: 'DELETE',
-    headers: getHeaders()
-  });
-  return res.ok;
+  const { error } = await supabase
+    .from('actividadDia')
+    .delete()
+    .eq('id_actividad', id_actividad);
+
+  return !error;
 }
 
 export function isConfigured(): boolean {
-  return !SUPABASE_URL.includes('YOUR-PROJECT-ID');
+  return SUPABASE_URL !== '' && !SUPABASE_URL.includes('YOUR-PROJECT-ID');
 }

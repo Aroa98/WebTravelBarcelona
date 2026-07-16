@@ -1,8 +1,9 @@
 import { Navbar, type NavbarTab } from '../components/Navbar.js';
 import { ItineraryView } from '../components/ItineraryView.js';
 import { HomeView } from '../components/HomeView.js';
+import { LoginView } from '../components/LoginView.js';
 import type { Day } from '../components/DayItinerary.js';
-import { getDiasViaje, updateDiaViaje } from '../database/supabaseClient.js';
+import { getDiasViaje, updateDiaViaje, supabase } from '../database/supabaseClient.js';
 
 import { t } from '../i18n/index.js';
 
@@ -298,10 +299,28 @@ function renderGeneralInfo(container: HTMLElement, ui: UIData) {
   container.appendChild(infoSection);
 }
 
-function initApp() {
+async function initApp() {
   const container = document.getElementById('itinerario-container');
   if (!container) return;
-  loadDataAndRender(container);
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    container.innerHTML = '';
+    const loginView = new LoginView(() => {
+      // Upon successful login, re-initialize
+      initApp();
+    });
+    container.appendChild(loginView.render());
+  } else {
+    // Escuchar cambios en la auth (e.g. si cierran sesión)
+    supabase.auth.onAuthStateChange((_event, newSession) => {
+      if (!newSession) {
+        window.location.reload();
+      }
+    });
+    loadDataAndRender(container);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
