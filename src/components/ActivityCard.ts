@@ -73,15 +73,17 @@ export class ActivityCard {
 
     const locationContainer = document.createElement('div');
     locationContainer.className = 'activity-location clickable-location';
-    locationContainer.title = this.activity.reservaLink ? t('clickToBookTickets') : t('viewOnMaps');
+    locationContainer.title = t('viewOnMaps');
 
     locationContainer.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (this.activity.reservaLink) {
-        window.open(this.activity.reservaLink, '_blank');
-      } else if (this.activity.url) {
-        const query = encodeURIComponent(this.activity.url);
-        window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+      if (this.activity.url) {
+        if (this.activity.url.startsWith('http')) {
+          window.open(this.activity.url, '_blank');
+        } else {
+          const query = encodeURIComponent(this.activity.url);
+          window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+        }
       }
     });
 
@@ -305,15 +307,17 @@ export class ActivityCard {
     
     this.locText = document.createElement('span');
     this.locText.className = 'location-text clickable-location';
-    this.locText.title = this.activity.reservaLink ? t('clickToBookTickets') : t('viewOnMaps');
+    this.locText.title = t('viewOnMaps');
     this.locText.innerHTML = `📍 <strong>${this.activity.url || t('noLocation')}</strong>`;
     
     this.locText.addEventListener('click', () => {
-      if (this.activity.reservaLink) {
-        window.open(this.activity.reservaLink, '_blank');
-      } else if (this.activity.url) {
-        const query = encodeURIComponent(this.activity.url);
-        window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+      if (this.activity.url) {
+        if (this.activity.url.startsWith('http')) {
+          window.open(this.activity.url, '_blank');
+        } else {
+          const query = encodeURIComponent(this.activity.url);
+          window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+        }
       }
     });
     locationBox.appendChild(this.locText);
