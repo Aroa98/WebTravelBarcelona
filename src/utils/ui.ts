@@ -129,3 +129,61 @@ export function showMessage(title: string, message: string): void {
   
   document.body.appendChild(confirmOverlay);
 }
+
+export function showUserGuideModal(title: string, contentHtml: string): void {
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-modal-overlay';
+  
+  const modal = document.createElement('div');
+  modal.className = 'confirm-modal';
+  modal.style.borderTopColor = 'var(--primary-color)';
+  modal.style.maxWidth = '500px'; 
+  modal.style.maxHeight = '90vh';
+  modal.style.overflowY = 'auto';
+  
+  const icon = document.createElement('div');
+  icon.className = 'confirm-modal-icon';
+  icon.style.color = 'var(--primary-color)';
+  icon.innerHTML = `
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+  `;
+  modal.appendChild(icon);
+  
+  const titleEl = document.createElement('h4');
+  titleEl.className = 'confirm-modal-title';
+  titleEl.textContent = title;
+  modal.appendChild(titleEl);
+  
+  const desc = document.createElement('div');
+  desc.className = 'confirm-modal-desc';
+  desc.innerHTML = contentHtml;
+  modal.appendChild(desc);
+  
+  const actions = document.createElement('div');
+  actions.className = 'confirm-modal-actions';
+  actions.style.justifyContent = 'center';
+  
+  const okBtn = document.createElement('button');
+  okBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
+  okBtn.style.backgroundColor = 'var(--primary-color)';
+  okBtn.textContent = 'OK';
+  okBtn.addEventListener('click', () => {
+    overlay.remove();
+  });
+  
+  actions.appendChild(okBtn);
+  modal.appendChild(actions);
+  overlay.appendChild(modal);
+  
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+    }
+  });
+  
+  document.body.appendChild(overlay);
+}

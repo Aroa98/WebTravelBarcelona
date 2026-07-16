@@ -1,3 +1,6 @@
+import { t } from '../i18n/index.js';
+import { showUserGuideModal } from '../utils/ui.js';
+
 export interface NavbarTab {
   id: string;
   label: string;
@@ -96,6 +99,22 @@ export class Navbar {
       }
     });
 
+    const infoBtn = document.createElement('button');
+    infoBtn.className = 'lang-btn';
+    infoBtn.style.padding = '0 6px';
+    infoBtn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    `;
+    infoBtn.title = t('userGuideTitle');
+    infoBtn.addEventListener('click', () => {
+      showUserGuideModal(t('userGuideTitle'), t('userGuideContent'));
+    });
+
+    langContainer.appendChild(infoBtn);
     langContainer.appendChild(esBtn);
     langContainer.appendChild(enBtn);
     header.appendChild(langContainer);

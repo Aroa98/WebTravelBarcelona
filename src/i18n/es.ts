@@ -98,5 +98,30 @@ export const es = {
   discardLeaveBtn: "Salir sin guardar",
   confirmDeletionTitle: "Confirmar eliminación",
   confirmDeletionDesc: "¿Estás seguro de que deseas eliminar esta actividad? Esta acción no se puede deshacer.",
-  deleteBtn: "Eliminar"
+  deleteBtn: "Eliminar",
+
+  // User Guide
+  userGuideTitle: "Guía de Usuario",
+  userGuideContent: `
+    <div style="text-align: left; font-size: 0.95rem; line-height: 1.5;">
+      <h3 style="color: var(--primary-color); margin-bottom: 8px; font-size: 1.1rem;">1. Navegación Principal</h3>
+      <ul style="margin-bottom: 16px; padding-left: 20px;">
+        <li><strong>Cambiar de Idioma</strong>: Usa el botón ES/EN de la esquina.</li>
+        <li><strong>Filtrar por Día</strong>: En la línea de tiempo (Timeline), pulsa un día para ver solo sus actividades.</li>
+        <li><strong>Todos los Días</strong>: Pulsa el botón "ALL DAYS" del Timeline para ver el viaje completo.</li>
+      </ul>
+      <h3 style="color: var(--primary-color); margin-bottom: 8px; font-size: 1.1rem;">2. Gestionar Actividades</h3>
+      <ul style="margin-bottom: 16px; padding-left: 20px;">
+        <li><strong>Añadir</strong>: Pulsa el botón rojo <strong>(+)</strong> junto al título del día.</li>
+        <li><strong>Editar</strong>: Pasa el ratón sobre una actividad y pulsa el lápiz (✏️). Al guardar, se traduce automáticamente al otro idioma.</li>
+        <li><strong>Eliminar</strong>: En el modo editar, pulsa la papelera (🗑️) arriba.</li>
+      </ul>
+      <h3 style="color: var(--primary-color); margin-bottom: 8px; font-size: 1.1rem;">3. Detalles y Enlaces</h3>
+      <ul style="margin-bottom: 0; padding-left: 20px;">
+        <li><strong>Añadir Notas</strong>: Pulsa la tarjeta (fuera del lápiz) para abrir detalles y escribir notas.</li>
+        <li><strong>Ver en Mapa</strong>: Haz click en la ubicación (📍) para buscarla en Google Maps o abrir el link.</li>
+        <li><strong>Reservar Tickets</strong>: Si hay enlace de reserva, verás el botón rojo "Reservar Entradas".</li>
+      </ul>
+    </div>
+  `
 };
