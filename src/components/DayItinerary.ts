@@ -89,6 +89,9 @@ export class DayItinerary {
           () => {
             this.day.actividadDia.splice(idx, 1);
             if (this.onUpdateDay) this.onUpdateDay(this.day);
+          },
+          (time: string, currentActivityId: number) => {
+            return this.day.actividadDia.some(a => a.hora === time && a.id_actividad !== currentActivityId);
           }
         );
         timeline.appendChild(activityCard.render());
@@ -125,7 +128,7 @@ export class DayItinerary {
     const createField = (label: string, isTextarea = false, placeholder = '', defaultValue = '') => {
       const lbl = document.createElement('div');
       lbl.style.fontWeight = '700';
-      lbl.style.marginBottom = '4px';
+      lbl.style.marginBottom = '2px';
       lbl.style.color = 'var(--primary-color)';
       lbl.textContent = label;
       
@@ -134,7 +137,7 @@ export class DayItinerary {
       if (!isTextarea) (input as HTMLInputElement).type = 'text';
       if (placeholder) input.placeholder = placeholder;
       if (defaultValue) input.value = defaultValue;
-      input.style.marginBottom = '12px';
+      input.style.marginBottom = '6px';
       
       scrollContainer.appendChild(lbl);
       scrollContainer.appendChild(input);
@@ -144,14 +147,14 @@ export class DayItinerary {
     const createTimeSelect = (label: string, defaultValue = '10:00:00') => {
       const lbl = document.createElement('div');
       lbl.style.fontWeight = '700';
-      lbl.style.marginBottom = '4px';
+      lbl.style.marginBottom = '2px';
       lbl.style.color = 'var(--primary-color)';
       lbl.textContent = label;
       
       const input = document.createElement('input');
       input.type = 'time';
       input.className = 'activity-edit-input';
-      input.style.marginBottom = '12px';
+      input.style.marginBottom = '6px';
       input.style.cursor = 'pointer';
       
       // Native time input uses HH:mm
@@ -190,13 +193,19 @@ export class DayItinerary {
     saveBtn.textContent = t('createPlanBtn');
     
     saveBtn.addEventListener('click', async () => {
-      const titleVal = titleInput.value.trim();
-      
-      if (!titleVal) {
+      const newTitle = titleInput.value.trim();
+      const newTime = timeInput.value ? (timeInput.value.length === 5 ? timeInput.value + ':00' : timeInput.value) : '10:00:00';
+
+      if (!newTitle) {
         showMessage('Error', t('errorEmptyName'));
         return;
       }
       
+      if (this.day.actividadDia && this.day.actividadDia.some(a => a.hora === newTime)) {
+        showMessage('Error', t('errorTimeOccupied'));
+        return;
+      }
+
       saveBtn.disabled = true;
       saveBtn.textContent = t('savingBtn');
 
@@ -207,19 +216,19 @@ export class DayItinerary {
       const notesVal = notesTextarea.value.trim() || null;
 
       const [translatedTitle, translatedDesc, translatedNotes] = await Promise.all([
-        translateText(titleVal, targetLang),
+        translateText(newTitle, targetLang),
         descVal ? translateText(descVal, targetLang) : Promise.resolve(null),
         notesVal ? translateText(notesVal, targetLang) : Promise.resolve(null)
       ]);
       
       const newActivityPayload = {
         id_dia: this.day.id_dia,
-        hora: timeInput.value ? (timeInput.value.length === 5 ? timeInput.value + ':00' : timeInput.value) : '10:00:00',
+        hora: newTime,
         url: locInput.value.trim() || null,
         reservaLink: linkInput.value.trim() || null,
         
-        titulo_es: sourceLang === 'es' ? titleVal : translatedTitle,
-        titulo_en: sourceLang === 'en' ? titleVal : translatedTitle,
+        titulo_es: sourceLang === 'es' ? newTitle : translatedTitle,
+        titulo_en: sourceLang === 'en' ? newTitle : translatedTitle,
         
         descripcion_es: sourceLang === 'es' ? descVal : translatedDesc,
         descripcion_en: sourceLang === 'en' ? descVal : translatedDesc,
@@ -232,7 +241,7 @@ export class DayItinerary {
       
       if (createdRecord) {
         // Remap the inserted fields so the frontend immediately works without refreshing
-        createdRecord.titulo = titleVal;
+        createdRecord.titulo = newTitle;
         createdRecord.descripcion = descVal;
         createdRecord.notas = notesVal;
 

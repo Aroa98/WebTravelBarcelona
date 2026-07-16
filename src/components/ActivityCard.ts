@@ -18,7 +18,10 @@ export class ActivityCard {
   private dayId: number | undefined;
   private onUpdateActivity: ((updatedActivity: Activity) => void) | undefined;
   private onDeleteActivity: (() => void) | undefined;
+  private isTimeOccupied: ((time: string, currentActivityId: number) => boolean) | undefined;
+
   private isEditing: boolean = false;
+  private isNotesEditing = false;
   
   // Elements kept as instance variables to avoid passing them deeply
   private viewModeContainer!: HTMLElement;
@@ -34,12 +37,14 @@ export class ActivityCard {
     activity: Activity, 
     dayId?: number, 
     onUpdateActivity?: (updatedActivity: Activity) => void,
-    onDeleteActivity?: () => void
+    onDeleteActivity?: () => void,
+    isTimeOccupied?: (time: string, currentActivityId: number) => boolean
   ) {
     this.activity = activity;
     this.dayId = dayId;
     this.onUpdateActivity = onUpdateActivity;
     this.onDeleteActivity = onDeleteActivity;
+    this.isTimeOccupied = isTimeOccupied;
   }
 
   public render(): HTMLElement {
@@ -342,11 +347,13 @@ export class ActivityCard {
       const lbl = document.createElement('div');
       lbl.style.fontWeight = '700';
       lbl.style.color = 'var(--primary-color)';
+      lbl.style.marginBottom = '2px';
       lbl.textContent = label;
       
       const input = document.createElement(isTextarea ? 'textarea' : 'input') as HTMLInputElement | HTMLTextAreaElement;
       input.className = isTextarea ? 'activity-edit-textarea' : 'activity-edit-input';
       if (!isTextarea) (input as HTMLInputElement).type = 'text';
+      input.style.marginBottom = '6px';
       input.value = initialValue;
       
       this.editModeContainer.appendChild(lbl);
@@ -358,12 +365,13 @@ export class ActivityCard {
       const lbl = document.createElement('div');
       lbl.style.fontWeight = '700';
       lbl.style.color = 'var(--primary-color)';
+      lbl.style.marginBottom = '2px';
       lbl.textContent = label;
       
       const input = document.createElement('input');
       input.type = 'time';
       input.className = 'activity-edit-input';
-      input.style.marginBottom = '12px';
+      input.style.marginBottom = '6px';
       input.style.cursor = 'pointer';
       
       // Native time input expects HH:mm
@@ -428,9 +436,15 @@ export class ActivityCard {
 
     saveChangesBtn.addEventListener('click', async () => {
       const newTitle = editTitle.value.trim();
+      const newTime = editTime.value ? (editTime.value.length === 5 ? editTime.value + ':00' : editTime.value) : '10:00:00';
       
       if (!newTitle) {
         showMessage('Error', t('errorEmptyName'));
+        return;
+      }
+      
+      if (this.isTimeOccupied && this.isTimeOccupied(newTime, this.activity.id_actividad || 0)) {
+        showMessage('Error', t('errorTimeOccupied'));
         return;
       }
 
@@ -447,7 +461,7 @@ export class ActivityCard {
       ]);
 
       const payloadToSave = {
-        hora: editTime.value ? (editTime.value.length === 5 ? editTime.value + ':00' : editTime.value) : '10:00:00',
+        hora: newTime,
         url: editLoc.value.trim() || null,
         reservaLink: editLink.value.trim() || null,
         

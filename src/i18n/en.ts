@@ -70,6 +70,7 @@ export const en = {
   modalNotesPlaceholder: "Write here your notes...",
   createPlanBtn: "Create Plan ➕",
   errorEmptyName: "Please enter a name for the activity",
+  errorTimeOccupied: "That time is already occupied by another activity on this day.",
   savingBtn: "Saving...",
   errorSupabaseCreate: "Error creating activity in Supabase.",
 

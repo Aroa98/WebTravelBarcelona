@@ -1658,7 +1658,7 @@ html {
   /* Modals */
   .activity-modal {
     width: 95%;
-    padding: 30px 20px 20px 20px;
+    padding: 20px 15px 15px 15px;
     max-height: 95vh;
   }
   
@@ -1680,6 +1680,15 @@ html {
   
   .activity-notes-textarea {
     font-size: 1.2rem;
+  }
+  
+  .activity-edit-input {
+    padding: 8px 10px;
+  }
+  
+  .activity-edit-textarea {
+    padding: 8px 10px;
+    min-height: 50px;
   }
   
   .confirm-modal {
