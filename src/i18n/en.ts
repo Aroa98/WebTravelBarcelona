@@ -1,13 +1,13 @@
 export const en = {
   // Global / App level
   title: "Aroa & Chanchai's Wedding",
-  subtitle: "Our Barcelona Itinerary",
+  subtitle: "Barcelona Itinerary",
   itineraryTab: "Itinerary",
   infoTab: "General Info",
   searchPlaceholder: "Search activities...",
   allDays: "All Days",
   noResults: "No activities found.",
-  
+
   // General Info Tab
   infoTitle: "General Information",
   infoDestination: "Destination",
@@ -25,11 +25,11 @@ export const en = {
     "Emergencies": "112",
     "National Police": "091"
   },
-  
+
   // Errors
   errorTitle: "Oops! Something went wrong.",
   errorDesc: "Could not load the trip itinerary from the database. Please try again later.",
-  
+
   // Home View
   homeTitle: "Welcome to Barcelona",
   homeSubtitle: "Discover the itinerary and all the details for our wedding in Barcelona.",
@@ -56,7 +56,7 @@ export const en = {
   clickToFocusDay: "Click to focus on this day",
   addCustomPlan: "Add custom plan",
   emptyDayTimeline: "No activities planned for this day.",
-  
+
   modalTimeLabel: "Time (e.g. 10:00:00):",
   modalActivityNameLabel: "Activity Name:",
   modalActivityNamePlaceholder: "e.g. Lunch at beach...",

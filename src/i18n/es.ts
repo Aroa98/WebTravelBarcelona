@@ -1,13 +1,13 @@
 export const es = {
   // Global / App level
   title: "Boda de Aroa y Chanchai",
-  subtitle: "Nuestro Itinerario en Barcelona",
+  subtitle: "Itinerario en Barcelona",
   itineraryTab: "Itinerario",
   infoTab: "Info General",
   searchPlaceholder: "Buscar actividades...",
   allDays: "Todos los días",
   noResults: "No se encontraron actividades.",
-  
+
   // General Info Tab
   infoTitle: "Información General",
   infoDestination: "Destino",
@@ -25,11 +25,11 @@ export const es = {
     "Emergencias": "112",
     "Policía Nacional": "091"
   },
-  
+
   // Errors
   errorTitle: "Oops! Algo salió mal.",
   errorDesc: "No se pudo cargar el itinerario del viaje desde la base de datos. Por favor, inténtalo más tarde.",
-  
+
   // Home View
   homeTitle: "Bienvenidos a Barcelona",
   homeSubtitle: "Descubre el itinerario y todos los detalles de nuestra boda en Barcelona.",
@@ -56,7 +56,7 @@ export const es = {
   clickToFocusDay: "Haz clic para enfocar este día",
   addCustomPlan: "Añadir plan personalizado",
   emptyDayTimeline: "No hay actividades planificadas para este día.",
-  
+
   modalTimeLabel: "Hora (ej. 10:00:00):",
   modalActivityNameLabel: "Nombre de la Actividad:",
   modalActivityNamePlaceholder: "ej. Almuerzo en la playa...",

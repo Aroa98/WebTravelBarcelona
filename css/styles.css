@@ -728,10 +728,12 @@ body {
   .activity-card {
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 24px;
   }
   
   .activity-time-container {
     min-width: unset;
+    padding-top: 0;
   }
   
   .day-timeline {
@@ -739,13 +741,14 @@ body {
   }
   
   .day-timeline::before {
-    left: 5px;
+    left: 9px;
   }
   
   .activity-card::before {
-    left: -24px;
-    width: 10px;
-    height: 10px;
+    left: -23px;
+    width: 12px;
+    height: 12px;
+    top: 4px;
   }
 }
 
@@ -1695,19 +1698,21 @@ html {
   
   /* Timeline fixes */
   .day-header {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 12px;
   }
   
   .day-header > div:first-child {
-    width: 100%;
+    flex: 1;
+    min-width: 200px;
   }
   
   .day-add-plan-btn {
-    margin-left: 0;
-    align-self: flex-end;
-    margin-top: -44px; /* Pull it up next to the title on mobile */
+    margin-left: auto;
+    margin-top: 0;
   }
 }
 
@@ -1740,27 +1745,28 @@ html {
   }
   
   .day-timeline {
-    padding-left: 16px;
+    padding-left: 20px;
   }
   
   .day-timeline::before {
-    left: 4px;
+    left: 9px;
   }
   
   .activity-card {
-    gap: 0;
+    gap: 8px;
+    margin-bottom: 24px;
   }
   
   .activity-card::before {
-    left: -17px;
-    width: 10px;
-    height: 10px;
-    top: 6px;
+    left: -19px;
+    width: 12px;
+    height: 12px;
+    top: 4px;
   }
   
   .activity-content {
     padding: 16px;
-    margin-left: 12px;
+    margin-left: 0;
   }
   
   .activity-title {
@@ -1768,15 +1774,15 @@ html {
   }
   
   .activity-time-container {
-    position: absolute;
-    top: -24px;
-    left: 20px;
+    position: relative;
+    top: 0;
+    left: 0;
   }
   
   .activity-time {
-    font-size: 0.9rem;
-    background: var(--bg-primary);
-    padding: 0 4px;
+    font-size: 1rem;
+    background: transparent;
+    padding: 0;
   }
   
   .activity-booking-link {

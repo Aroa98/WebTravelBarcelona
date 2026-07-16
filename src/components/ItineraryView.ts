@@ -67,6 +67,31 @@ export class ItineraryView {
       '/images/girona_onyar_1784198517887.png'
     ];
 
+    // All Days Item
+    const allDaysItem = document.createElement('div');
+    allDaysItem.className = 'timeline-deadline-item';
+    allDaysItem.style.backgroundImage = `url('/images/barceloneta.png')`;
+
+    if (this.activeDayFilter === 'all') {
+      allDaysItem.classList.add('active');
+    }
+
+    allDaysItem.innerHTML = `
+      <div class="timeline-deadline-content">
+        <div class="timeline-deadline-day-label">ALL</div>
+        <div class="timeline-deadline-day-number" style="font-size: 1.1rem; line-height: 1.2;">DAYS</div>
+      </div>
+    `;
+
+    allDaysItem.addEventListener('click', () => {
+      this.activeDayFilter = 'all';
+      Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
+      allDaysItem.classList.add('active');
+      this.updateList();
+    });
+
+    timelineContainer.appendChild(allDaysItem);
+
     this.days.forEach((day, index) => {
       const dayNum = index + 7;
       const formattedDate = dayNum.toString().padStart(2, '0');
@@ -76,7 +101,7 @@ export class ItineraryView {
       const item = document.createElement('div');
       item.className = 'timeline-deadline-item';
       item.style.backgroundImage = `url('${imageUrl}')`;
-      
+
       if (this.activeDayFilter === day.id_dia.toString()) {
         item.classList.add('active');
       }
@@ -89,19 +114,9 @@ export class ItineraryView {
       `;
 
       item.addEventListener('click', () => {
-        // Toggle the filter
-        if (this.activeDayFilter === day.id_dia.toString()) {
-          this.activeDayFilter = 'all'; // deselect
-        } else {
-          this.activeDayFilter = day.id_dia.toString(); // select
-        }
-        
-        // Update visual active state of items
+        this.activeDayFilter = day.id_dia.toString();
         Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
-        if (this.activeDayFilter !== 'all') {
-          item.classList.add('active');
-        }
-
+        item.classList.add('active');
         this.updateList();
       });
 
@@ -213,8 +228,9 @@ export class ItineraryView {
             if (timelineContainer) {
               Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
               const index = this.days.findIndex(d => d.id_dia === dayId);
-              if (index !== -1 && timelineContainer.children[index]) {
-                timelineContainer.children[index].classList.add('active');
+              const child = timelineContainer.children[index + 1];
+              if (index !== -1 && child) {
+                child.classList.add('active');
               }
             }
             this.updateList();

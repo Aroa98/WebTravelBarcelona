@@ -1,5 +1,6 @@
 import { updateActividad, deleteActividad, translateText } from '../database/supabaseClient.js';
 import { t } from '../i18n/index.js';
+import { showMessage, showConfirm } from '../utils/ui.js';
 
 export interface Activity {
   id_actividad?: number;
@@ -403,7 +404,7 @@ export class ActivityCard {
       const newTitle = editTitle.value.trim();
       
       if (!newTitle) {
-        alert(t('errorEmptyName'));
+        showMessage('Error', t('errorEmptyName'));
         return;
       }
 
@@ -435,7 +436,7 @@ export class ActivityCard {
       if (this.activity.id_actividad) {
         const success = await updateActividad(this.activity.id_actividad, payloadToSave);
         if (!success) {
-          alert(t('errorSupabaseUpdate'));
+          showMessage('Error', t('errorSupabaseUpdate'));
           saveChangesBtn.disabled = false;
           saveChangesBtn.textContent = t('saveChangesBtn');
           return;
@@ -528,7 +529,7 @@ export class ActivityCard {
           setTimeout(() => statusMsg.classList.remove('show'), 2000);
           this.updateNoteIndicator(contentEl, titleEl);
         } else {
-          alert(t('errorSupabaseNote'));
+          showMessage('Error', t('errorSupabaseNote'));
         }
         saveBtn.disabled = false;
       }
@@ -543,132 +544,34 @@ export class ActivityCard {
   }
 
   private openUnsavedWarningModal(onConfirmDiscard: () => void): void {
-    const confirmOverlay = document.createElement('div');
-    confirmOverlay.className = 'confirm-modal-overlay';
-    
-    const confirmModal = document.createElement('div');
-    confirmModal.className = 'confirm-modal';
-    confirmModal.style.borderTopColor = '#e67e22'; 
-    
-    const warningIcon = document.createElement('div');
-    warningIcon.className = 'confirm-modal-icon';
-    warningIcon.style.color = '#e67e22';
-    warningIcon.innerHTML = `
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-    `;
-    confirmModal.appendChild(warningIcon);
-    
-    const title = document.createElement('h4');
-    title.className = 'confirm-modal-title';
-    title.textContent = t('unsavedChangesTitle');
-    confirmModal.appendChild(title);
-    
-    const desc = document.createElement('p');
-    desc.className = 'confirm-modal-desc';
-    desc.textContent = t('unsavedChangesDesc');
-    confirmModal.appendChild(desc);
-    
-    const actions = document.createElement('div');
-    actions.className = 'confirm-modal-actions';
-    
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'confirm-modal-btn confirm-modal-btn-cancel';
-    cancelBtn.textContent = t('keepEditingBtn');
-    cancelBtn.addEventListener('click', () => confirmOverlay.remove());
-    
-    const discardBtn = document.createElement('button');
-    discardBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
-    discardBtn.style.backgroundColor = '#e67e22';
-    discardBtn.textContent = t('discardLeaveBtn');
-    discardBtn.addEventListener('click', () => {
-      confirmOverlay.remove();
-      onConfirmDiscard();
+    showConfirm({
+      title: t('unsavedChangesTitle'),
+      message: t('unsavedChangesDesc'),
+      confirmText: t('discardLeaveBtn'),
+      cancelText: t('keepEditingBtn'),
+      confirmColor: '#e67e22',
+      onConfirm: onConfirmDiscard
     });
-    
-    actions.appendChild(cancelBtn);
-    actions.appendChild(discardBtn);
-    confirmModal.appendChild(actions);
-    
-    confirmOverlay.appendChild(confirmModal);
-    
-    confirmOverlay.addEventListener('click', (e) => {
-      if (e.target === confirmOverlay) confirmOverlay.remove();
-    });
-    
-    document.body.appendChild(confirmOverlay);
   }
 
   private openDeleteConfirmModal(detailOverlay: HTMLElement): void {
-    const confirmOverlay = document.createElement('div');
-    confirmOverlay.className = 'confirm-modal-overlay';
-    
-    const confirmModal = document.createElement('div');
-    confirmModal.className = 'confirm-modal';
-    
-    const warningIcon = document.createElement('div');
-    warningIcon.className = 'confirm-modal-icon';
-    warningIcon.innerHTML = `
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-        <line x1="12" y1="9" x2="12" y2="13"></line>
-        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-      </svg>
-    `;
-    confirmModal.appendChild(warningIcon);
-    
-    const title = document.createElement('h4');
-    title.className = 'confirm-modal-title';
-    title.textContent = t('confirmDeletionTitle');
-    confirmModal.appendChild(title);
-    
-    const desc = document.createElement('p');
-    desc.className = 'confirm-modal-desc';
-    desc.textContent = t('confirmDeletionDesc');
-    confirmModal.appendChild(desc);
-    
-    const actions = document.createElement('div');
-    actions.className = 'confirm-modal-actions';
-    
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'confirm-modal-btn confirm-modal-btn-cancel';
-    cancelBtn.textContent = t('cancelBtn');
-    cancelBtn.addEventListener('click', () => confirmOverlay.remove());
-    
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
-    deleteBtn.textContent = t('deleteBtn');
-    deleteBtn.addEventListener('click', async () => {
-      if (this.activity.id_actividad) {
-        deleteBtn.disabled = true;
-        deleteBtn.textContent = t('deletingBtn');
-        const success = await deleteActividad(this.activity.id_actividad);
-        if (!success) {
-          alert(t('errorSupabaseDelete'));
-          deleteBtn.disabled = false;
-          deleteBtn.textContent = t('deleteBtn');
-          return;
+    showConfirm({
+      title: t('confirmDeletionTitle'),
+      message: t('confirmDeletionDesc'),
+      confirmText: t('deleteBtn'),
+      cancelText: t('cancelBtn'),
+      confirmColor: '#e74c3c',
+      onConfirm: async () => {
+        if (this.activity.id_actividad) {
+          const success = await deleteActividad(this.activity.id_actividad);
+          if (!success) {
+            showMessage('Error', t('errorSupabaseDelete'));
+            return;
+          }
         }
+        detailOverlay.remove();
+        if (this.onDeleteActivity) this.onDeleteActivity();
       }
-
-      confirmOverlay.remove();
-      detailOverlay.remove();
-      if (this.onDeleteActivity) this.onDeleteActivity();
     });
-    
-    actions.appendChild(cancelBtn);
-    actions.appendChild(deleteBtn);
-    confirmModal.appendChild(actions);
-    
-    confirmOverlay.appendChild(confirmModal);
-    
-    confirmOverlay.addEventListener('click', (e) => {
-      if (e.target === confirmOverlay) confirmOverlay.remove();
-    });
-    
-    document.body.appendChild(confirmOverlay);
   }
 }
