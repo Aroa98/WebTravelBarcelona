@@ -354,7 +354,43 @@ export class ActivityCard {
       return input;
     };
 
-    const editTime = createField(t('modalTimeLabel'), this.activity.hora) as HTMLInputElement;
+    const createTimeSelect = (label: string, defaultValue: string) => {
+      const lbl = document.createElement('div');
+      lbl.style.fontWeight = '700';
+      lbl.style.color = 'var(--primary-color)';
+      lbl.textContent = label;
+      
+      const select = document.createElement('select');
+      select.className = 'activity-edit-input';
+      select.style.marginBottom = '12px';
+      select.style.cursor = 'pointer';
+      
+      // The DB might return something like "10:00:00" or "10:00"
+      const defaultPrefix = defaultValue.length >= 5 ? defaultValue.substring(0, 5) : '10:00';
+      
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const hh = h.toString().padStart(2, '0');
+          const mm = m.toString().padStart(2, '0');
+          const timeValue = `${hh}:${mm}:00`;
+          const timeDisplay = `${hh}:${mm}`;
+          
+          const option = document.createElement('option');
+          option.value = timeValue;
+          option.textContent = timeDisplay;
+          if (timeDisplay === defaultPrefix) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        }
+      }
+      
+      this.editModeContainer.appendChild(lbl);
+      this.editModeContainer.appendChild(select);
+      return select;
+    };
+
+    const editTime = createTimeSelect(t('modalTimeLabel'), this.activity.hora) as HTMLSelectElement;
     const editTitle = createField(t('modalActivityNameLabel'), this.activity.titulo) as HTMLInputElement;
     const editLoc = createField(t('modalLocationLabel'), this.activity.url || '') as HTMLInputElement;
     const editDesc = createField(t('modalDescriptionLabel'), this.activity.descripcion || '', true) as HTMLTextAreaElement;
@@ -379,8 +415,9 @@ export class ActivityCard {
     this.editModeContainer.appendChild(editActions);
 
     cancelChangesBtn.addEventListener('click', () => {
+      const dbTime = this.activity.hora.length === 5 ? this.activity.hora + ':00' : this.activity.hora;
       const hasChanges = 
-        editTime.value.trim() !== this.activity.hora ||
+        editTime.value !== dbTime ||
         editTitle.value.trim() !== this.activity.titulo ||
         editLoc.value.trim() !== (this.activity.url || '') ||
         editDesc.value.trim() !== (this.activity.descripcion || '') ||
@@ -390,7 +427,7 @@ export class ActivityCard {
         this.viewModeContainer.style.display = 'block';
         this.editModeContainer.style.display = 'none';
         this.isEditing = false;
-        editTime.value = this.activity.hora;
+        editTime.value = dbTime;
         editTitle.value = this.activity.titulo;
         editLoc.value = this.activity.url || '';
         editDesc.value = this.activity.descripcion || '';
@@ -418,7 +455,6 @@ export class ActivityCard {
       const sourceLang = (localStorage.getItem('app-lang') || 'es') as 'es' | 'en';
       const targetLang = sourceLang === 'es' ? 'en' : 'es';
 
-      // Auto-translate using the mock function
       const descVal = editDesc.value.trim() || null;
       const [translatedTitle, translatedDesc] = await Promise.all([
         translateText(newTitle, targetLang),
@@ -426,7 +462,7 @@ export class ActivityCard {
       ]);
 
       const payloadToSave = {
-        hora: editTime.value.trim() || '10:00:00',
+        hora: editTime.value,
         url: editLoc.value.trim() || null,
         reservaLink: editLink.value.trim() || null,
         

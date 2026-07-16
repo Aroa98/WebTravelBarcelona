@@ -141,7 +141,42 @@ export class DayItinerary {
       return input;
     };
 
-    const timeInput = createField(t('modalTimeLabel'), false, '', '10:00:00') as HTMLInputElement;
+    const createTimeSelect = (label: string, defaultValue = '10:00:00') => {
+      const lbl = document.createElement('div');
+      lbl.style.fontWeight = '700';
+      lbl.style.marginBottom = '4px';
+      lbl.style.color = 'var(--primary-color)';
+      lbl.textContent = label;
+      
+      const select = document.createElement('select');
+      select.className = 'activity-edit-input';
+      select.style.marginBottom = '12px';
+      select.style.cursor = 'pointer';
+      
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const hh = h.toString().padStart(2, '0');
+          const mm = m.toString().padStart(2, '0');
+          const timeValue = `${hh}:${mm}:00`;
+          const timeDisplay = `${hh}:${mm}`;
+          
+          const option = document.createElement('option');
+          option.value = timeValue;
+          option.textContent = timeDisplay;
+          // In Safari/iOS sometimes exact matching is needed
+          if (timeValue === defaultValue || timeValue.startsWith(`${hh}:${mm}`)) {
+            if (timeValue === defaultValue) option.selected = true;
+          }
+          select.appendChild(option);
+        }
+      }
+      
+      scrollContainer.appendChild(lbl);
+      scrollContainer.appendChild(select);
+      return select;
+    };
+
+    const timeInput = createTimeSelect(t('modalTimeLabel'), '10:00:00') as HTMLSelectElement;
     const titleInput = createField(t('modalActivityNameLabel'), false, t('modalActivityNamePlaceholder')) as HTMLInputElement;
     const descTextarea = createField(t('modalDescriptionLabel'), true, t('modalDescriptionPlaceholder')) as HTMLTextAreaElement;
     const locInput = createField(t('modalLocationLabel'), false, t('modalLocationPlaceholder')) as HTMLInputElement;
@@ -233,7 +268,7 @@ export class DayItinerary {
 
     const hasChanges = () => {
       return titleInput.value.trim() !== '' ||
-             timeInput.value.trim() !== '10:00:00' ||
+             timeInput.value !== '10:00:00' ||
              locInput.value.trim() !== '' ||
              descTextarea.value.trim() !== '' ||
              linkInput.value.trim() !== '' ||
