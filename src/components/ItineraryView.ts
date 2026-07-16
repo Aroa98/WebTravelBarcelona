@@ -69,7 +69,7 @@ export class ItineraryView {
 
     this.days.forEach((day, index) => {
       const dayNum = index + 7;
-      const formattedDate = `${dayNum.toString().padStart(2, '0')}/10/2026`;
+      const formattedDate = dayNum.toString().padStart(2, '0');
 
       const imageUrl = bgImages[index % bgImages.length];
 
@@ -83,8 +83,8 @@ export class ItineraryView {
 
       item.innerHTML = `
         <div class="timeline-deadline-content">
-          <div class="timeline-deadline-day-label">Day</div>
-          <div class="timeline-deadline-day-number" style="font-size: 1.1rem; line-height: 1.2;">${formattedDate}</div>
+          <div class="timeline-deadline-day-label">DAY</div>
+          <div class="timeline-deadline-day-number">${formattedDate}</div>
         </div>
       `;
 
