@@ -185,6 +185,7 @@ export class ActivityCard {
     
     this.overlay = document.createElement('div');
     this.overlay.className = 'activity-modal-overlay';
+    document.body.style.overflow = 'hidden';
     
     const modal = document.createElement('div');
     modal.className = 'activity-modal';
@@ -201,11 +202,13 @@ export class ActivityCard {
       if (this.isEditing) {
         this.openUnsavedWarningModal(() => {
           this.overlay.remove();
+          document.body.style.overflow = '';
           this.isEditing = false;
           this.updateNoteIndicator(contentEl, titleEl);
         });
       } else {
         this.overlay.remove();
+        document.body.style.overflow = '';
         this.updateNoteIndicator(contentEl, titleEl);
       }
     };

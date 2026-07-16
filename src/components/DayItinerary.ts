@@ -110,6 +110,7 @@ export class DayItinerary {
   private openAddPlanModal(): void {
     const overlay = document.createElement('div');
     overlay.className = 'activity-modal-overlay';
+    document.body.style.overflow = 'hidden';
     
     const modal = document.createElement('div');
     modal.className = 'activity-modal';
@@ -251,6 +252,7 @@ export class DayItinerary {
         
         if (this.onUpdateDay) this.onUpdateDay(this.day);
         overlay.remove();
+        document.body.style.overflow = '';
       } else {
         showMessage('Error', t('errorSupabaseCreate'));
         saveBtn.disabled = false;
@@ -271,17 +273,44 @@ export class DayItinerary {
              notesTextarea.value.trim() !== '';
     };
 
-    const handleCloseAttempt = () => {
+    closeBtn.addEventListener('click', () => {
       if (hasChanges()) {
-        this.openUnsavedWarningModal(() => overlay.remove());
+        showConfirm({
+          title: t('unsavedChangesTitle') || 'Cambios no guardados',
+          message: t('unsavedChangesDesc') || '¿Seguro que quieres salir?',
+          confirmText: t('discardLeaveBtn') || 'Salir',
+          cancelText: t('keepEditingBtn') || 'Seguir',
+          confirmColor: '#e74c3c',
+          onConfirm: () => {
+            overlay.remove();
+            document.body.style.overflow = '';
+          }
+        });
       } else {
         overlay.remove();
+        document.body.style.overflow = '';
       }
-    };
+    });
 
-    closeBtn.addEventListener('click', handleCloseAttempt);
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) handleCloseAttempt();
+      if (e.target === overlay) {
+        if (hasChanges()) {
+          showConfirm({
+            title: t('unsavedChangesTitle') || 'Cambios no guardados',
+            message: t('unsavedChangesDesc') || '¿Seguro que quieres salir?',
+            confirmText: t('discardLeaveBtn') || 'Salir',
+            cancelText: t('keepEditingBtn') || 'Seguir',
+            confirmColor: '#e74c3c',
+            onConfirm: () => {
+              overlay.remove();
+              document.body.style.overflow = '';
+            }
+          });
+        } else {
+          overlay.remove();
+          document.body.style.overflow = '';
+        }
+      }
     });
 
     modal.appendChild(closeBtn);

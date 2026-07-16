@@ -1488,6 +1488,8 @@ html {
 /* Form Inputs inside Modal (Edit Mode) */
 .activity-edit-input {
   width: 100%;
+  height: 42px;
+  box-sizing: border-box;
   padding: 10px 14px;
   border: 1px dashed rgba(29, 53, 87, 0.25);
   border-radius: var(--radius-sm);
@@ -1499,6 +1501,11 @@ html {
   outline: none;
 }
 
+input[type="time"].activity-edit-input {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .activity-edit-input:focus {
   background-color: #ffffff;
   border-style: solid;
@@ -1508,6 +1515,7 @@ html {
 
 .activity-edit-textarea {
   width: 100%;
+  box-sizing: border-box;
   min-height: 80px;
   padding: 10px 14px;
   border: 1px dashed rgba(29, 53, 87, 0.25);
@@ -1683,12 +1691,15 @@ html {
   }
   
   .activity-edit-input {
+    height: 38px;
     padding: 8px 10px;
+    font-size: 0.9rem;
   }
   
   .activity-edit-textarea {
     padding: 8px 10px;
-    min-height: 50px;
+    font-size: 0.9rem;
+    min-height: 60px;
   }
   
   .confirm-modal {

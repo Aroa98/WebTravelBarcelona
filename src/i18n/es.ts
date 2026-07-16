@@ -1,6 +1,6 @@
 export const es = {
   // Global / App level
-  title: "Boda de Aroa y Chanchai",
+  title: "Bienvenido a Barcelona",
   subtitle: "Itinerario en Barcelona",
   itineraryTab: "Itinerario",
   infoTab: "Info General",

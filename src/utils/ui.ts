@@ -11,6 +11,7 @@ export interface ConfirmModalOptions {
 export function showConfirm(options: ConfirmModalOptions): void {
   const confirmOverlay = document.createElement('div');
   confirmOverlay.className = 'confirm-modal-overlay';
+  document.body.style.overflow = 'hidden';
   
   const confirmModal = document.createElement('div');
   confirmModal.className = 'confirm-modal';
@@ -48,6 +49,7 @@ export function showConfirm(options: ConfirmModalOptions): void {
   cancelBtn.textContent = options.cancelText || 'Cancel';
   cancelBtn.addEventListener('click', () => {
     confirmOverlay.remove();
+    document.body.style.overflow = '';
     if (options.onCancel) options.onCancel();
   });
   
@@ -57,6 +59,7 @@ export function showConfirm(options: ConfirmModalOptions): void {
   confirmBtn.textContent = options.confirmText || 'Confirm';
   confirmBtn.addEventListener('click', () => {
     confirmOverlay.remove();
+    document.body.style.overflow = '';
     options.onConfirm();
   });
   
@@ -68,6 +71,7 @@ export function showConfirm(options: ConfirmModalOptions): void {
   confirmOverlay.addEventListener('click', (e) => {
     if (e.target === confirmOverlay) {
       confirmOverlay.remove();
+      document.body.style.overflow = '';
       if (options.onCancel) options.onCancel();
     }
   });
@@ -78,6 +82,7 @@ export function showConfirm(options: ConfirmModalOptions): void {
 export function showMessage(title: string, message: string): void {
   const confirmOverlay = document.createElement('div');
   confirmOverlay.className = 'confirm-modal-overlay';
+  document.body.style.overflow = 'hidden';
   
   const confirmModal = document.createElement('div');
   confirmModal.className = 'confirm-modal';
@@ -115,6 +120,7 @@ export function showMessage(title: string, message: string): void {
   okBtn.textContent = 'OK';
   okBtn.addEventListener('click', () => {
     confirmOverlay.remove();
+    document.body.style.overflow = '';
   });
   
   actions.appendChild(okBtn);
@@ -124,6 +130,7 @@ export function showMessage(title: string, message: string): void {
   confirmOverlay.addEventListener('click', (e) => {
     if (e.target === confirmOverlay) {
       confirmOverlay.remove();
+      document.body.style.overflow = '';
     }
   });
   
@@ -133,6 +140,7 @@ export function showMessage(title: string, message: string): void {
 export function showUserGuideModal(title: string, contentHtml: string): void {
   const overlay = document.createElement('div');
   overlay.className = 'confirm-modal-overlay';
+  document.body.style.overflow = 'hidden';
   
   const modal = document.createElement('div');
   modal.className = 'confirm-modal';
@@ -173,6 +181,7 @@ export function showUserGuideModal(title: string, contentHtml: string): void {
   okBtn.textContent = 'OK';
   okBtn.addEventListener('click', () => {
     overlay.remove();
+    document.body.style.overflow = '';
   });
   
   actions.appendChild(okBtn);
@@ -182,6 +191,7 @@ export function showUserGuideModal(title: string, contentHtml: string): void {
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) {
       overlay.remove();
+      document.body.style.overflow = '';
     }
   });
   
