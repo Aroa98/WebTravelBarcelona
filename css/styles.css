@@ -1820,8 +1820,10 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   line-height: 1.5;
   color: var(--text-secondary);
   margin-bottom: 24px;
-  flex: 1;           /* grow to fill available space */
-  overflow-y: auto;  /* scroll when content is long */
+  flex: 1;                            /* grow to fill available height */
+  overflow-y: auto;                   /* scroll long content inside modal */
+  overscroll-behavior: contain;       /* no scroll-chain to background */
+  -webkit-overflow-scrolling: touch;  /* smooth scroll on iOS */
   text-align: left;
   width: 100%;
 }
@@ -1868,6 +1870,8 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 /* Scroll container inside modal */
 .activity-modal-scroll-container {
   overflow-y: auto;
+  overscroll-behavior: contain;       /* prevents scroll chaining to the page */
+  -webkit-overflow-scrolling: touch;  /* smooth momentum scroll on iOS */
   padding-right: 6px;
   flex: 1;
   display: flex;
@@ -1881,20 +1885,20 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 
 @media (max-width: 768px) {
   /* Modals */
-  /* Bottom-sheet modal on mobile: anchors to bottom, avoids keyboard overlap */
+  /* Activity modal: centered, compact, scrolls internally */
   .activity-modal-overlay {
-    align-items: flex-end; /* sheet slides up from bottom */
+    align-items: center; /* centered, NOT bottom-sheet */
+    padding: 12px;       /* breathing room around the modal */
   }
 
   .activity-modal {
     width: 100%;
     max-width: 100%;
-    max-height: 92dvh;   /* dvh = dynamic viewport height, shrinks when keyboard appears */
-    max-height: 92vh;    /* fallback for older browsers */
-    border-radius: 24px 24px 0 0;  /* rounded only at top */
-    border-bottom: none;
-    padding: 36px 16px 24px 16px;
-    padding-bottom: max(24px, env(safe-area-inset-bottom)); /* notch-safe */
+    /* svh = small viewport height (excludes browser chrome on iOS/Android) */
+    max-height: 88svh;
+    max-height: 88vh;  /* fallback for older browsers */
+    padding: 36px 14px 16px 14px;
+    border-radius: 18px; /* keep rounded all sides */
     margin: 0;
   }
   
@@ -1936,21 +1940,21 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
     min-height: 70px;
   }
   
-  /* Confirm/Info modal → bottom sheet on mobile */
+  /* Confirm/Info modal: centered, compact, scrollable content */
   .confirm-modal-overlay {
-    align-items: flex-end;
+    align-items: center; /* centered, NOT bottom-sheet */
+    padding: 12px;
   }
 
   .confirm-modal {
-    width: 100%;
-    max-width: 100%;
-    max-height: 92dvh;
-    max-height: 92vh;  /* fallback */
-    border-radius: 24px 24px 0 0;
-    border-bottom: none;
-    padding: 20px 16px max(16px, env(safe-area-inset-bottom)) 16px;
+    width: 95%;
+    max-width: 400px;
+    max-height: 85svh;
+    max-height: 85vh;  /* fallback */
+    border-radius: var(--radius-md); /* keep original radius */
+    border-bottom: 4px solid var(--primary-color); /* restore bottom border */
+    padding: 20px 16px;
     margin: 0;
-    /* Ensure action buttons are reachable — sticky at bottom */
     display: flex;
     flex-direction: column;
   }
