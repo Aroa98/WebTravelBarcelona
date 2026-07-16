@@ -27,6 +27,19 @@ CREATE TABLE "actividadDia" (
     FOREIGN KEY (id_dia) REFERENCES "diaViaje"(id_dia) ON DELETE CASCADE
 );
 
+-- 1. Creamos la nueva tabla para los alojamientos
+CREATE TABLE "alojamiento" (
+    id_alojamiento SERIAL PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    url VARCHAR(255),
+    direccion VARCHAR(255)
+);
+
+-- 2. Modificamos tu tabla diaViaje actual para añadir la relación
+ALTER TABLE "diaViaje" 
+ADD COLUMN id_alojamiento INT,
+ADD FOREIGN KEY (id_alojamiento) REFERENCES "alojamiento"(id_alojamiento) ON DELETE SET NULL;
+
 
 -- 1. Insertamos los días del viaje
 INSERT INTO "diaViaje" (id_dia, fecha, descripcion_es, descripcion_en) VALUES

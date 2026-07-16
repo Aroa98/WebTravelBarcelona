@@ -314,11 +314,12 @@ body {
   padding: 10px 36px 10px 16px;
   border-radius: var(--radius-md);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem; /* ≥16px: prevents iOS auto-zoom on focus */
   font-weight: 600;
   color: var(--text-primary);
   cursor: pointer;
   outline: none;
+  touch-action: manipulation;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e76f51%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
@@ -1334,6 +1335,7 @@ body {
   transition: var(--transition);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
   outline: none;
+  touch-action: manipulation;
 }
 
 .activity-notes-save-btn {
@@ -1418,6 +1420,200 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Edit description pencil button next to day title */
+.day-desc-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  opacity: 0.6;
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+.day-desc-edit-btn:hover {
+  opacity: 1;
+  color: var(--accent-color);
+  background-color: rgba(231, 111, 81, 0.1);
+  transform: scale(1.15) rotate(10deg);
+}
+
+/* ==========================================
+   Accommodation Row & Chip
+   ========================================== */
+
+.accommodation-row {
+  padding: 0 0 18px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  /* Align with timeline content (offset by timeline padding-left) */
+  padding-left: 36px;
+}
+
+.accommodation-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(69, 123, 157, 0.07);
+  border: 1px solid rgba(69, 123, 157, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px 6px 10px;
+  transition: var(--transition);
+  max-width: 100%;
+  min-height: 34px;
+}
+
+.accommodation-chip.empty {
+  background: none;
+  border: 1px dashed rgba(29, 53, 87, 0.18);
+  padding: 4px 12px;
+}
+
+.accommodation-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.accommodation-name {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.accommodation-name.clickable {
+  cursor: pointer;
+  text-decoration: underline dashed var(--barcelona-blue);
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.accommodation-name.clickable:hover {
+  color: var(--barcelona-blue);
+  text-decoration-style: solid;
+}
+
+.accommodation-add-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition);
+  touch-action: manipulation;
+  letter-spacing: 0.01em;
+}
+
+.accommodation-add-btn:hover {
+  color: var(--accent-color);
+}
+
+.accommodation-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  transition: var(--transition);
+  opacity: 0.55;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.accommodation-edit-btn:hover {
+  opacity: 1;
+  color: var(--barcelona-blue);
+  background-color: rgba(69, 123, 157, 0.1);
+}
+
+/* Accommodation modal: segmented tab control */
+.aloj-tabs {
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1.5px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.aloj-tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border-color);
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  touch-action: manipulation;
+}
+
+.aloj-tab-btn:last-child {
+  border-right: none;
+}
+
+.aloj-tab-btn.active {
+  background-color: var(--barcelona-blue);
+  color: #ffffff;
+}
+
+/* Details hint below existing select */
+.aloj-details-hint {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-style: italic;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-color);
+  display: none;
+  line-height: 1.5;
+}
+
+.aloj-details-hint.visible {
+  display: block;
+}
+
+/* Mobile accommodation row */
+@media (max-width: 768px) {
+  .accommodation-row {
+    padding-left: 24px;
+  }
+  .accommodation-name {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .accommodation-row {
+    padding-left: 20px;
+  }
+  .accommodation-name {
+    max-width: 140px;
+  }
+}
+
 /* Add plan button inside Day Header */
 .day-add-plan-btn {
   background-color: var(--accent-color);
@@ -1495,10 +1691,11 @@ html {
   border-radius: var(--radius-sm);
   background-color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem; /* ≥16px: prevents iOS Safari auto-zoom on focus */
   color: var(--text-primary);
   transition: var(--transition);
   outline: none;
+  touch-action: manipulation;
 }
 
 input[type="time"].activity-edit-input {
@@ -1532,12 +1729,13 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   border-radius: var(--radius-sm);
   background-color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem; /* ≥16px: prevents iOS Safari auto-zoom on focus */
   line-height: 1.5;
   color: var(--text-primary);
   resize: vertical;
   transition: var(--transition);
   outline: none;
+  touch-action: manipulation;
 }
 
 .activity-edit-textarea:focus {
@@ -1697,19 +1895,19 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   }
   
   .activity-notes-textarea {
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* ≥16px: prevents iOS auto-zoom */
   }
   
   .activity-edit-input {
-    height: 38px;
-    padding: 8px 10px;
-    font-size: 0.9rem;
+    height: 44px;
+    padding: 10px 12px;
+    font-size: 1rem; /* ≥16px: prevents iOS auto-zoom on focus */
   }
   
   .activity-edit-textarea {
-    padding: 8px 10px;
-    font-size: 0.9rem;
-    min-height: 60px;
+    padding: 10px 12px;
+    font-size: 1rem; /* ≥16px: prevents iOS auto-zoom on focus */
+    min-height: 70px;
   }
   
   .confirm-modal {

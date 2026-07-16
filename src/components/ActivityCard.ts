@@ -93,13 +93,9 @@ export class ActivityCard {
     });
 
     const pinSvg = this.createPinSvg();
-    const locationText = document.createElement('span');
-    locationText.className = 'location-text';
-    locationText.textContent = this.activity.url || '';
 
     if (this.activity.url) {
       locationContainer.appendChild(pinSvg);
-      locationContainer.appendChild(locationText);
       content.appendChild(title);
       content.appendChild(description);
       content.appendChild(locationContainer);
@@ -214,8 +210,14 @@ export class ActivityCard {
     };
 
     closeBtn.addEventListener('click', handleCloseAttempt);
+    // Overlay (backdrop) click: only close when NOT editing.
+    // When editing, user must use the ✕ or Cancel button — avoids accidental confirm popups on mobile.
     this.overlay.addEventListener('click', (e) => {
-      if (e.target === this.overlay) handleCloseAttempt();
+      if (e.target === this.overlay && !this.isEditing) {
+        this.overlay.remove();
+        document.body.style.overflow = '';
+        this.updateNoteIndicator(contentEl, titleEl);
+      }
     });
 
     this.viewModeContainer = document.createElement('div');
@@ -316,7 +318,10 @@ export class ActivityCard {
     this.locText = document.createElement('span');
     this.locText.className = 'location-text clickable-location';
     this.locText.title = t('viewOnMaps');
-    this.locText.innerHTML = `📍 <strong>${this.activity.url || t('noLocation')}</strong>`;
+    // Show only the pin icon — URL/location name stays hidden
+    this.locText.innerHTML = this.activity.url
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px;color:var(--accent-color)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`
+      : `<span style="color:var(--text-secondary);font-size:0.85rem">${t('noLocation')}</span>`;
     
     this.locText.addEventListener('click', () => {
       if (this.activity.url) {
@@ -495,7 +500,9 @@ export class ActivityCard {
       this.timeSpan.textContent = this.activity.hora.substring(0, 5);
       this.titleEl.textContent = this.activity.titulo;
       this.descEl.textContent = this.activity.descripcion || '';
-      this.locText.innerHTML = `📍 <strong>${this.activity.url || t('noLocation')}</strong>`;
+      this.locText.innerHTML = this.activity.url
+        ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px;color:var(--accent-color)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`
+        : `<span style="color:var(--text-secondary);font-size:0.85rem">${t('noLocation')}</span>`;
 
       if (this.activity.reservaLink) {
         if (this.bookBtn) {

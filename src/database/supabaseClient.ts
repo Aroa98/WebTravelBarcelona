@@ -9,6 +9,14 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // =============================================
 // Translation Utility (MyMemory API)
 // =============================================
+/** Strips any HTML/SVG tags the MyMemory API may inject in its response */
+function stripHtml(raw: string): string {
+  // Use a temporary element to decode HTML entities and remove tags
+  const tmp = document.createElement('div');
+  tmp.innerHTML = raw;
+  return (tmp.textContent || tmp.innerText || '').trim();
+}
+
 export async function translateText(text: string, targetLang: 'es' | 'en'): Promise<string> {
   if (!text) return text;
   
@@ -19,14 +27,16 @@ export async function translateText(text: string, targetLang: 'es' | 'en'): Prom
     const data = await response.json();
     
     if (data && data.responseData && data.responseData.translatedText) {
-      return data.responseData.translatedText;
+      const cleaned = stripHtml(data.responseData.translatedText);
+      // Fallback to original if the API returns garbage or an empty string
+      return cleaned.length > 0 ? cleaned : text;
     }
   } catch (error) {
     console.error('Error traduciendo texto:', error);
   }
 
-  // Fallback en caso de que la API falle
-  return `[${targetLang.toUpperCase()}] ${text}`;
+  // Fallback si la API falla
+  return text;
 }
 
 // =============================================
@@ -34,7 +44,7 @@ export async function translateText(text: string, targetLang: 'es' | 'en'): Prom
 // =============================================
 
 export async function getDiasViaje(lang: string = 'es'): Promise<any[]> {
-  const selectQuery = `id_dia, fecha, descripcion:descripcion_${lang}, actividadDia(id_actividad, id_dia, hora, titulo:titulo_${lang}, descripcion:descripcion_${lang}, url, reservaLink, notas:notas_${lang})`;
+  const selectQuery = `id_dia, fecha, descripcion:descripcion_${lang}, alojamiento(id_alojamiento, nombre, url, direccion), actividadDia(id_actividad, id_dia, hora, titulo:titulo_${lang}, descripcion:descripcion_${lang}, url, reservaLink, notas:notas_${lang})`;
   const { data, error } = await supabase
     .from('diaViaje')
     .select(selectQuery)
@@ -46,6 +56,40 @@ export async function getDiasViaje(lang: string = 'es'): Promise<any[]> {
   }
   return data || [];
 }
+
+// =============================================
+// CRUD: alojamiento
+// =============================================
+
+export async function getAlojamientos(): Promise<any[]> {
+  const { data, error } = await supabase
+    .from('alojamiento')
+    .select('id_alojamiento, nombre, url, direccion')
+    .order('nombre', { ascending: true });
+
+  if (error) return [];
+  return data || [];
+}
+
+export async function createAlojamiento(data: any): Promise<any> {
+  const { data: result, error } = await supabase
+    .from('alojamiento')
+    .insert([data])
+    .select();
+
+  if (error) return null;
+  return result?.[0];
+}
+
+export async function updateAlojamiento(id_alojamiento: number, data: any): Promise<boolean> {
+  const { error } = await supabase
+    .from('alojamiento')
+    .update(data)
+    .eq('id_alojamiento', id_alojamiento);
+
+  return !error;
+}
+
 
 export async function createDiaViaje(data: any): Promise<any> {
   const { data: result, error } = await supabase
