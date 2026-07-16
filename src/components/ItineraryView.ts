@@ -67,24 +67,9 @@ export class ItineraryView {
       '/images/girona_onyar_1784198517887.png'
     ];
 
-    // Day 7 of October 2026 is Wednesday (Miércoles)
-    const dayNames = ['MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM', 'LUN', 'MAR'];
-
     this.days.forEach((day, index) => {
-      // Extraemos el número del día de la fecha (ej. "7 de Octubre" -> "7")
-      const dayNumberMatch = day.fecha.match(/\d+/);
-      const dayNumber = dayNumberMatch ? dayNumberMatch[0] : (index + 7).toString();
-      
-      // Intentamos extraer el nombre del día de la fecha si existe, si no, asumimos que empieza en Lunes
-      let dayNameLabel = dayNames[index % 7];
-      const lowerFecha = day.fecha.toLowerCase();
-      if (lowerFecha.includes('lun')) dayNameLabel = 'LUN';
-      else if (lowerFecha.includes('mar')) dayNameLabel = 'MAR';
-      else if (lowerFecha.includes('mié') || lowerFecha.includes('mie')) dayNameLabel = 'MIÉ';
-      else if (lowerFecha.includes('jue')) dayNameLabel = 'JUE';
-      else if (lowerFecha.includes('vie')) dayNameLabel = 'VIE';
-      else if (lowerFecha.includes('sáb') || lowerFecha.includes('sab')) dayNameLabel = 'SÁB';
-      else if (lowerFecha.includes('dom')) dayNameLabel = 'DOM';
+      const dayNum = index + 7;
+      const formattedDate = `${dayNum.toString().padStart(2, '0')}/10/2026`;
 
       const imageUrl = bgImages[index % bgImages.length];
 
@@ -98,8 +83,8 @@ export class ItineraryView {
 
       item.innerHTML = `
         <div class="timeline-deadline-content">
-          <div class="timeline-deadline-day-label">${dayNameLabel}</div>
-          <div class="timeline-deadline-day-number">${dayNumber}</div>
+          <div class="timeline-deadline-day-label">Day</div>
+          <div class="timeline-deadline-day-number" style="font-size: 1.1rem; line-height: 1.2;">${formattedDate}</div>
         </div>
       `;
 
@@ -115,12 +100,6 @@ export class ItineraryView {
         Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
         if (this.activeDayFilter !== 'all') {
           item.classList.add('active');
-        }
-        
-        // Update the select dropdown to match
-        const select = this.element?.querySelector('.day-select-filter') as HTMLSelectElement;
-        if (select) {
-          select.value = this.activeDayFilter;
         }
 
         this.updateList();
@@ -174,34 +153,7 @@ export class ItineraryView {
       this.updateList();
     });
 
-    // Day Quick Filters (Dropdown)
-    const filterWrapper = document.createElement('div');
-    filterWrapper.className = 'filter-wrapper';
-
-    const daySelect = document.createElement('select');
-    daySelect.className = 'day-select-filter';
-
-    const allOption = document.createElement('option');
-    allOption.value = 'all';
-    allOption.textContent = this.ui.allDays;
-    daySelect.appendChild(allOption);
-
-    this.days.forEach(day => {
-      const option = document.createElement('option');
-      option.value = day.id_dia.toString();
-      option.textContent = day.fecha;
-      daySelect.appendChild(option);
-    });
-
-    daySelect.addEventListener('change', (e) => {
-      this.activeDayFilter = (e.target as HTMLSelectElement).value;
-      this.updateList();
-    });
-
-    filterWrapper.appendChild(daySelect);
-
     toolbar.appendChild(searchWrapper);
-    toolbar.appendChild(filterWrapper);
 
     return toolbar;
   }
@@ -255,11 +207,16 @@ export class ItineraryView {
         const dayItinerary = new DayItinerary(
           day,
           (dayId) => {
-            const select = this.element?.querySelector('.day-select-filter') as HTMLSelectElement;
-            if (select) {
-              select.value = dayId.toString();
-            }
             this.activeDayFilter = dayId.toString();
+            // Update timeline visually when clicked from day section
+            const timelineContainer = this.element?.querySelector('.timeline-deadline-container');
+            if (timelineContainer) {
+              Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
+              const index = this.days.findIndex(d => d.id_dia === dayId);
+              if (index !== -1 && timelineContainer.children[index]) {
+                timelineContainer.children[index].classList.add('active');
+              }
+            }
             this.updateList();
           },
           (updatedDay) => {
