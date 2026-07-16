@@ -86,7 +86,16 @@ export function showMessage(title: string, message: string): void {
   
   const confirmModal = document.createElement('div');
   confirmModal.className = 'confirm-modal';
-  confirmModal.style.borderTopColor = '#f39c12'; // Orange warning color for general messages
+  confirmModal.style.borderTopColor = '#f39c12';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'activity-modal-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.addEventListener('click', () => {
+    confirmOverlay.remove();
+    document.body.style.overflow = '';
+  });
+  confirmModal.appendChild(closeBtn);
   
   const icon = document.createElement('div');
   icon.className = 'confirm-modal-icon';
@@ -148,6 +157,15 @@ export function showUserGuideModal(title: string, contentHtml: string): void {
   modal.style.maxWidth = '500px'; 
   modal.style.maxHeight = '90vh';
   modal.style.overflowY = 'auto';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'activity-modal-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.addEventListener('click', () => {
+    overlay.remove();
+    document.body.style.overflow = '';
+  });
+  modal.appendChild(closeBtn);
   
   const icon = document.createElement('div');
   icon.className = 'confirm-modal-icon';
@@ -171,21 +189,7 @@ export function showUserGuideModal(title: string, contentHtml: string): void {
   desc.innerHTML = contentHtml;
   modal.appendChild(desc);
   
-  const actions = document.createElement('div');
-  actions.className = 'confirm-modal-actions';
-  actions.style.justifyContent = 'center';
-  
-  const okBtn = document.createElement('button');
-  okBtn.className = 'confirm-modal-btn confirm-modal-btn-delete';
-  okBtn.style.backgroundColor = 'var(--primary-color)';
-  okBtn.textContent = 'OK';
-  okBtn.addEventListener('click', () => {
-    overlay.remove();
-    document.body.style.overflow = '';
-  });
-  
-  actions.appendChild(okBtn);
-  modal.appendChild(actions);
+
   overlay.appendChild(modal);
   
   overlay.addEventListener('click', (e) => {

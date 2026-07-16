@@ -1176,20 +1176,28 @@ body {
 }
 
 /* Modal detail view for activities */
-.activity-modal-overlay {
+.activity-modal-overlay,
+.confirm-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 100%;  /* Evita el sangrado horizontal de 100vw */
+  height: 100%; /* Evita problemas con las barras de navegación móviles */
   background-color: rgba(29, 53, 87, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  padding: 16px; /* Este margen evita que el modal toque los bordes físicos */
+  box-sizing: border-box;
   animation: fadeIn 0.3s ease-out;
+}
+
+.activity-modal-overlay {
+  z-index: 9999;
 }
 
 /* Modal detail view for activities */
@@ -1767,19 +1775,7 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 
 /* Custom Warning MessageBox Overlay */
 .confirm-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(29, 53, 87, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000; /* Must overlay the activity details modal */
-  animation: fadeIn 0.2s ease-out;
+  z-index: 10000;
 }
 
 /* Custom Warning MessageBox Container */
@@ -1893,13 +1889,14 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 
   .activity-modal {
     width: 100%;
-    max-width: 100%;
-    /* svh = small viewport height (excludes browser chrome on iOS/Android) */
-    max-height: 88svh;
-    max-height: 88vh;  /* fallback for older browsers */
-    padding: 36px 14px 16px 14px;
-    border-radius: 18px; /* keep rounded all sides */
+    max-width: 450px; /* Límite sensato para que no se deforme */
+    max-height: 85svh;
+    max-height: 85vh;
+    padding: 36px 16px 20px 16px; /* Ajustamos el aire interior */
+    border-radius: 16px;
+    border-width: 4px !important; /* Pasamos de un borde gigante de 8px a 4px */
     margin: 0;
+    box-sizing: border-box;
   }
   
   .activity-modal-title {
@@ -1914,8 +1911,10 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
     font-size: 0.95rem;
   }
   
+  /* Ajuste de la cinta (washi tape) al nuevo borde más fino */
   .activity-modal-washi-tape {
-    width: 100px;
+    width: 110px;
+    top: -12px;
   }
   
   /* ALL inputs/textareas/selects inside modals: hard 16px prevents iOS zoom */
@@ -1939,6 +1938,14 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
     padding: 10px 12px;
     min-height: 70px;
   }
+
+  /* Blindaje para que los inputs no empujen el modal hacia afuera */
+  .activity-edit-input,
+  .activity-edit-textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
   
   /* Confirm/Info modal: centered, compact, scrollable content */
   .confirm-modal-overlay {
@@ -1947,14 +1954,16 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   }
 
   .confirm-modal {
-    width: 95%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 450px;
     max-height: 85svh;
-    max-height: 85vh;  /* fallback */
-    border-radius: var(--radius-md); /* keep original radius */
-    border-bottom: 4px solid var(--primary-color); /* restore bottom border */
-    padding: 20px 16px;
+    max-height: 85vh;
+    border-radius: 16px;
+    border-width: 4px;
+    border-top-width: 8px; /* Mantenemos el acento rojo arriba */
+    padding: 24px 16px;
     margin: 0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
   }
