@@ -126,6 +126,11 @@ export class DayItinerary {
     const scrollContainer = document.createElement('div');
     scrollContainer.className = 'activity-modal-scroll-container';
 
+    const fieldsContainer = document.createElement('div');
+    fieldsContainer.style.display = 'flex';
+    fieldsContainer.style.flexDirection = 'column';
+    fieldsContainer.style.gap = '12px';
+
     const createField = (label: string, isTextarea = false, placeholder = '', defaultValue = '') => {
       const lbl = document.createElement('div');
       lbl.style.fontWeight = '700';
@@ -140,8 +145,8 @@ export class DayItinerary {
       if (defaultValue) input.value = defaultValue;
       input.style.marginBottom = '6px';
       
-      scrollContainer.appendChild(lbl);
-      scrollContainer.appendChild(input);
+      fieldsContainer.appendChild(lbl);
+      fieldsContainer.appendChild(input);
       return input;
     };
 
@@ -161,16 +166,18 @@ export class DayItinerary {
       // Native time input uses HH:mm
       input.value = defaultValue.length >= 5 ? defaultValue.substring(0, 5) : '10:00';
       
-      scrollContainer.appendChild(lbl);
-      scrollContainer.appendChild(input);
+      fieldsContainer.appendChild(lbl);
+      fieldsContainer.appendChild(input);
       return input;
     };
 
     const timeInput = createTimeSelect(t('modalTimeLabel'), '10:00:00') as HTMLInputElement;
     const titleInput = createField(t('modalActivityNameLabel'), false, t('modalActivityNamePlaceholder')) as HTMLInputElement;
-    const descTextarea = createField(t('modalDescriptionLabel'), true, t('modalDescriptionPlaceholder')) as HTMLTextAreaElement;
     const locInput = createField(t('modalLocationLabel'), false, t('modalLocationPlaceholder')) as HTMLInputElement;
-    const linkInput = createField(t('modalBookingLinkLabel'), false, 'https://...') as HTMLInputElement;
+    const descTextarea = createField(t('modalDescriptionLabel'), true, t('modalDescriptionPlaceholder')) as HTMLTextAreaElement;
+    const linkInput = createField(t('modalBookingLinkLabel') || 'Link Reserva', false, 'https://...') as HTMLInputElement;
+
+    scrollContainer.appendChild(fieldsContainer);
 
     const notesTitle = document.createElement('h4');
     notesTitle.textContent = t('modalNotesTitle');
@@ -192,6 +199,30 @@ export class DayItinerary {
     const saveBtn = document.createElement('button');
     saveBtn.className = 'activity-notes-save-btn';
     saveBtn.textContent = t('createPlanBtn');
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'activity-notes-save-btn';
+    cancelBtn.style.backgroundColor = 'var(--text-secondary)';
+    cancelBtn.textContent = t('cancelBtn') || 'Cancel';
+    
+    cancelBtn.addEventListener('click', () => {
+      if (hasChanges()) {
+        showConfirm({
+          title: t('unsavedChangesTitle') || 'Cambios no guardados',
+          message: t('unsavedChangesDesc') || '¿Seguro que quieres salir?',
+          confirmText: t('discardLeaveBtn') || 'Salir',
+          cancelText: t('keepEditingBtn') || 'Seguir',
+          confirmColor: '#e74c3c',
+          onConfirm: () => {
+            overlay.remove();
+            document.body.style.overflow = '';
+          }
+        });
+      } else {
+        overlay.remove();
+        document.body.style.overflow = '';
+      }
+    });
     
     saveBtn.addEventListener('click', async () => {
       const newTitle = titleInput.value.trim();
@@ -261,6 +292,7 @@ export class DayItinerary {
     });
     
     actionsWrapper.appendChild(saveBtn);
+    actionsWrapper.appendChild(cancelBtn);
     scrollContainer.appendChild(actionsWrapper);
 
     const hasChanges = () => {

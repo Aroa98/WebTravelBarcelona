@@ -1502,8 +1502,18 @@ html {
 }
 
 input[type="time"].activity-edit-input {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 12px;
+  padding-right: 32px; /* Space for the clock/dot icon */
+}
+
+input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 .activity-edit-input:focus {
