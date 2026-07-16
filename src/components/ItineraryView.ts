@@ -54,23 +54,29 @@ export class ItineraryView {
     const timelineContainer = document.createElement('div');
     timelineContainer.className = 'timeline-deadline-container animate-fade-in';
 
-    // Beautiful Unsplash images for Barcelona & Costa Brava
+    // Beautiful Unsplash images for Barcelona & Catalunya
     const bgImages = [
-      'https://images.unsplash.com/photo-1583422409516-c737d97d02ba?auto=format&fit=crop&w=400&q=80', // Sagrada
-      'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=400&q=80', // Park Guell
-      'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=400&q=80', // Streets
-      'https://images.unsplash.com/photo-1558642084-fd07fae5282e?auto=format&fit=crop&w=400&q=80', // Barceloneta
-      'https://images.unsplash.com/photo-1588612502693-e4c19c5c9af7?auto=format&fit=crop&w=400&q=80', // Tossa de Mar / Costa Brava
+      'https://images.unsplash.com/photo-1583422409516-c737d97d02ba?auto=format&fit=crop&w=400&q=80', // Sagrada Familia (Barcelona)
+      'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=400&q=80', // Park Guell (Barcelona)
+      'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=400&q=80', // Gothic Streets (Barcelona)
+      'https://images.unsplash.com/photo-1558642084-fd07fae5282e?auto=format&fit=crop&w=400&q=80', // Barceloneta (Barcelona)
+      'https://images.unsplash.com/photo-1588612502693-e4c19c5c9af7?auto=format&fit=crop&w=400&q=80', // Tossa de Mar (Costa Brava)
       'https://images.unsplash.com/photo-1596524174092-2253816a27ce?auto=format&fit=crop&w=400&q=80', // Costa Brava Coast
-      'https://images.unsplash.com/photo-1607583626353-855fde6c1e51?auto=format&fit=crop&w=400&q=80', // Tarragona / Roman ruins
-      'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=400&q=80', // Montjuic
-      'https://images.unsplash.com/photo-1629731671801-b5e1b2123fbc?auto=format&fit=crop&w=400&q=80', // Arc de Triomf
-      'https://images.unsplash.com/photo-1552599602-5e4d20cb6b62?auto=format&fit=crop&w=400&q=80', // Port
-      'https://images.unsplash.com/photo-1574751499596-f5db18e55e37?auto=format&fit=crop&w=400&q=80', // Sunset
-      'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=400&q=80' // Extra
+      'https://images.unsplash.com/photo-1607583626353-855fde6c1e51?auto=format&fit=crop&w=400&q=80', // Tarragona (Roman ruins)
+      'https://images.unsplash.com/photo-1582103287241-2762adba6c36?auto=format&fit=crop&w=400&q=80', // Girona (Onyar River)
+      'https://images.unsplash.com/photo-1579282240050-352f15ac8302?auto=format&fit=crop&w=400&q=80', // Cadaqués / Mediterranean White Town
+      'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=400&q=80', // Montjuic (Barcelona)
+      'https://images.unsplash.com/photo-1629731671801-b5e1b2123fbc?auto=format&fit=crop&w=400&q=80', // Arc de Triomf (Barcelona)
+      'https://images.unsplash.com/photo-1597818428581-79b83b9bf019?auto=format&fit=crop&w=400&q=80', // Montserrat (Mountains)
+      'https://images.unsplash.com/photo-1552599602-5e4d20cb6b62?auto=format&fit=crop&w=400&q=80', // Port Vell (Barcelona)
+      'https://images.unsplash.com/photo-1574751499596-f5db18e55e37?auto=format&fit=crop&w=400&q=80', // Sunset (Sitges / Coast)
+      'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=400&q=80', // Catalunya nature
+      'https://images.unsplash.com/photo-1543306871-3323a677abdb?auto=format&fit=crop&w=400&q=80', // Emporda / Vineyards
+      'https://images.unsplash.com/photo-1562883676-8c7feb83f09b?auto=format&fit=crop&w=400&q=80'  // Casa Batllo (Barcelona)
     ];
 
-    const dayNames = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'];
+    // Day 7 of October 2026 is Wednesday (Miércoles)
+    const dayNames = ['MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM', 'LUN', 'MAR'];
 
     this.days.forEach((day, index) => {
       // Extraemos el número del día de la fecha (ej. "7 de Octubre" -> "7")
