@@ -29,11 +29,15 @@ export class ItineraryView {
     const container = document.createElement('div');
     container.className = 'itinerary-view-container';
 
-    // Toolbar (search and filtering)
+    // 1. Timeline (Deadline) visual
+    const timeline = this.createTimeline();
+    container.appendChild(timeline);
+
+    // 2. Toolbar (search and filtering)
     const toolbar = this.createToolbar();
     container.appendChild(toolbar);
 
-    // Content container for rendering the days
+    // 3. Content container for rendering the days
     const content = document.createElement('div');
     content.className = 'itinerary-content';
     this.contentContainer = content;
@@ -44,6 +48,76 @@ export class ItineraryView {
 
     this.element = container;
     return container;
+  }
+
+  private createTimeline(): HTMLElement {
+    const timelineContainer = document.createElement('div');
+    timelineContainer.className = 'timeline-deadline-container animate-fade-in';
+
+    // Beautiful Unsplash images for Barcelona
+    const bgImages = [
+      'https://images.unsplash.com/photo-1583422409516-c737d97d02ba?auto=format&fit=crop&w=400&q=80', // Sagrada
+      'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=400&q=80', // Park Guell
+      'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=400&q=80', // Streets
+      'https://images.unsplash.com/photo-1558642084-fd07fae5282e?auto=format&fit=crop&w=400&q=80', // Barceloneta
+      'https://images.unsplash.com/photo-1539037116273-35d25d7220e8?auto=format&fit=crop&w=400&q=80', // Casa Batllo
+      'https://images.unsplash.com/photo-1562883676-8c7feb83f09b?auto=format&fit=crop&w=400&q=80', // Gothic
+      'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=400&q=80', // Montjuic
+      'https://images.unsplash.com/photo-1579282240050-352f15ac8302?auto=format&fit=crop&w=400&q=80', // Food
+      'https://images.unsplash.com/photo-1629731671801-b5e1b2123fbc?auto=format&fit=crop&w=400&q=80', // Arc de Triomf
+      'https://images.unsplash.com/photo-1552599602-5e4d20cb6b62?auto=format&fit=crop&w=400&q=80', // Port
+      'https://images.unsplash.com/photo-1574751499596-f5db18e55e37?auto=format&fit=crop&w=400&q=80', // Sunset
+      'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=400&q=80' // Extra
+    ];
+
+    this.days.forEach((day, index) => {
+      // Extraemos el número del día de la fecha (ej. "7 de Octubre" -> "7")
+      const dayNumberMatch = day.fecha.match(/\d+/);
+      const dayNumber = dayNumberMatch ? dayNumberMatch[0] : (index + 7).toString();
+      const imageUrl = bgImages[index % bgImages.length];
+
+      const item = document.createElement('div');
+      item.className = 'timeline-deadline-item';
+      item.style.backgroundImage = `url('${imageUrl}')`;
+      
+      if (this.activeDayFilter === day.id_dia.toString()) {
+        item.classList.add('active');
+      }
+
+      item.innerHTML = `
+        <div class="timeline-deadline-content">
+          <div class="timeline-deadline-day-label">Día</div>
+          <div class="timeline-deadline-day-number">${dayNumber}</div>
+        </div>
+      `;
+
+      item.addEventListener('click', () => {
+        // Toggle the filter
+        if (this.activeDayFilter === day.id_dia.toString()) {
+          this.activeDayFilter = 'all'; // deselect
+        } else {
+          this.activeDayFilter = day.id_dia.toString(); // select
+        }
+        
+        // Update visual active state of items
+        Array.from(timelineContainer.children).forEach(child => child.classList.remove('active'));
+        if (this.activeDayFilter !== 'all') {
+          item.classList.add('active');
+        }
+        
+        // Update the select dropdown to match
+        const select = this.element?.querySelector('.day-select-filter') as HTMLSelectElement;
+        if (select) {
+          select.value = this.activeDayFilter;
+        }
+
+        this.updateList();
+      });
+
+      timelineContainer.appendChild(item);
+    });
+
+    return timelineContainer;
   }
 
   private createToolbar(): HTMLElement {

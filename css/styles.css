@@ -1806,3 +1806,94 @@ html {
     right: 10px;
   }
 }
+
+/* ==========================================
+   Visual Timeline (Deadline) Component
+   ========================================== */
+.timeline-deadline-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 10px 4px 20px 4px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  scroll-behavior: smooth;
+  /* Ocultar barra de scroll para estética limpia */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.timeline-deadline-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.timeline-deadline-item {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 110px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border: 2px solid transparent;
+  background-size: cover;
+  background-position: center;
+}
+
+.timeline-deadline-item::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(29, 53, 87, 0.8) 100%);
+  transition: var(--transition);
+}
+
+.timeline-deadline-item:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-color);
+}
+
+.timeline-deadline-item:hover::after {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(231, 111, 81, 0.9) 100%);
+}
+
+.timeline-deadline-item.active {
+  border-color: var(--accent-color);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.timeline-deadline-item.active::after {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(231, 111, 81, 0.95) 100%);
+}
+
+.timeline-deadline-content {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+  color: #ffffff;
+}
+
+.timeline-deadline-day-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.timeline-deadline-day-number {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
