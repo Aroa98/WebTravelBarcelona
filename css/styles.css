@@ -2,27 +2,33 @@
 
 :root {
   /* Barcelona Inspired Mediterranean Palette */
-  --bg-primary: #faf9f6; /* Soft warm ivory, sandy beach tone */
+  --bg-primary: #faf9f6;
+  /* Soft warm ivory, sandy beach tone */
   --bg-secondary: #f4efe6;
   --card-bg: #ffffff;
-  
+
   /* Deep maritime navy sea, Sagrada terracotta and golden hour yellow */
-  --primary-color: #1d3557; 
+  --primary-color: #1d3557;
   --primary-light: #ebf1f5;
-  --accent-color: #e76f51; /* Terracotta rooftop orange */
+  --accent-color: #e76f51;
+  /* Terracotta rooftop orange */
   --accent-hover: #cf5b3b;
   --accent-light: #fdf2ee;
-  --barcelona-blue: #457b9d; /* Sea blue */
+  --barcelona-blue: #457b9d;
+  /* Sea blue */
   --barcelona-aqua: #a8dadc;
-  --barcelona-gold: #e9c46a; /* Golden hour sun */
-  
+  --barcelona-gold: #e9c46a;
+  /* Golden hour sun */
+
   /* Text and borders */
   --text-primary: #1a232c;
   --text-secondary: #606c76;
   --border-color: #e5dec9;
-  --success-color: #2a9d8f; /* Park Güell mosaic green */
-  --wedding-gold: #dfba6b; /* Champagne gold for Day 10 */
-  
+  --success-color: #2a9d8f;
+  /* Park Güell mosaic green */
+  --wedding-gold: #dfba6b;
+  /* Champagne gold for Day 10 */
+
   /* Fonts & Shadows */
   --font-display: 'Montserrat', -apple-system, sans-serif;
   --font-sans: 'Outfit', -apple-system, sans-serif;
@@ -52,16 +58,19 @@ body {
 
 /* App Header & Hero Section */
 .app-header {
-  background-color: #faf6ee; /* Warm paper background */
+  background-color: #faf6ee;
+  /* Warm paper background */
   color: var(--text-primary);
-  padding: 30px 40px; /* Reduced padding for notebook feel */
+  padding: 30px 40px;
+  /* Reduced padding for notebook feel */
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  border-bottom: 8px solid var(--accent-color); /* Terracotta binder cover style */
+  border-bottom: 8px solid var(--accent-color);
+  /* Terracotta binder cover style */
 }
 
 /* Washi tape detail */
@@ -87,7 +96,7 @@ body {
   right: 0;
   bottom: 0;
   background-image: linear-gradient(rgba(229, 222, 201, 0.3) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(229, 222, 201, 0.3) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(229, 222, 201, 0.3) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
   z-index: 1;
@@ -101,7 +110,8 @@ body {
 }
 
 .header-title {
-  font-family: 'Playfair Display', serif; /* Scrapbook title */
+  font-family: 'Playfair Display', serif;
+  /* Scrapbook title */
   font-size: 2.2rem;
   font-weight: 800;
   color: var(--text-primary);
@@ -110,7 +120,8 @@ body {
 }
 
 .header-subtitle {
-  font-family: 'Caveat', cursive; /* Handwritten subtitle */
+  font-family: 'Caveat', cursive;
+  /* Handwritten subtitle */
   font-size: 1.4rem;
   color: var(--accent-color);
   font-weight: 600;
@@ -156,7 +167,8 @@ body {
 
 .nav-button:hover {
   color: var(--text-primary);
-  background-color: rgba(231, 111, 81, 0.05); /* Terracotta hover */
+  background-color: rgba(231, 111, 81, 0.05);
+  /* Terracotta hover */
 }
 
 .nav-item.active .nav-button {
@@ -296,7 +308,7 @@ body {
   transition: var(--transition);
 }
 
-.search-input:focus + .search-icon,
+.search-input:focus+.search-icon,
 .search-wrapper:focus-within .search-icon {
   color: var(--accent-color);
 }
@@ -314,7 +326,8 @@ body {
   padding: 10px 36px 10px 16px;
   border-radius: var(--radius-md);
   font-family: var(--font-sans);
-  font-size: 1rem; /* ≥16px: prevents iOS auto-zoom on focus */
+  font-size: 1rem;
+  /* ≥16px: prevents iOS auto-zoom on focus */
   font-weight: 600;
   color: var(--text-primary);
   cursor: pointer;
@@ -328,7 +341,8 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-.day-select-filter:hover, .day-select-filter:focus {
+.day-select-filter:hover,
+.day-select-filter:focus {
   border-color: var(--primary-color);
   box-shadow: 0 4px 12px rgba(231, 111, 81, 0.15);
 }
@@ -649,7 +663,9 @@ body {
 }
 
 /* Empty, Error, and Loading States */
-.no-results, .error-container, .timeline-empty {
+.no-results,
+.error-container,
+.timeline-empty {
   text-align: center;
   padding: 50px 30px;
   color: var(--text-secondary);
@@ -677,80 +693,31 @@ body {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .app-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 40px 24px 70px 24px;
-  }
-  
-  .header-nav {
-    width: 100%;
-  }
-  
-  .nav-list {
-    width: 100%;
-    justify-content: space-around;
-  }
-  
-  .lang-switcher {
-    align-self: flex-end;
-    margin-top: -10px;
-  }
-  
-  #itinerario-container {
-    padding: 0 16px;
-  }
-  
-  .itinerary-toolbar {
-    margin-top: -24px;
-    padding: 16px;
-  }
-  
-  .day-section {
-    padding: 24px;
-  }
-  
-  .activity-card {
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  
-  .activity-time-container {
-    min-width: unset;
-    padding-top: 0;
-  }
-  
-  .day-timeline {
-    padding-left: 24px;
-  }
-  
-  .day-timeline::before {
-    left: 9px;
-  }
-  
-  .activity-card::before {
-    left: -23px;
-    width: 12px;
-    height: 12px;
-    top: 4px;
-  }
 }
 
 /* ==========================================
@@ -779,8 +746,10 @@ body {
 
 /* The open notebook/scrapbook card container */
 .planner-book {
-  background-color: #faf6ee; /* Warm paper background */
-  border: 12px solid #e76f51; /* Terracotta binder cover */
+  background-color: #faf6ee;
+  /* Warm paper background */
+  border: 12px solid #e76f51;
+  /* Terracotta binder cover */
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg), 0 24px 60px rgba(29, 53, 87, 0.18);
   display: flex;
@@ -799,7 +768,7 @@ body {
   right: 0;
   bottom: 0;
   background-image: linear-gradient(rgba(229, 222, 201, 0.15) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(229, 222, 201, 0.15) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(229, 222, 201, 0.15) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
   z-index: 1;
@@ -831,9 +800,17 @@ body {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-6px) rotate(15deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(15deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
 }
 
 .planner-title {
@@ -890,11 +867,16 @@ body {
   gap: 14px;
   font-size: 1.05rem;
   animation: fadeIn 0.4s ease-out;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.planner-checklist li:hover {
+  transform: translateX(6px);
 }
 
 .checklist-icon {
   font-size: 1.4rem;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .checklist-content {
@@ -962,8 +944,8 @@ body {
   align-items: center;
   position: relative;
   z-index: 5;
-  border-left: 1px solid rgba(0,0,0,0.05);
-  border-right: 1px solid rgba(0,0,0,0.05);
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .binder-ring {
@@ -971,7 +953,7 @@ body {
   height: 40px;
   background: linear-gradient(90deg, #dcdcdc 0%, #ffffff 40%, #a9a9a9 100%);
   border-radius: 10px;
-  box-shadow: -2px 4px 6px rgba(0,0,0,0.15), 2px 4px 6px rgba(0,0,0,0.15);
+  box-shadow: -2px 4px 6px rgba(0, 0, 0, 0.15), 2px 4px 6px rgba(0, 0, 0, 0.15);
   position: relative;
 }
 
@@ -1021,7 +1003,7 @@ body {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .polaroid-caption {
@@ -1041,11 +1023,12 @@ body {
   transform: translateX(-50%) rotate(-3deg);
   width: 75px;
   height: 24px;
-  background-color: rgba(233, 196, 106, 0.5); /* Semi-transparent tape */
+  background-color: rgba(233, 196, 106, 0.5);
+  /* Semi-transparent tape */
   backdrop-filter: blur(1px);
-  border-left: 2px dashed rgba(0,0,0,0.06);
-  border-right: 2px dashed rgba(0,0,0,0.06);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  border-left: 2px dashed rgba(0, 0, 0, 0.06);
+  border-right: 2px dashed rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 10;
   pointer-events: none;
 }
@@ -1054,29 +1037,37 @@ body {
 .polaroid-sagrada {
   transform: rotate(-4deg) translateY(-8px);
 }
+
 .polaroid-sagrada .washi-tape {
-  background-color: rgba(231, 111, 81, 0.4); /* Terracotta washi tape */
+  background-color: rgba(231, 111, 81, 0.4);
+  /* Terracotta washi tape */
 }
 
 .polaroid-park {
   transform: rotate(3deg) translateY(-4px);
 }
+
 .polaroid-park .washi-tape {
-  background-color: rgba(42, 157, 143, 0.4); /* Teal washi tape */
+  background-color: rgba(42, 157, 143, 0.4);
+  /* Teal washi tape */
 }
 
 .polaroid-barceloneta {
   transform: rotate(2deg) translateY(4px);
 }
+
 .polaroid-barceloneta .washi-tape {
-  background-color: rgba(69, 123, 157, 0.4); /* Blue washi tape */
+  background-color: rgba(69, 123, 157, 0.4);
+  /* Blue washi tape */
 }
 
 .polaroid-gotico {
   transform: rotate(-3deg) translateY(6px);
 }
+
 .polaroid-gotico .washi-tape {
-  background-color: rgba(233, 196, 106, 0.45); /* Yellow washi tape */
+  background-color: rgba(233, 196, 106, 0.45);
+  /* Yellow washi tape */
 }
 
 /* Hover scales up and elevates */
@@ -1084,72 +1075,6 @@ body {
   transform: scale(1.08) rotate(0deg) translateY(-10px);
   box-shadow: 0 16px 35px rgba(29, 53, 87, 0.2);
   z-index: 12;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 768px) {
-  .home-container {
-    padding: 20px 12px;
-  }
-
-  .planner-book {
-    flex-direction: column;
-    min-height: auto;
-    border-width: 8px;
-  }
-
-  .planner-page {
-    border-right: none;
-    border-bottom: 2px dashed var(--border-color);
-    padding: 36px 20px;
-  }
-
-  .planner-title {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-
-  .planner-subtitle {
-    font-size: 1.8rem;
-    text-align: center;
-    display: block;
-    margin-bottom: 16px;
-  }
-
-  .planner-cta-btn {
-    align-self: center;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .binder-rings {
-    display: none; /* Hide rings on mobile vertical stack */
-  }
-
-  .gallery-page {
-    padding: 30px 20px;
-  }
-
-  .polaroid-collage {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .polaroid {
-    transform: none !important;
-    padding: 8px 8px 16px 8px;
-  }
-  
-  .polaroid-caption {
-    font-size: 1.1rem;
-    margin-top: 8px;
-  }
-
-  .washi-tape {
-    width: 55px;
-    height: 18px;
-    top: -10px;
-  }
 }
 
 /* Clickable Location Link */
@@ -1175,35 +1100,53 @@ body {
   background-color: var(--accent-light);
 }
 
-/* Modal detail view for activities */
-.activity-modal-overlay,
-.confirm-modal-overlay {
+/* Modal overlays corregidos */
+.activity-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;  /* Evita el sangrado horizontal de 100vw */
-  height: 100%; /* Evita problemas con las barras de navegación móviles */
+  width: 100%;
+  height: 100%;
   background-color: rgba(29, 53, 87, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px; /* Este margen evita que el modal toque los bordes físicos */
+  padding: 16px;
   box-sizing: border-box;
+  z-index: 9999;
   animation: fadeIn 0.3s ease-out;
 }
 
-.activity-modal-overlay {
-  z-index: 9999;
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(29, 53, 87, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
 }
 
 /* Modal detail view for activities */
 .activity-modal {
-  background-color: #faf6ee; /* Warm paper */
-  border: 8px solid #e76f51; /* Terracotta binder cover style border */
+  background-color: #faf6ee;
+  /* Warm paper */
+  border: 8px solid #e76f51;
+  /* Terracotta binder cover style border */
   border-radius: var(--radius-lg);
   width: 90%;
   max-width: 580px;
@@ -1226,7 +1169,7 @@ body {
   right: 0;
   bottom: 0;
   background-image: linear-gradient(rgba(229, 222, 201, 0.15) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(229, 222, 201, 0.15) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(229, 222, 201, 0.15) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
   z-index: 0;
@@ -1235,12 +1178,13 @@ body {
 .activity-modal-washi-tape {
   width: 140px;
   height: 30px;
-  background-color: rgba(233, 196, 106, 0.65); /* Yellow/gold torn tape */
+  background-color: rgba(233, 196, 106, 0.65);
+  /* Yellow/gold torn tape */
   position: absolute;
   top: -10px;
   left: 50%;
   transform: translateX(-50%) rotate(-1deg);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   z-index: 10;
   pointer-events: none;
   clip-path: polygon(0% 15%, 8% 0%, 15% 15%, 25% 0%, 35% 10%, 45% 0%, 55% 15%, 65% 5%, 75% 15%, 85% 0%, 93% 15%, 100% 0%, 97% 50%, 100% 100%, 90% 85%, 80% 100%, 70% 85%, 60% 100%, 50% 90%, 40% 100%, 30% 85%, 20% 100%, 10% 85%, 0% 100%);
@@ -1382,14 +1326,17 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(231, 111, 81, 0.35);
   border-radius: var(--radius-sm);
   border: 2px solid var(--bg-primary);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(231, 111, 81, 0.6);
 }
@@ -1404,23 +1351,20 @@ body {
 }
 
 @keyframes noteBounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-3px); }
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-3px);
+  }
 }
 
 .activity-content.has-notes {
   border-left-style: double !important;
   border-left-width: 6px !important;
-  background-color: #f7faf8 !important; /* Soft warm green highlight */
-}
-
-/* Checklist Hover Effect */
-.planner-checklist li {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.planner-checklist li:hover {
-  transform: translateX(6px);
+  background-color: #f7faf8 !important;
+  /* Soft warm green highlight */
 }
 
 /* Global scroll behavior */
@@ -1603,25 +1547,6 @@ html {
   display: block;
 }
 
-/* Mobile accommodation row */
-@media (max-width: 768px) {
-  .accommodation-row {
-    padding-left: 24px;
-  }
-  .accommodation-name {
-    max-width: 180px;
-  }
-}
-
-@media (max-width: 480px) {
-  .accommodation-row {
-    padding-left: 20px;
-  }
-  .accommodation-name {
-    max-width: 140px;
-  }
-}
-
 /* Add plan button inside Day Header */
 .day-add-plan-btn {
   background-color: var(--accent-color);
@@ -1638,7 +1563,8 @@ html {
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(231, 111, 81, 0.25);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-left: auto; /* Push it to the right of the flex container */
+  margin-left: auto;
+  /* Push it to the right of the flex container */
 }
 
 .day-add-plan-btn:hover {
@@ -1699,7 +1625,8 @@ html {
   border-radius: var(--radius-sm);
   background-color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
-  font-size: 16px; /* MUST be exactly 16px — iOS Safari auto-zooms on focus for anything < 16px */
+  font-size: 16px;
+  /* MUST be exactly 16px — iOS Safari auto-zooms on focus for anything < 16px */
   color: var(--text-primary);
   transition: var(--transition);
   outline: none;
@@ -1708,7 +1635,8 @@ html {
 
 input[type="time"].activity-edit-input {
   padding-left: 12px;
-  padding-right: 32px; /* Space for the clock/dot icon */
+  padding-right: 32px;
+  /* Space for the clock/dot icon */
 }
 
 input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator {
@@ -1737,7 +1665,8 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   border-radius: var(--radius-sm);
   background-color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
-  font-size: 16px; /* MUST be exactly 16px — iOS Safari auto-zooms on focus for anything < 16px */
+  font-size: 16px;
+  /* MUST be exactly 16px — iOS Safari auto-zooms on focus for anything < 16px */
   line-height: 1.5;
   color: var(--text-primary);
   resize: vertical;
@@ -1773,25 +1702,25 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   transform: scale(1.1) rotate(-15deg);
 }
 
-/* Custom Warning MessageBox Overlay */
-.confirm-modal-overlay {
-  z-index: 10000;
-}
-
 /* Custom Warning MessageBox Container */
 .confirm-modal {
-  background-color: #faf6ee; /* Warm paper background */
-  border: 4px solid var(--primary-color); /* Navy binder cover border style */
+  background-color: #faf6ee;
+  /* Warm paper background */
+  border: 4px solid var(--primary-color);
+  /* Navy binder cover border style */
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg), 0 16px 36px rgba(29, 53, 87, 0.15);
   width: 90%;
   max-width: 400px;
-  max-height: 85vh;       /* prevent overflow on any screen */
-  overflow-y: auto;       /* scroll inside if content is long (e.g. user guide) */
+  max-height: 85vh;
+  /* prevent overflow on any screen */
+  overflow-y: auto;
+  /* scroll inside if content is long (e.g. user guide) */
   padding: 24px;
   text-align: center;
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  border-top: 8px solid #e74c3c; /* Red/Orange top warning accent */
+  border-top: 8px solid #e74c3c;
+  /* Red/Orange top warning accent */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1816,10 +1745,14 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   line-height: 1.5;
   color: var(--text-secondary);
   margin-bottom: 24px;
-  flex: 1;                            /* grow to fill available height */
-  overflow-y: auto;                   /* scroll long content inside modal */
-  overscroll-behavior: contain;       /* no scroll-chain to background */
-  -webkit-overflow-scrolling: touch;  /* smooth scroll on iOS */
+  flex: 1;
+  /* grow to fill available height */
+  overflow-y: auto;
+  /* scroll long content inside modal */
+  overscroll-behavior: contain;
+  /* no scroll-chain to background */
+  -webkit-overflow-scrolling: touch;
+  /* smooth scroll on iOS */
   text-align: left;
   width: 100%;
 }
@@ -1828,7 +1761,8 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   display: flex;
   gap: 12px;
   width: 100%;
-  margin-top: auto;  /* pin buttons to bottom when content scrolls */
+  margin-top: auto;
+  /* pin buttons to bottom when content scrolls */
   flex-shrink: 0;
   padding-top: 12px;
 }
@@ -1866,8 +1800,10 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 /* Scroll container inside modal */
 .activity-modal-scroll-container {
   overflow-y: auto;
-  overscroll-behavior: contain;       /* prevents scroll chaining to the page */
-  -webkit-overflow-scrolling: touch;  /* smooth momentum scroll on iOS */
+  overscroll-behavior: contain;
+  /* prevents scroll chaining to the page */
+  -webkit-overflow-scrolling: touch;
+  /* smooth momentum scroll on iOS */
   padding-right: 6px;
   flex: 1;
   display: flex;
@@ -1880,43 +1816,167 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
    ========================================== */
 
 @media (max-width: 768px) {
-  /* Modals */
-  /* Activity modal: centered, compact, scrolls internally */
-  .activity-modal-overlay {
-    align-items: center; /* centered, NOT bottom-sheet */
-    padding: 12px;       /* breathing room around the modal */
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 40px 24px 70px 24px;
   }
 
+  .header-nav {
+    width: 100%;
+  }
+
+  .nav-list {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .lang-switcher {
+    align-self: flex-end;
+    margin-top: -10px;
+  }
+
+  #itinerario-container {
+    padding: 0 16px;
+  }
+
+  .itinerary-toolbar {
+    margin-top: -24px;
+    padding: 16px;
+  }
+
+  .day-section {
+    padding: 24px;
+  }
+
+  .activity-card {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .activity-time-container {
+    min-width: unset;
+    padding-top: 0;
+  }
+
+  .day-timeline {
+    padding-left: 24px;
+  }
+
+  .day-timeline::before {
+    left: 9px;
+  }
+
+  .activity-card::before {
+    left: -23px;
+    width: 12px;
+    height: 12px;
+    top: 4px;
+  }
+
+  .home-container {
+    padding: 20px 12px;
+  }
+
+  .planner-book {
+    flex-direction: column;
+    min-height: auto;
+    border-width: 8px;
+  }
+
+  .planner-page {
+    border-right: none;
+    border-bottom: 2px dashed var(--border-color);
+    padding: 36px 20px;
+  }
+
+  .planner-title {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .planner-subtitle {
+    font-size: 1.8rem;
+    text-align: center;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .planner-cta-btn {
+    align-self: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .binder-rings {
+    display: none;
+  }
+
+  .gallery-page {
+    padding: 30px 20px;
+  }
+
+  .polaroid-collage {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .polaroid {
+    transform: none !important;
+    padding: 8px 8px 16px 8px;
+  }
+
+  .polaroid-caption {
+    font-size: 1.1rem;
+    margin-top: 8px;
+  }
+
+  .washi-tape {
+    width: 55px;
+    height: 18px;
+    top: -10px;
+  }
+
+  .accommodation-row {
+    padding-left: 24px;
+  }
+
+  .accommodation-name {
+    max-width: 180px;
+  }
+
+  /* Activity modal: centered, compact, scrolls internally */
   .activity-modal {
     width: 100%;
-    max-width: 450px; /* Límite sensato para que no se deforme */
+    max-width: 450px;
     max-height: 85svh;
     max-height: 85vh;
-    padding: 36px 16px 20px 16px; /* Ajustamos el aire interior */
+    padding: 36px 16px 20px 16px;
     border-radius: 16px;
-    border-width: 4px !important; /* Pasamos de un borde gigante de 8px a 4px */
+    border-width: 4px !important;
     margin: 0;
     box-sizing: border-box;
   }
-  
+
   .activity-modal-title {
     font-size: 1.6rem;
   }
-  
+
   .activity-modal-time {
     font-size: 1.4rem;
   }
-  
+
   .activity-modal-desc {
     font-size: 0.95rem;
   }
-  
-  /* Ajuste de la cinta (washi tape) al nuevo borde más fino */
+
   .activity-modal-washi-tape {
     width: 110px;
     top: -12px;
   }
-  
+
   /* ALL inputs/textareas/selects inside modals: hard 16px prevents iOS zoom */
   .activity-modal input,
   .activity-modal textarea,
@@ -1932,27 +1992,20 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   .activity-edit-input {
     height: 44px;
     padding: 10px 12px;
-  }
-  
-  .activity-edit-textarea {
-    padding: 10px 12px;
-    min-height: 70px;
-  }
-
-  /* Blindaje para que los inputs no empujen el modal hacia afuera */
-  .activity-edit-input,
-  .activity-edit-textarea {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
   }
-  
-  /* Confirm/Info modal: centered, compact, scrollable content */
-  .confirm-modal-overlay {
-    align-items: center; /* centered, NOT bottom-sheet */
-    padding: 12px;
+
+  .activity-edit-textarea {
+    padding: 10px 12px;
+    min-height: 70px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
+  /* Confirm/Info modal: centered, compact, scrollable content */
   .confirm-modal {
     width: 100%;
     max-width: 450px;
@@ -1960,23 +2013,23 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
     max-height: 85vh;
     border-radius: 16px;
     border-width: 4px;
-    border-top-width: 8px; /* Mantenemos el acento rojo arriba */
+    border-top-width: 8px;
     padding: 24px 16px;
     margin: 0;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
   }
-  
+
   .confirm-modal-actions {
     flex-direction: column-reverse;
   }
-  
+
   .confirm-modal-btn {
     width: 100%;
     padding: 12px;
   }
-  
+
   /* Timeline fixes */
   .day-header {
     flex-direction: row;
@@ -1985,12 +2038,12 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
     justify-content: space-between;
     gap: 12px;
   }
-  
-  .day-header > div:first-child {
+
+  .day-header>div:first-child {
     flex: 1;
     min-width: 200px;
   }
-  
+
   .day-add-plan-btn {
     margin-left: auto;
     margin-top: 0;
@@ -1998,99 +2051,108 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 }
 
 @media (max-width: 480px) {
+
   /* Extra Small Devices */
   .app-header {
     padding: 24px 16px 60px 16px;
   }
-  
+
   .header-title {
     font-size: 1.8rem;
   }
-  
+
   .header-subtitle {
     font-size: 1.2rem;
   }
-  
+
   .nav-button {
     padding: 8px 12px;
     font-size: 0.85rem;
   }
-  
+
   .day-section {
     padding: 20px 16px;
     border-radius: var(--radius-md);
   }
-  
+
   .day-title {
     font-size: 1.3rem;
   }
-  
+
   .day-timeline {
     padding-left: 20px;
   }
-  
+
   .day-timeline::before {
     left: 9px;
   }
-  
+
   .activity-card {
     gap: 8px;
     margin-bottom: 24px;
   }
-  
+
   .activity-card::before {
     left: -19px;
     width: 12px;
     height: 12px;
     top: 4px;
   }
-  
+
   .activity-content {
     padding: 16px;
     margin-left: 0;
   }
-  
+
   .activity-title {
     font-size: 1.1rem;
   }
-  
+
   .activity-time-container {
     position: relative;
     top: 0;
     left: 0;
   }
-  
+
   .activity-time {
     font-size: 1rem;
     background: transparent;
     padding: 0;
   }
-  
+
   .activity-booking-link {
     width: 100%;
     justify-content: center;
   }
-  
+
   .itinerary-toolbar {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .filter-wrapper {
     width: 100%;
   }
-  
+
   .day-select-filter {
     width: 100%;
   }
-  
+
   .activity-modal-header {
     padding-right: 20px;
   }
-  
+
   .activity-modal-close {
     top: 10px;
     right: 10px;
+  }
+
+  .accommodation-row {
+    padding-left: 20px;
+  }
+
+  .accommodation-name {
+    max-width: 140px;
   }
 }
 
@@ -2106,12 +2168,15 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   margin-bottom: 5px;
   scroll-behavior: smooth;
   /* Ocultar barra de scroll para estética limpia */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
 
 .timeline-deadline-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
+  /* Chrome/Safari */
 }
 
 .timeline-deadline-item {
@@ -2132,8 +2197,11 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 .timeline-deadline-item::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(29, 53, 87, 0.8) 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(29, 53, 87, 0.8) 100%);
   transition: var(--transition);
 }
 
@@ -2144,7 +2212,7 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 }
 
 .timeline-deadline-item:hover::after {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(231, 111, 81, 0.9) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(231, 111, 81, 0.9) 100%);
 }
 
 .timeline-deadline-item.active {
@@ -2154,7 +2222,7 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
 }
 
 .timeline-deadline-item.active::after {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(231, 111, 81, 0.95) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 0%, rgba(231, 111, 81, 0.95) 100%);
 }
 
 .timeline-deadline-content {
@@ -2182,5 +2250,5 @@ input[type="time"].activity-edit-input::-webkit-calendar-picker-indicator:hover 
   font-size: 1.5rem;
   font-weight: 800;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
