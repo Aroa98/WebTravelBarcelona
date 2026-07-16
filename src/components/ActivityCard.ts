@@ -360,37 +360,21 @@ export class ActivityCard {
       lbl.style.color = 'var(--primary-color)';
       lbl.textContent = label;
       
-      const select = document.createElement('select');
-      select.className = 'activity-edit-input';
-      select.style.marginBottom = '12px';
-      select.style.cursor = 'pointer';
+      const input = document.createElement('input');
+      input.type = 'time';
+      input.className = 'activity-edit-input';
+      input.style.marginBottom = '12px';
+      input.style.cursor = 'pointer';
       
-      // The DB might return something like "10:00:00" or "10:00"
-      const defaultPrefix = defaultValue.length >= 5 ? defaultValue.substring(0, 5) : '10:00';
-      
-      for (let h = 0; h < 24; h++) {
-        for (let m = 0; m < 60; m += 15) {
-          const hh = h.toString().padStart(2, '0');
-          const mm = m.toString().padStart(2, '0');
-          const timeValue = `${hh}:${mm}:00`;
-          const timeDisplay = `${hh}:${mm}`;
-          
-          const option = document.createElement('option');
-          option.value = timeValue;
-          option.textContent = timeDisplay;
-          if (timeDisplay === defaultPrefix) {
-            option.selected = true;
-          }
-          select.appendChild(option);
-        }
-      }
+      // Native time input expects HH:mm
+      input.value = defaultValue.length >= 5 ? defaultValue.substring(0, 5) : '10:00';
       
       this.editModeContainer.appendChild(lbl);
-      this.editModeContainer.appendChild(select);
-      return select;
+      this.editModeContainer.appendChild(input);
+      return input;
     };
 
-    const editTime = createTimeSelect(t('modalTimeLabel'), this.activity.hora) as HTMLSelectElement;
+    const editTime = createTimeSelect(t('modalTimeLabel'), this.activity.hora) as HTMLInputElement;
     const editTitle = createField(t('modalActivityNameLabel'), this.activity.titulo) as HTMLInputElement;
     const editLoc = createField(t('modalLocationLabel'), this.activity.url || '') as HTMLInputElement;
     const editDesc = createField(t('modalDescriptionLabel'), this.activity.descripcion || '', true) as HTMLTextAreaElement;
@@ -416,8 +400,9 @@ export class ActivityCard {
 
     cancelChangesBtn.addEventListener('click', () => {
       const dbTime = this.activity.hora.length === 5 ? this.activity.hora + ':00' : this.activity.hora;
+      const currentVal = editTime.value ? (editTime.value.length === 5 ? editTime.value + ':00' : editTime.value) : '10:00:00';
       const hasChanges = 
-        editTime.value !== dbTime ||
+        currentVal !== dbTime ||
         editTitle.value.trim() !== this.activity.titulo ||
         editLoc.value.trim() !== (this.activity.url || '') ||
         editDesc.value.trim() !== (this.activity.descripcion || '') ||
@@ -427,7 +412,7 @@ export class ActivityCard {
         this.viewModeContainer.style.display = 'block';
         this.editModeContainer.style.display = 'none';
         this.isEditing = false;
-        editTime.value = dbTime;
+        editTime.value = dbTime.substring(0, 5);
         editTitle.value = this.activity.titulo;
         editLoc.value = this.activity.url || '';
         editDesc.value = this.activity.descripcion || '';
@@ -462,7 +447,7 @@ export class ActivityCard {
       ]);
 
       const payloadToSave = {
-        hora: editTime.value,
+        hora: editTime.value ? (editTime.value.length === 5 ? editTime.value + ':00' : editTime.value) : '10:00:00',
         url: editLoc.value.trim() || null,
         reservaLink: editLink.value.trim() || null,
         

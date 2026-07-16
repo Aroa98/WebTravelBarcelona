@@ -148,35 +148,21 @@ export class DayItinerary {
       lbl.style.color = 'var(--primary-color)';
       lbl.textContent = label;
       
-      const select = document.createElement('select');
-      select.className = 'activity-edit-input';
-      select.style.marginBottom = '12px';
-      select.style.cursor = 'pointer';
+      const input = document.createElement('input');
+      input.type = 'time';
+      input.className = 'activity-edit-input';
+      input.style.marginBottom = '12px';
+      input.style.cursor = 'pointer';
       
-      for (let h = 0; h < 24; h++) {
-        for (let m = 0; m < 60; m += 15) {
-          const hh = h.toString().padStart(2, '0');
-          const mm = m.toString().padStart(2, '0');
-          const timeValue = `${hh}:${mm}:00`;
-          const timeDisplay = `${hh}:${mm}`;
-          
-          const option = document.createElement('option');
-          option.value = timeValue;
-          option.textContent = timeDisplay;
-          // In Safari/iOS sometimes exact matching is needed
-          if (timeValue === defaultValue || timeValue.startsWith(`${hh}:${mm}`)) {
-            if (timeValue === defaultValue) option.selected = true;
-          }
-          select.appendChild(option);
-        }
-      }
+      // Native time input uses HH:mm
+      input.value = defaultValue.length >= 5 ? defaultValue.substring(0, 5) : '10:00';
       
       scrollContainer.appendChild(lbl);
-      scrollContainer.appendChild(select);
-      return select;
+      scrollContainer.appendChild(input);
+      return input;
     };
 
-    const timeInput = createTimeSelect(t('modalTimeLabel'), '10:00:00') as HTMLSelectElement;
+    const timeInput = createTimeSelect(t('modalTimeLabel'), '10:00:00') as HTMLInputElement;
     const titleInput = createField(t('modalActivityNameLabel'), false, t('modalActivityNamePlaceholder')) as HTMLInputElement;
     const descTextarea = createField(t('modalDescriptionLabel'), true, t('modalDescriptionPlaceholder')) as HTMLTextAreaElement;
     const locInput = createField(t('modalLocationLabel'), false, t('modalLocationPlaceholder')) as HTMLInputElement;
@@ -228,7 +214,7 @@ export class DayItinerary {
       
       const newActivityPayload = {
         id_dia: this.day.id_dia,
-        hora: timeInput.value.trim() || '10:00:00',
+        hora: timeInput.value ? (timeInput.value.length === 5 ? timeInput.value + ':00' : timeInput.value) : '10:00:00',
         url: locInput.value.trim() || null,
         reservaLink: linkInput.value.trim() || null,
         
@@ -267,8 +253,9 @@ export class DayItinerary {
     scrollContainer.appendChild(actionsWrapper);
 
     const hasChanges = () => {
+      const timeVal = timeInput.value ? (timeInput.value.length === 5 ? timeInput.value + ':00' : timeInput.value) : '10:00:00';
       return titleInput.value.trim() !== '' ||
-             timeInput.value !== '10:00:00' ||
+             timeVal !== '10:00:00' ||
              locInput.value.trim() !== '' ||
              descTextarea.value.trim() !== '' ||
              linkInput.value.trim() !== '' ||
