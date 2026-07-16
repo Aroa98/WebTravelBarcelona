@@ -54,26 +54,40 @@ export class ItineraryView {
     const timelineContainer = document.createElement('div');
     timelineContainer.className = 'timeline-deadline-container animate-fade-in';
 
-    // Beautiful Unsplash images for Barcelona
+    // Beautiful Unsplash images for Barcelona & Costa Brava
     const bgImages = [
       'https://images.unsplash.com/photo-1583422409516-c737d97d02ba?auto=format&fit=crop&w=400&q=80', // Sagrada
       'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=400&q=80', // Park Guell
       'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=400&q=80', // Streets
       'https://images.unsplash.com/photo-1558642084-fd07fae5282e?auto=format&fit=crop&w=400&q=80', // Barceloneta
-      'https://images.unsplash.com/photo-1539037116273-35d25d7220e8?auto=format&fit=crop&w=400&q=80', // Casa Batllo
-      'https://images.unsplash.com/photo-1562883676-8c7feb83f09b?auto=format&fit=crop&w=400&q=80', // Gothic
+      'https://images.unsplash.com/photo-1588612502693-e4c19c5c9af7?auto=format&fit=crop&w=400&q=80', // Tossa de Mar / Costa Brava
+      'https://images.unsplash.com/photo-1596524174092-2253816a27ce?auto=format&fit=crop&w=400&q=80', // Costa Brava Coast
+      'https://images.unsplash.com/photo-1607583626353-855fde6c1e51?auto=format&fit=crop&w=400&q=80', // Tarragona / Roman ruins
       'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=400&q=80', // Montjuic
-      'https://images.unsplash.com/photo-1579282240050-352f15ac8302?auto=format&fit=crop&w=400&q=80', // Food
       'https://images.unsplash.com/photo-1629731671801-b5e1b2123fbc?auto=format&fit=crop&w=400&q=80', // Arc de Triomf
       'https://images.unsplash.com/photo-1552599602-5e4d20cb6b62?auto=format&fit=crop&w=400&q=80', // Port
       'https://images.unsplash.com/photo-1574751499596-f5db18e55e37?auto=format&fit=crop&w=400&q=80', // Sunset
       'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=400&q=80' // Extra
     ];
 
+    const dayNames = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'];
+
     this.days.forEach((day, index) => {
       // Extraemos el número del día de la fecha (ej. "7 de Octubre" -> "7")
       const dayNumberMatch = day.fecha.match(/\d+/);
       const dayNumber = dayNumberMatch ? dayNumberMatch[0] : (index + 7).toString();
+      
+      // Intentamos extraer el nombre del día de la fecha si existe, si no, asumimos que empieza en Lunes
+      let dayNameLabel = dayNames[index % 7];
+      const lowerFecha = day.fecha.toLowerCase();
+      if (lowerFecha.includes('lun')) dayNameLabel = 'LUN';
+      else if (lowerFecha.includes('mar')) dayNameLabel = 'MAR';
+      else if (lowerFecha.includes('mié') || lowerFecha.includes('mie')) dayNameLabel = 'MIÉ';
+      else if (lowerFecha.includes('jue')) dayNameLabel = 'JUE';
+      else if (lowerFecha.includes('vie')) dayNameLabel = 'VIE';
+      else if (lowerFecha.includes('sáb') || lowerFecha.includes('sab')) dayNameLabel = 'SÁB';
+      else if (lowerFecha.includes('dom')) dayNameLabel = 'DOM';
+
       const imageUrl = bgImages[index % bgImages.length];
 
       const item = document.createElement('div');
@@ -86,7 +100,7 @@ export class ItineraryView {
 
       item.innerHTML = `
         <div class="timeline-deadline-content">
-          <div class="timeline-deadline-day-label">Día</div>
+          <div class="timeline-deadline-day-label">${dayNameLabel}</div>
           <div class="timeline-deadline-day-number">${dayNumber}</div>
         </div>
       `;
